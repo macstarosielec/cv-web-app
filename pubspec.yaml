@@ -1,0 +1,30 @@
+name: cv_web_app
+description: CV Web Application monorepo - A clean architecture Flutter web project with admin and public-facing applications
+publish_to: none
+environment:
+  sdk: ^3.9.0
+workspace:
+  - packages/core/data
+  - packages/core/domain
+  - packages/core/shared
+  - packages/features/admin_content
+  - packages/features/cv_content
+  - packages/features/auth
+  - apps/cv_app
+  - apps/admin_app
+
+dev_dependencies:
+  melos: ^7.3.0
+
+melos:
+  scripts:
+    analyze:
+      run: flutter analyze
+
+    test:
+      run: flutter test
+
+    build:
+      run: dart run build_runner build --delete-conflicting-outputs
+      packageFilter:
+        dependsOn: build_runner
