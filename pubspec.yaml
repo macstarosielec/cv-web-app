@@ -1,5 +1,6 @@
 name: cv_web_app
-description: CV Web Application monorepo - A clean architecture Flutter web project with admin and public-facing applications
+description: CV Web Application monorepo - A clean architecture Flutter web
+  project with admin and public-facing applications
 publish_to: none
 environment:
   sdk: ^3.9.0
@@ -28,3 +29,8 @@ melos:
       run: dart run build_runner build --delete-conflicting-outputs
       packageFilter:
         dependsOn: build_runner
+
+    # CV app commands
+    run:cv:dev:
+      run: melos exec --scope="cv_app" -- flutter run -d chrome -t lib/main_dev.dart
+      description: Run cv app in dev mode
