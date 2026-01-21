@@ -1,0 +1,175 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        
+        {
+            "name": "cv-web-app",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "admin_app",
+            "cwd": "apps/admin_app",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "admin_app (profile mode)",
+            "cwd": "apps/admin_app",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "admin_app (release mode)",
+            "cwd": "apps/admin_app",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "cv_app",
+            "cwd": "apps/cv_app",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "cv_app (profile mode)",
+            "cwd": "apps/cv_app",
+            "request": "launch",
+            "program": "lib/main_dev.dart",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "cv_app (release mode)",
+            "cwd": "apps/cv_app",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "data",
+            "cwd": "packages/core/data",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "data (profile mode)",
+            "cwd": "packages/core/data",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "data (release mode)",
+            "cwd": "packages/core/data",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "domain",
+            "cwd": "packages/core/domain",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "domain (profile mode)",
+            "cwd": "packages/core/domain",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "domain (release mode)",
+            "cwd": "packages/core/domain",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "shared",
+            "cwd": "packages/core/shared",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "shared (profile mode)",
+            "cwd": "packages/core/shared",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "shared (release mode)",
+            "cwd": "packages/core/shared",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "admin_content",
+            "cwd": "packages/features/admin_content",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "admin_content (profile mode)",
+            "cwd": "packages/features/admin_content",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "admin_content (release mode)",
+            "cwd": "packages/features/admin_content",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "auth",
+            "cwd": "packages/features/auth",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "auth (profile mode)",
+            "cwd": "packages/features/auth",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "auth (release mode)",
+            "cwd": "packages/features/auth",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "cv_content",
+            "cwd": "packages/features/cv_content",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "cv_content (profile mode)",
+            "cwd": "packages/features/cv_content",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "cv_content (release mode)",
+            "cwd": "packages/features/cv_content",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}

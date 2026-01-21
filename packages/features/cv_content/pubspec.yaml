@@ -1,5 +1,6 @@
 name: cv_content
-description: Content display feature with presentation layer for the public-facing CV application
+description: Content display feature with presentation layer for the
+  public-facing CV application
 version: 0.0.1
 homepage: null
 resolution: workspace
@@ -9,13 +10,19 @@ environment:
   flutter: ">=1.17.0"
 
 dependencies:
+  auto_route: ^11.1.0
   flutter:
     sdk: flutter
+  get_it: ^9.2.0
+  injectable: ^2.7.1+4
+  shared: ^0.0.1
 
 dev_dependencies:
+  auto_route_generator: ^10.4.0
   build_runner: ^2.10.5
   flutter_test:
     sdk: flutter
+  injectable_generator: ^2.12.0
   very_good_analysis: ^10.0.0
 
 flutter: null

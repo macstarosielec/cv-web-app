@@ -1,10 +1,12 @@
-
 // Config
-// export 'src/config/firebase_config.dart';
-// export 'src/config/env_config.dart';
-
+export 'config/app_config.dart';
 // Constants
-// export 'src/constants/app_constants.dart';
+export 'constants/app_constants.dart';
+// Observers
+export 'observers/app_bloc_observer.dart';
+export 'observers/route_observer.dart';
+// Theme
+export 'theme/theme.dart';
 
 // Utils
 // export 'src/utils/failures.dart';

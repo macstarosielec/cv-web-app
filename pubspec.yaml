@@ -15,7 +15,7 @@ workspace:
   - apps/admin_app
 
 dev_dependencies:
-  melos: ^7.3.0
+  melos: ^7.4.0
 
 melos:
   scripts:
@@ -26,9 +26,33 @@ melos:
       run: flutter test
 
     build:
-      run: dart run build_runner build --delete-conflicting-outputs
-      packageFilter:
+      run: flutter pub run build_runner build --delete-conflicting-outputs
+      exec:
+        concurrency: 1
+      packageFilters:
         dependsOn: build_runner
+      description: Run build_runner for all packages that depend on it
+
+    # Alternative: Run build_runner with concurrency
+    build:concurrent:
+      run: flutter pub run build_runner build --delete-conflicting-outputs
+      exec:
+        concurrency: 4
+      packageFilters:
+        dependsOn: build_runner
+      description: Run build_runner concurrently
+
+    l10n:
+      run: flutter gen-l10n
+      exec:
+        concurrency: 1
+      packageFilters:
+        fileExists: l10n.yaml
+      description: Generate localization files for all packages
+
+    l10n:shared:
+      run: melos exec --scope="shared" -- flutter gen-l10n
+      description: Generate localization files for shared package
 
     # CV app commands
     run:cv:dev:

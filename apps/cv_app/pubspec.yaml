@@ -9,23 +9,25 @@ environment:
   sdk: ^3.10.7
 
 dependencies:
-  auto_route: ^10.0.1
+  auto_route: ^11.1.0
   cupertino_icons: ^1.0.8
-  firebase_analytics: ^11.4.4
-  firebase_core: ^3.12.1
-  firebase_crashlytics: ^4.3.4
+  cv_content: ^0.0.1
+  firebase_analytics: ^12.1.1
+  firebase_core: ^4.4.0
   flutter:
     sdk: flutter
-  get_it: ^8.0.3
-  injectable: ^2.5.0
+  flutter_bloc: ^9.1.1
+  get_it: ^9.2.0
+  injectable: ^2.7.1+4
   logger: ^2.5.0
+  shared: ^0.0.1
 
 dev_dependencies:
-  auto_route_generator: ^10.0.1
+  auto_route_generator: ^10.4.0
   build_runner: ^2.10.5
   flutter_test:
     sdk: flutter
-  injectable_generator: ^2.7.0
+  injectable_generator: ^2.12.0
   very_good_analysis: ^10.0.0
 
 flutter:
