@@ -16,5 +16,5 @@ export 'di/injection.dart';
 export 'presentation/pages/home/home_page.dart';
 
 // Router
-// export 'router/router.dart';
-// export 'router/router.gr.dart';
+export 'router/cv_content_router.dart';
+export 'router/cv_content_router.gr.dart';
