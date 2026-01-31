@@ -3,7 +3,7 @@ description: CV Web Application monorepo - A clean architecture Flutter web
   project with admin and public-facing applications
 publish_to: none
 environment:
-  sdk: ^3.9.0
+  sdk: ^3.10.7
 workspace:
   - packages/core/data
   - packages/core/domain
