@@ -35,7 +35,7 @@ The project follows **Clean Architecture** with modular feature packages, uses *
 | **Firebase CLI** | Firebase project management and deployment | [firebase.google.com/docs/cli](https://firebase.google.com/docs/cli) |
 | **FlutterFire CLI** | Generating Firebase config files | `dart pub global activate flutterfire_cli` |
 
-> The project uses **Dart SDK ^3.9.0** at the workspace level. Individual packages target **^3.10.7**.
+> The project uses **Dart SDK ^3.10.7**.
 
 ---
 
@@ -101,10 +101,12 @@ cv-web-app/
 │   │   └── shared/                # Cross-cutting: theme, DI, localization, config, observers
 │   │       ├── lib/
 │   │       │   ├── config/app_config.dart        # IAppConfig interface
+│   │       │   ├── config/firebase_config.dart   # IFirebaseConfig interface
 │   │       │   ├── constants/app_constants.dart   # App name constants
 │   │       │   ├── di/injection.dart              # Shared DI module
 │   │       │   ├── gen/colors.gen.dart            # Generated color constants (FlutterGen)
 │   │       │   ├── l10n/                          # Generated localization classes
+│   │       │   │   └── l10n.dart                  # Localization helper extension
 │   │       │   ├── observers/                     # BLoC observer, route observer
 │   │       │   └── theme/theme.dart               # AppTheme (light + dark)
 │   │       ├── l10n/app_en.arb                    # English translations source
@@ -156,9 +158,9 @@ Feature Packages (presentation) --> core/domain <-- core/data
 | **Dependency Injection** | `get_it` + `injectable` (with `@dev`/`@prod` environment annotations) |
 | **State Management** | `flutter_bloc` (BLoC / Cubit pattern) |
 | **Routing** | `auto_route` v11 with generated type-safe routes |
-| **Immutable Models** | `freezed` + `freezed_annotation` |
-| **JSON Serialization** | `json_annotation` + `json_serializable` (via build_runner) |
-| **Functional Error Handling** | `dartz` (`Either` type) |
+| **Immutable Models** (planned) | `freezed` + `freezed_annotation` -- not yet added to any package |
+| **JSON Serialization** (planned) | `json_annotation` + `json_serializable` (via build_runner) -- not yet added to any package |
+| **Functional Error Handling** (planned) | `dartz` (`Either` type) -- not yet added to any package |
 | **Asset Generation** | `flutter_gen` (color constants from XML) |
 | **Linting** | `very_good_analysis` |
 | **Firebase** | `firebase_core`, `firebase_analytics` |
@@ -169,14 +171,19 @@ Each package that registers dependencies exposes a `configure*Dependencies(GetIt
 
 ```dart
 Future<void> configureDependencies({required String environment}) async {
-  // 1. App-level dependencies (IAppConfig registered per environment)
-  getIt.init(environment: environment);
+  // 1. Shared dependencies first
+  await shared.configureSharedDependencies(getIt, environment: environment);
 
   // 2. Feature modules
   await cv_content.configureCvContentDependencies(getIt, environment: environment);
 
-  // 3. Shared module
-  await shared.configureSharedDependencies(getIt, environment: environment);
+  // 3. App-specific dependencies (IAppConfig registered per environment)
+  getIt.init(environment: environment);
+
+  // 4. Register IFirebaseConfig by casting the IAppConfig instance
+  getIt.registerSingleton<IFirebaseConfig>(
+    getIt<IAppConfig>() as IFirebaseConfig,
+  );
 }
 ```
 
@@ -192,7 +199,7 @@ bootstrap(environment: "dev")    bootstrap(environment: "prod")
       |
       ├── WidgetsFlutterBinding.ensureInitialized()
       ├── configureDependencies()      // GetIt setup for all modules
-      ├── Firebase.initializeApp()     // Uses IAppConfig.getFirebaseOptions()
+      ├── Firebase.initializeApp()     // Uses IFirebaseConfig.getFirebaseOptions()
       ├── Bloc.observer = AppBlocObserver()
       └── runApp(App())
 ```
@@ -210,18 +217,18 @@ The project uses two Firebase projects and two app entry points to separate dev 
 2. **IAppConfig interface** (`packages/core/shared/lib/config/app_config.dart`): Defines the contract for environment-specific configuration:
    ```dart
    abstract class IAppConfig {
-     String? environment;
-     String? appName;
-     late bool isLogBlocChanges;
-     late bool isLogBlocErrors;
-     FirebaseOptions? getFirebaseOptions();
+     String get environment;
+     String get appName;
+     bool get isLogBlocChanges;
+     bool get isLogBlocErrors;
    }
    ```
+   > `IFirebaseConfig` is a separate interface for Firebase options (`FirebaseOptions getFirebaseOptions()`), located in `config/firebase_config.dart`.
 
 3. **Environment implementations** (`apps/cv_app/lib/config/dev/` and `prod/`):
    - `AppConfigDev` is annotated `@dev` and `@Injectable(as: IAppConfig)` -- registered only when `environment == "dev"`.
    - `AppConfigProd` is annotated `@prod` and `@Injectable(as: IAppConfig)` -- registered only when `environment == "prod"`.
-   - Each returns its own `FirebaseOptions` via `getFirebaseOptions()`, pointing to the appropriate Firebase project.
+   - Each class implements both `IAppConfig` and `IFirebaseConfig`, returning its own `FirebaseOptions` via `getFirebaseOptions()`, pointing to the appropriate Firebase project.
 
 4. **Firebase projects**:
    - Dev: `cv-web-app-dev` (Firebase options in `config/dev/firebase_options_dev.dart`)
@@ -539,7 +546,7 @@ The project uses **very_good_analysis** as the base lint ruleset, configured at 
 **Customizations**:
 - `lines_longer_than_80_chars`: ignored
 - `public_member_api_docs`: disabled
-- Generated files excluded: `*.freezed.dart`, `*.g.dart`, `*.mocks.dart`, `**/build/**`
+- Generated files excluded: `*.freezed.dart`, `*.g.dart`, `*.gr.dart`, `*.mocks.dart`, `**/build/**`
 
 ---
 
