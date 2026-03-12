@@ -33,8 +33,8 @@ class GradientCard extends StatelessWidget {
                   center: alignment,
                   radius: radius,
                   colors: [
-                    ColorName.accent.withValues(alpha: 0.3),
-                    ColorName.accent.withValues(alpha: 0.1),
+                    ColorName.accent.withValues(alpha: 0.55),
+                    ColorName.accent.withValues(alpha: 0.2),
                     Colors.transparent,
                   ],
                   stops: const [0.0, 0.4, 1.0],
