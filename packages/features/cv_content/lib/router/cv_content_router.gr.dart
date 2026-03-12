@@ -12,44 +12,16 @@ part of 'cv_content_router.dart';
 
 /// generated route for
 /// [HomePage]
-class HomeRoute extends PageRouteInfo<HomeRouteArgs> {
-  HomeRoute({required String title, Key? key, List<PageRouteInfo>? children})
-    : super(
-        HomeRoute.name,
-        args: HomeRouteArgs(title: title, key: key),
-        initialChildren: children,
-      );
+class HomeRoute extends PageRouteInfo<void> {
+  const HomeRoute({List<PageRouteInfo>? children})
+    : super(HomeRoute.name, initialChildren: children);
 
   static const String name = 'HomeRoute';
 
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      final args = data.argsAs<HomeRouteArgs>();
-      return HomePage(title: args.title, key: args.key);
+      return const HomePage();
     },
   );
-}
-
-class HomeRouteArgs {
-  const HomeRouteArgs({required this.title, this.key});
-
-  final String title;
-
-  final Key? key;
-
-  @override
-  String toString() {
-    return 'HomeRouteArgs{title: $title, key: $key}';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    if (other is! HomeRouteArgs) return false;
-    return title == other.title && key == other.key;
-  }
-
-  @override
-  int get hashCode => title.hashCode ^ key.hashCode;
 }
