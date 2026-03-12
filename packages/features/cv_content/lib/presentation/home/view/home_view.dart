@@ -30,12 +30,12 @@ class HomeView extends HookWidget {
     );
 
     final entranceController = useAnimationController(
-      duration: const Duration(milliseconds: 800),
+      duration: const Duration(milliseconds: 1000),
     );
     final entranceAnimation = useMemoized(
       () => CurvedAnimation(
         parent: entranceController,
-        curve: Curves.easeOutCubic,
+        curve: Curves.easeOutQuart,
       ),
       [entranceController],
     );
@@ -91,8 +91,12 @@ class HomeView extends HookWidget {
 
                 final entranceProgress = entranceAnimation.value;
 
-                return Transform.scale(
-                  scale: 0.85 + 0.15 * entranceProgress,
+                final screenWidth = MediaQuery.sizeOf(context).width;
+                return Transform.translate(
+                  offset: Offset(
+                    -screenWidth * (1 - entranceProgress),
+                    0,
+                  ),
                   child: Opacity(
                     opacity: entranceProgress,
                     child: Center(
