@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:cv_content/presentation/home/view/widgets/matrix_rain.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/gen/colors.gen.dart';
 
@@ -41,6 +42,9 @@ class GradientCard extends StatelessWidget {
                 ),
               ),
             ),
+          ),
+          const Positioned.fill(
+            child: MatrixRain(),
           ),
           child,
         ],
