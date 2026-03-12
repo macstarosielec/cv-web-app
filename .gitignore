@@ -6,3 +6,4 @@
 # FVM Version Cache
 .fvm/
 CLAUDE.md
+/.claude/
