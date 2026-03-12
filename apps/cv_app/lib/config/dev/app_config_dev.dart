@@ -21,6 +21,9 @@ class AppConfigDev implements IAppConfig, IFirebaseConfig {
   bool get isLogBlocErrors => true;
 
   @override
+  bool get alwaysAnimateEntrance => true;
+
+  @override
   FirebaseOptions getFirebaseOptions() =>
       DefaultFirebaseOptions.currentPlatform;
 }

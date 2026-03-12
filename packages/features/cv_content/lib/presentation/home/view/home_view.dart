@@ -7,6 +7,8 @@ import 'package:cv_content/presentation/home/view/widgets/profile_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:get_it/get_it.dart';
+import 'package:shared/config/app_config.dart';
 import 'package:shared/gen/colors.gen.dart';
 import 'package:shared/utils/visit_tracker.dart';
 
@@ -17,6 +19,14 @@ class HomeView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final config = useMemoized(() => GetIt.instance<IAppConfig>());
+    final shouldAnimate = useMemoized(() {
+      if (config.alwaysAnimateEntrance) return true;
+      final first = VisitTracker.isFirstVisit();
+      if (first) VisitTracker.markVisited();
+      return first;
+    });
+
     final selectedPanel = useState<DetailPanelType?>(null);
     final animationController = useAnimationController(
       duration: const Duration(milliseconds: 500),
@@ -27,33 +37,6 @@ class HomeView extends HookWidget {
         curve: Curves.easeInOutCubic,
       ),
       [animationController],
-    );
-
-    final entranceController = useAnimationController(
-      duration: const Duration(milliseconds: 1000),
-    );
-    final entranceAnimation = useMemoized(
-      () => CurvedAnimation(
-        parent: entranceController,
-        curve: Curves.easeOutQuart,
-      ),
-      [entranceController],
-    );
-
-    final isFirstVisit = useMemoized(VisitTracker.isFirstVisit);
-    final entranceReady = useState(false);
-
-    useEffect(
-      () {
-        if (isFirstVisit) {
-          VisitTracker.markVisited();
-        } else {
-          entranceController.value = 1;
-        }
-        entranceReady.value = true;
-        return null;
-      },
-      [],
     );
 
     void onChipSelected(DetailPanelType type) {
@@ -76,82 +59,53 @@ class HomeView extends HookWidget {
           loading: () => const Center(
             child: CircularProgressIndicator(),
           ),
-          loaded: (profile) {
-            if (isFirstVisit &&
-                entranceController.status == AnimationStatus.dismissed) {
-              unawaited(entranceController.forward());
-            }
+          loaded: (profile) => Center(
+            child: Padding(
+              padding: const EdgeInsets.all(32),
+              child: AnimatedBuilder(
+                animation: animation,
+                builder: (context, child) {
+                  final expandProgress = animation.value;
 
-            return AnimatedBuilder(
-              animation: entranceAnimation,
-              builder: (context, _) {
-                if (!entranceReady.value) {
-                  return const SizedBox.shrink();
-                }
-
-                final entranceProgress = entranceAnimation.value;
-
-                final screenWidth = MediaQuery.sizeOf(context).width;
-                return Transform.translate(
-                  offset: Offset(
-                    -screenWidth * (1 - entranceProgress),
-                    0,
-                  ),
-                  child: Opacity(
-                    opacity: entranceProgress,
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(32),
-                        child: AnimatedBuilder(
-                          animation: animation,
-                          builder: (context, child) {
-                            final expandProgress = animation.value;
-
-                            return Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment:
-                                  CrossAxisAlignment.stretch,
-                              children: [
-                                AnimatedContainer(
-                                  duration: Duration.zero,
-                                  width: _profileCardWidth(
-                                    context,
-                                    expandProgress,
-                                  ),
-                                  child: ProfileCard(
-                                    profile: profile,
-                                    selectedPanel: selectedPanel.value,
-                                    onChipSelected: onChipSelected,
-                                  ),
-                                ),
-                                if (expandProgress > 0) ...[
-                                  const SizedBox(width: 24),
-                                  SizedBox(
-                                    width: _detailPanelWidth(
-                                      context,
-                                      expandProgress,
-                                    ),
-                                    child: Opacity(
-                                      opacity: expandProgress,
-                                      child: DetailPanel(
-                                        type: selectedPanel.value,
-                                        animationProgress:
-                                            expandProgress,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ],
-                            );
-                          },
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      AnimatedContainer(
+                        duration: Duration.zero,
+                        width: _profileCardWidth(
+                          context,
+                          expandProgress,
+                        ),
+                        child: ProfileCard(
+                          profile: profile,
+                          selectedPanel: selectedPanel.value,
+                          onChipSelected: onChipSelected,
+                          animate: shouldAnimate,
                         ),
                       ),
-                    ),
-                  ),
-                );
-              },
-            );
-          },
+                      if (expandProgress > 0) ...[
+                        const SizedBox(width: 24),
+                        SizedBox(
+                          width: _detailPanelWidth(
+                            context,
+                            expandProgress,
+                          ),
+                          child: Opacity(
+                            opacity: expandProgress,
+                            child: DetailPanel(
+                              type: selectedPanel.value,
+                              animationProgress: expandProgress,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ],
+                  );
+                },
+              ),
+            ),
+          ),
           error: (message) => Center(
             child: Text(
               'Error: $message',
