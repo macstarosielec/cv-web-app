@@ -134,33 +134,41 @@ class _ProfileCardState extends State<ProfileCard>
             const SizedBox(height: 32),
             _staggerItem(
               3,
-              Wrap(
-                spacing: 12,
-                runSpacing: 12,
+              Row(
                 children: [
-                  NavigationChip(
-                    label: 'Projects',
-                    icon: Icons.code_rounded,
-                    isSelected:
-                        widget.selectedPanel == DetailPanelType.projects,
-                    onTap: () =>
-                        widget.onChipSelected(DetailPanelType.projects),
+                  Expanded(
+                    child: NavigationChip(
+                      label: 'Projects',
+                      icon: Icons.code_rounded,
+                      isSelected:
+                          widget.selectedPanel == DetailPanelType.projects,
+                      onTap: () =>
+                          widget.onChipSelected(DetailPanelType.projects),
+                    ),
                   ),
-                  NavigationChip(
-                    label: 'Experience',
-                    icon: Icons.work_outline_rounded,
-                    isSelected:
-                        widget.selectedPanel == DetailPanelType.experience,
-                    onTap: () =>
-                        widget.onChipSelected(DetailPanelType.experience),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: NavigationChip(
+                      label: 'Experience',
+                      icon: Icons.work_outline_rounded,
+                      isSelected:
+                          widget.selectedPanel ==
+                              DetailPanelType.experience,
+                      onTap: () => widget.onChipSelected(
+                        DetailPanelType.experience,
+                      ),
+                    ),
                   ),
-                  NavigationChip(
-                    label: 'Contact',
-                    icon: Icons.mail_outline_rounded,
-                    isSelected:
-                        widget.selectedPanel == DetailPanelType.contact,
-                    onTap: () =>
-                        widget.onChipSelected(DetailPanelType.contact),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: NavigationChip(
+                      label: 'Contact',
+                      icon: Icons.mail_outline_rounded,
+                      isSelected:
+                          widget.selectedPanel == DetailPanelType.contact,
+                      onTap: () =>
+                          widget.onChipSelected(DetailPanelType.contact),
+                    ),
                   ),
                 ],
               ),
