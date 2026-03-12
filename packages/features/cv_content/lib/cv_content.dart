@@ -1,18 +1,9 @@
-// library cv_content;
-
-// Presentation - Cubit/State
-// export 'src/presentation/cubit/content_list_cubit.dart';
-// export 'src/presentation/cubit/content_list_state.dart';
-// export 'src/presentation/cubit/content_detail_cubit.dart';
-// export 'src/presentation/cubit/content_detail_state.dart';
-
-// Presentation - Widgets
-// export 'src/presentation/widgets/content_card.dart';
-// export 'src/presentation/widgets/content_grid.dart';
-
-// Dependency Injection
 export 'di/injection.dart';
-// Presentation - Pages
+export 'presentation/cubit/profile/profile_cubit.dart';
+export 'presentation/cubit/profile/profile_state.dart';
+export 'presentation/cubit/projects/projects_cubit.dart';
+export 'presentation/cubit/projects/projects_state.dart';
+export 'presentation/cubit/work_experience/work_experience_cubit.dart';
+export 'presentation/cubit/work_experience/work_experience_state.dart';
 export 'presentation/pages/home/home_page.dart';
-// Router
 export 'router/cv_content_router.dart';
