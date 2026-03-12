@@ -25,8 +25,9 @@ class _AppViewState extends State<AppView> {
     localizationsDelegates: AppLocalizations.localizationsDelegates,
     supportedLocales: AppLocalizations.supportedLocales,
     title: getIt<IAppConfig>().appName,
-    theme: AppTheme.light,
+    theme: AppTheme.dark,
     darkTheme: AppTheme.dark,
+    themeMode: ThemeMode.dark,
     routerDelegate: _appRouter.delegate(
       navigatorObservers: () => [
         AppRouteObserver(),
