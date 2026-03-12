@@ -21,6 +21,9 @@ class AppConfigProd implements IAppConfig, IFirebaseConfig {
   bool get isLogBlocErrors => false;
 
   @override
+  bool get alwaysAnimateEntrance => false;
+
+  @override
   FirebaseOptions getFirebaseOptions() =>
       DefaultFirebaseOptions.currentPlatform;
 }

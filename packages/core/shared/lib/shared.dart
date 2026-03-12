@@ -12,8 +12,7 @@ export 'observers/route_observer.dart';
 export 'theme/theme.dart';
 
 // Utils
-// export 'src/utils/failures.dart';
-// export 'src/utils/either.dart';
+export 'utils/visit_tracker.dart';
 
 // Exceptions
 // export 'src/exceptions/app_exceptions.dart';

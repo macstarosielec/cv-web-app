@@ -1,31 +1,106 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared/gen/colors.gen.dart';
 
 class AppTheme {
-  static ThemeData get light => ThemeData(
-    scaffoldBackgroundColor: ColorName.primaryColor,
-    appBarTheme: const AppBarTheme(
-      backgroundColor: ColorName.primaryDarkColor,
-    ),
-    colorScheme: ColorScheme.fromSwatch(
-      accentColor: ColorName.secondaryColor,
-    ),
-    snackBarTheme: const SnackBarThemeData(
-      behavior: SnackBarBehavior.floating,
-    ),
-  );
+  static final TextTheme _baseTextTheme = GoogleFonts.tekoTextTheme();
+
+  static TextStyle accentStyle({double? fontSize}) =>
+      GoogleFonts.roboto(
+        fontSize: fontSize,
+        fontWeight: FontWeight.w900,
+      );
+
+  static TextTheme get _textTheme => _baseTextTheme.copyWith(
+        displayLarge: _baseTextTheme.displayLarge?.copyWith(
+          color: ColorName.textPrimary,
+          fontWeight: FontWeight.w400,
+        ),
+        displayMedium: _baseTextTheme.displayMedium?.copyWith(
+          color: ColorName.textPrimary,
+          fontWeight: FontWeight.w400,
+        ),
+        displaySmall: _baseTextTheme.displaySmall?.copyWith(
+          color: ColorName.textPrimary,
+          fontWeight: FontWeight.w400,
+        ),
+        headlineLarge: _baseTextTheme.headlineLarge?.copyWith(
+          fontSize: 38,
+          color: ColorName.textPrimary,
+          fontWeight: FontWeight.w700,
+        ),
+        headlineMedium: _baseTextTheme.headlineMedium?.copyWith(
+          fontSize: 34,
+          color: ColorName.textPrimary,
+          fontWeight: FontWeight.w600,
+        ),
+        headlineSmall: _baseTextTheme.headlineSmall?.copyWith(
+          fontSize: 29,
+          color: ColorName.textPrimary,
+          fontWeight: FontWeight.w600,
+        ),
+        titleLarge: _baseTextTheme.titleLarge?.copyWith(
+          fontSize: 26,
+          color: ColorName.textPrimary,
+          fontWeight: FontWeight.w600,
+        ),
+        titleMedium: _baseTextTheme.titleMedium?.copyWith(
+          fontSize: 19,
+          color: ColorName.textPrimary,
+          fontWeight: FontWeight.w500,
+        ),
+        titleSmall: _baseTextTheme.titleSmall?.copyWith(
+          fontSize: 17,
+          color: ColorName.textSecondary,
+        ),
+        bodyLarge: _baseTextTheme.bodyLarge?.copyWith(
+          fontSize: 19,
+          color: ColorName.textSecondary,
+        ),
+        bodyMedium: _baseTextTheme.bodyMedium?.copyWith(
+          fontSize: 17,
+          color: ColorName.textSecondary,
+        ),
+        bodySmall: _baseTextTheme.bodySmall?.copyWith(
+          fontSize: 15,
+          color: ColorName.textMuted,
+        ),
+        labelLarge: _baseTextTheme.labelLarge?.copyWith(
+          fontSize: 17,
+          color: ColorName.textPrimary,
+        ),
+      );
 
   static ThemeData get dark => ThemeData(
-    scaffoldBackgroundColor: ColorName.primaryColor,
-    appBarTheme: const AppBarTheme(
-      backgroundColor: ColorName.primaryDarkColor,
-    ),
-    colorScheme: ColorScheme.fromSwatch(
-      brightness: Brightness.dark,
-      accentColor: ColorName.secondaryColor,
-    ),
-    snackBarTheme: const SnackBarThemeData(
-      behavior: SnackBarBehavior.floating,
-    ),
-  );
+        brightness: Brightness.dark,
+        scaffoldBackgroundColor: Colors.transparent,
+        textTheme: _textTheme,
+        colorScheme: const ColorScheme.dark(
+          surface: ColorName.surface,
+          primary: ColorName.accent,
+          secondary: ColorName.accentLight,
+          error: ColorName.accentLight,
+          onSurface: ColorName.textPrimary,
+          onPrimary: ColorName.textPrimary,
+          outline: ColorName.surfaceBorder,
+        ),
+        cardTheme: const CardThemeData(
+          color: ColorName.background,
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            side: BorderSide(color: ColorName.surfaceBorder),
+          ),
+        ),
+        chipTheme: ChipThemeData(
+          backgroundColor: ColorName.surfaceLight,
+          labelStyle: _textTheme.bodySmall?.copyWith(
+            color: ColorName.textSecondary,
+          ),
+          side: BorderSide.none,
+          shape: const RoundedRectangleBorder(),
+        ),
+        snackBarTheme: const SnackBarThemeData(
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
 }

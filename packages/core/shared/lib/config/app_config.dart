@@ -3,4 +3,5 @@ abstract class IAppConfig {
   String get appName;
   bool get isLogBlocChanges;
   bool get isLogBlocErrors;
+  bool get alwaysAnimateEntrance;
 }
