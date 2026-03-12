@@ -1,9 +1,9 @@
 export 'di/injection.dart';
-export 'presentation/cubit/profile/profile_cubit.dart';
-export 'presentation/cubit/profile/profile_state.dart';
-export 'presentation/cubit/projects/projects_cubit.dart';
-export 'presentation/cubit/projects/projects_state.dart';
-export 'presentation/cubit/work_experience/work_experience_cubit.dart';
-export 'presentation/cubit/work_experience/work_experience_state.dart';
-export 'presentation/pages/home/home_page.dart';
+export 'presentation/home/cubit/profile_cubit.dart';
+export 'presentation/home/cubit/profile_state.dart';
+export 'presentation/home/cubit/projects_cubit.dart';
+export 'presentation/home/cubit/projects_state.dart';
+export 'presentation/home/cubit/work_experience_cubit.dart';
+export 'presentation/home/cubit/work_experience_state.dart';
+export 'presentation/home/view/home_page.dart';
 export 'router/cv_content_router.dart';

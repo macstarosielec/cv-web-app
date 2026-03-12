@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:auto_route/auto_route.dart';
-import 'package:cv_content/presentation/cubit/profile/profile_cubit.dart';
-import 'package:cv_content/presentation/cubit/projects/projects_cubit.dart';
-import 'package:cv_content/presentation/cubit/work_experience/work_experience_cubit.dart';
-import 'package:cv_content/presentation/pages/home/home_content.dart';
+import 'package:cv_content/presentation/home/cubit/profile_cubit.dart';
+import 'package:cv_content/presentation/home/cubit/projects_cubit.dart';
+import 'package:cv_content/presentation/home/cubit/work_experience_cubit.dart';
+import 'package:cv_content/presentation/home/view/home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -39,7 +39,7 @@ class HomePage extends HookWidget {
         BlocProvider.value(value: projectsCubit),
         BlocProvider.value(value: workExperienceCubit),
       ],
-      child: const HomeContent(),
+      child: const HomeView(),
     );
   }
 }

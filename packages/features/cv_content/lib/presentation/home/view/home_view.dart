@@ -1,20 +1,20 @@
-import 'package:cv_content/presentation/cubit/profile/profile_cubit.dart';
-import 'package:cv_content/presentation/cubit/profile/profile_state.dart';
-import 'package:cv_content/presentation/cubit/projects/projects_cubit.dart';
-import 'package:cv_content/presentation/cubit/projects/projects_state.dart';
-import 'package:cv_content/presentation/cubit/work_experience/work_experience_cubit.dart';
-import 'package:cv_content/presentation/cubit/work_experience/work_experience_state.dart';
-import 'package:cv_content/presentation/widgets/interests_section.dart';
-import 'package:cv_content/presentation/widgets/languages_section.dart';
-import 'package:cv_content/presentation/widgets/profile_header.dart';
-import 'package:cv_content/presentation/widgets/projects_section.dart';
-import 'package:cv_content/presentation/widgets/skills_section.dart';
-import 'package:cv_content/presentation/widgets/work_experience_section.dart';
+import 'package:cv_content/presentation/home/cubit/profile_cubit.dart';
+import 'package:cv_content/presentation/home/cubit/profile_state.dart';
+import 'package:cv_content/presentation/home/cubit/projects_cubit.dart';
+import 'package:cv_content/presentation/home/cubit/projects_state.dart';
+import 'package:cv_content/presentation/home/cubit/work_experience_cubit.dart';
+import 'package:cv_content/presentation/home/cubit/work_experience_state.dart';
+import 'package:cv_content/presentation/home/view/widgets/interests_section.dart';
+import 'package:cv_content/presentation/home/view/widgets/languages_section.dart';
+import 'package:cv_content/presentation/home/view/widgets/profile_header.dart';
+import 'package:cv_content/presentation/home/view/widgets/projects_section.dart';
+import 'package:cv_content/presentation/home/view/widgets/skills_section.dart';
+import 'package:cv_content/presentation/home/view/widgets/work_experience_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class HomeContent extends StatelessWidget {
-  const HomeContent({super.key});
+class HomeView extends StatelessWidget {
+  const HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {

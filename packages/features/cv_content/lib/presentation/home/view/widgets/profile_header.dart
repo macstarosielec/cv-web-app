@@ -1,4 +1,4 @@
-import 'package:cv_content/presentation/widgets/contact_chip.dart';
+import 'package:cv_content/presentation/home/view/widgets/contact_chip.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 
