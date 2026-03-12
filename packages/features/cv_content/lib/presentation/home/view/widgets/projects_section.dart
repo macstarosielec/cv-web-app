@@ -1,4 +1,4 @@
-import 'package:cv_content/presentation/widgets/project_card.dart';
+import 'package:cv_content/presentation/home/view/widgets/project_card.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 

@@ -1,4 +1,4 @@
-import 'package:cv_content/presentation/widgets/work_experience_card.dart';
+import 'package:cv_content/presentation/home/view/widgets/work_experience_card.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 

@@ -1,5 +1,5 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:cv_content/presentation/pages/home/home_page.dart';
+import 'package:cv_content/presentation/home/view/home_page.dart';
 
 part 'cv_content_router.gr.dart';
 
