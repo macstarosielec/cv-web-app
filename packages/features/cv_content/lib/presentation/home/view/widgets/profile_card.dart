@@ -5,7 +5,9 @@ import 'package:cv_content/presentation/home/view/widgets/gradient_card.dart';
 import 'package:cv_content/presentation/home/view/widgets/navigation_chip.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
+import 'package:cv_content/presentation/home/view/widgets/section_title.dart';
 import 'package:shared/gen/colors.gen.dart';
+import 'package:shared/theme/theme.dart';
 
 class ProfileCard extends StatefulWidget {
   const ProfileCard({
@@ -112,9 +114,9 @@ class _ProfileCardState extends State<ProfileCard>
               1,
               Text(
                 profile.title,
-                style: textTheme.titleLarge?.copyWith(
+                style: AppTheme.accentStyle(fontSize: 24).copyWith(
                   color: ColorName.accent,
-                  fontWeight: FontWeight.w500,
+                  letterSpacing: 2,
                 ),
               ),
             ),
@@ -170,13 +172,7 @@ class _ProfileCardState extends State<ProfileCard>
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Skills',
-                      style: textTheme.titleMedium?.copyWith(
-                        color: ColorName.textPrimary,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+                    const SectionTitle('Skills'),
                     const SizedBox(height: 12),
                     Wrap(
                       spacing: 8,
@@ -216,13 +212,7 @@ class _ProfileCardState extends State<ProfileCard>
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Languages',
-                      style: textTheme.titleMedium?.copyWith(
-                        color: ColorName.textPrimary,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+                    const SectionTitle('Languages'),
                     const SizedBox(height: 12),
                     Wrap(
                       spacing: 8,

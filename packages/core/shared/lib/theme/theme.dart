@@ -3,7 +3,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared/gen/colors.gen.dart';
 
 class AppTheme {
-  static final TextTheme _baseTextTheme = GoogleFonts.interTextTheme();
+  static final TextTheme _baseTextTheme = GoogleFonts.jetBrainsMonoTextTheme();
+
+  static TextStyle accentStyle({double? fontSize}) =>
+      GoogleFonts.roboto(
+        fontSize: fontSize,
+        fontWeight: FontWeight.w900,
+      );
 
   static TextTheme get _textTheme => _baseTextTheme.copyWith(
         displayLarge: _baseTextTheme.displayLarge?.copyWith(

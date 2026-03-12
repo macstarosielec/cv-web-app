@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cv_content/presentation/home/view/widgets/project_tile.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
+import 'package:cv_content/presentation/home/view/widgets/section_title.dart';
 import 'package:shared/gen/colors.gen.dart';
 
 class ProjectsList extends StatefulWidget {
@@ -61,13 +62,7 @@ class _ProjectsListState extends State<ProjectsList>
     return ListView(
       padding: const EdgeInsets.all(32),
       children: [
-        Text(
-          'Projects',
-          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                color: ColorName.textPrimary,
-                fontWeight: FontWeight.w700,
-              ),
-        ),
+        const SectionTitle('Projects'),
         const SizedBox(height: 24),
         ...List.generate(widget.projects.length, (index) {
           return AnimatedBuilder(

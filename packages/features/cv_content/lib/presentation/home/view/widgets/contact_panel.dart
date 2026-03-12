@@ -1,9 +1,9 @@
 import 'package:cv_content/presentation/home/cubit/profile_cubit.dart';
 import 'package:cv_content/presentation/home/cubit/profile_state.dart';
 import 'package:cv_content/presentation/home/view/widgets/contact_row.dart';
+import 'package:cv_content/presentation/home/view/widgets/section_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared/gen/colors.gen.dart';
 
 class ContactPanel extends StatelessWidget {
   const ContactPanel({super.key});
@@ -23,13 +23,7 @@ class ContactPanel extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Contact',
-                style: textTheme.headlineSmall?.copyWith(
-                  color: ColorName.textPrimary,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
+              const SectionTitle('Contact'),
               const SizedBox(height: 24),
               ContactRow(
                 icon: Icons.email_outlined,

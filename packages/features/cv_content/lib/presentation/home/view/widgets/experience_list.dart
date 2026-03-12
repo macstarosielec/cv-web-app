@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cv_content/presentation/home/view/widgets/experience_tile.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
+import 'package:cv_content/presentation/home/view/widgets/section_title.dart';
 import 'package:shared/gen/colors.gen.dart';
 
 class ExperienceList extends StatefulWidget {
@@ -61,13 +62,7 @@ class _ExperienceListState extends State<ExperienceList>
     return ListView(
       padding: const EdgeInsets.all(32),
       children: [
-        Text(
-          'Experience',
-          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                color: ColorName.textPrimary,
-                fontWeight: FontWeight.w700,
-              ),
-        ),
+        const SectionTitle('Experience'),
         const SizedBox(height: 24),
         ...List.generate(widget.experiences.length, (index) {
           return AnimatedBuilder(
