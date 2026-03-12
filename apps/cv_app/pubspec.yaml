@@ -12,6 +12,7 @@ dependencies:
   auto_route: ^11.1.0
   cupertino_icons: ^1.0.8
   cv_content: ^0.0.1
+  data: ^0.0.1
   firebase_analytics: ^12.1.1
   firebase_core: ^4.4.0
   flutter:
