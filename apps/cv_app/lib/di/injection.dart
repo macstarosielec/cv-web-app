@@ -1,5 +1,6 @@
 import 'package:cv_app/di/injection.config.dart';
 import 'package:cv_content/di/injection.dart' as cv_content;
+import 'package:data/di/injection.dart' as data;
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared/config/app_config.dart';
@@ -16,7 +17,7 @@ Future<void> configureDependencies({required String environment}) async {
   await shared.configureSharedDependencies(getIt, environment: environment);
 
   // Initialize data layer (repositories, datasources)
-  // await configureDataDependencies(getIt, environment: environment);
+  await data.configureDataDependencies(getIt, environment: environment);
 
   // Initialize cv_content feature (cubits, etc.)
   await cv_content.configureCvContentDependencies(
