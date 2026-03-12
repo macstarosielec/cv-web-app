@@ -12,6 +12,9 @@ The project follows **Clean Architecture** with modular feature packages, uses *
 - [Getting Started](#getting-started)
 - [Project Structure](#project-structure)
 - [Architecture Overview](#architecture-overview)
+- [Domain Model](#domain-model)
+- [Data Layer](#data-layer)
+- [CV Content Feature](#cv-content-feature)
 - [Environment and Flavor Setup](#environment-and-flavor-setup)
 - [Melos Commands](#melos-commands)
 - [Code Generation](#code-generation)
@@ -76,7 +79,7 @@ cv-web-app/
 │   │   │   ├── app/app.dart       # Root App widget with MaterialApp.router
 │   │   │   ├── bootstrap.dart     # App initialization (DI, Firebase, BLoC observer)
 │   │   │   ├── main_dev.dart      # Entry point: dev environment
-│   │   │   ├── main_prod.dart     # Entry point: prod environment (placeholder)
+│   │   │   ├── main_prod.dart     # Entry point: prod environment
 │   │   │   ├── config/
 │   │   │   │   ├── dev/           # AppConfigDev + FirebaseOptions for dev project
 │   │   │   │   └── prod/          # AppConfigProd + FirebaseOptions for prod project
@@ -88,39 +91,42 @@ cv-web-app/
 │   │   ├── firebase.json          # FlutterFire CLI config (dev + prod project IDs)
 │   │   └── web/                   # Web entrypoint (index.html, manifest)
 │   │
-│   └── admin_app/                 # Admin dashboard web app (early stage)
-│       ├── lib/
-│       │   ├── main_dev.dart      # Entry point: dev environment (placeholder)
-│       │   └── main_prod.dart     # Entry point: prod environment (placeholder)
-│       └── web/
+│   └── admin_app/                 # Admin dashboard web app (scaffolded)
 │
 ├── packages/
 │   ├── core/
-│   │   ├── domain/                # Entities, repository interfaces, use cases
-│   │   ├── data/                  # Repository implementations, datasources, data models
+│   │   ├── domain/                # Entities (Freezed), repository interfaces
+│   │   │   └── lib/
+│   │   │       ├── entities/      # Profile, Project, WorkExperience, Skill, Language
+│   │   │       └── repositories/  # ProfileRepository, ProjectRepository, WorkExperienceRepository
+│   │   ├── data/                  # Repository implementations, datasources
+│   │   │   └── lib/
+│   │   │       ├── datasources/   # Mock datasources (@dev environment)
+│   │   │       ├── repositories/  # Mock repository implementations
+│   │   │       └── di/            # Data layer DI module
 │   │   └── shared/                # Cross-cutting: theme, DI, localization, config, observers
 │   │       ├── lib/
-│   │       │   ├── config/app_config.dart        # IAppConfig interface
-│   │       │   ├── config/firebase_config.dart   # IFirebaseConfig interface
-│   │       │   ├── constants/app_constants.dart   # App name constants
-│   │       │   ├── di/injection.dart              # Shared DI module
-│   │       │   ├── gen/colors.gen.dart            # Generated color constants (FlutterGen)
-│   │       │   ├── l10n/                          # Generated localization classes
-│   │       │   │   └── l10n.dart                  # Localization helper extension
-│   │       │   ├── observers/                     # BLoC observer, route observer
-│   │       │   └── theme/theme.dart               # AppTheme (light + dark)
-│   │       ├── l10n/app_en.arb                    # English translations source
-│   │       └── l10n.yaml                          # Localization config
+│   │       │   ├── config/        # IAppConfig, IFirebaseConfig interfaces
+│   │       │   ├── constants/     # App name constants
+│   │       │   ├── di/            # Shared DI module
+│   │       │   ├── gen/           # Generated color constants (FlutterGen)
+│   │       │   ├── l10n/          # Generated localization classes
+│   │       │   ├── observers/     # BLoC observer, route observer
+│   │       │   └── theme/         # AppTheme (light + dark)
+│   │       ├── l10n/app_en.arb    # English translations source
+│   │       └── l10n.yaml          # Localization config
 │   │
 │   └── features/
-│       ├── cv_content/            # CV display feature (pages, cubits, router)
-│       │   ├── lib/
-│       │   │   ├── di/injection.dart              # Feature DI module
-│       │   │   ├── presentation/pages/home/       # HomePage (annotated with @RoutePage)
-│       │   │   └── router/cv_content_router.dart  # Feature-level micro-router
-│       │   └── ...
-│       ├── admin_content/         # Admin content management (placeholder)
-│       └── auth/                  # Authentication feature (placeholder)
+│       ├── cv_content/            # CV display feature
+│       │   └── lib/
+│       │       ├── di/            # Feature DI module
+│       │       ├── presentation/
+│       │       │   ├── cubit/     # ProfileCubit, ProjectsCubit, WorkExperienceCubit
+│       │       │   ├── pages/     # HomePage (HookWidget), HomeContent
+│       │       │   └── widgets/   # ProfileHeader, SkillsSection, ProjectCard, etc.
+│       │       └── router/        # Feature-level micro-router
+│       ├── admin_content/         # Admin content management (scaffolded)
+│       └── auth/                  # Authentication feature (scaffolded)
 │
 ├── pubspec.yaml                   # Workspace root: Melos config + workspace member list
 ├── analysis_options.yaml          # Root lint config (very_good_analysis)
@@ -145,10 +151,10 @@ Feature Packages (presentation) --> core/domain <-- core/data
 
 | Layer | Package | Contains |
 |-------|---------|----------|
-| **Domain** | `packages/core/domain` | Entities, repository interfaces (abstract classes), use cases. No Flutter/Firebase dependencies. |
-| **Data** | `packages/core/data` | Repository implementations, Firebase datasources, data models (DTOs). Depends on domain. |
+| **Domain** | `packages/core/domain` | Entities (Freezed), repository interfaces. No Flutter/Firebase dependencies. |
+| **Data** | `packages/core/data` | Repository implementations, datasources (mock for dev, Firebase for prod). Depends on domain. |
 | **Shared** | `packages/core/shared` | Cross-cutting concerns: `IAppConfig` interface, `AppTheme`, localization, `AppBlocObserver`, `AppRouteObserver`, DI setup, generated colors. |
-| **Features** | `packages/features/*` | Self-contained feature modules. Each owns its presentation layer (pages, cubits/blocs), its own DI module, and its own micro-router. |
+| **Features** | `packages/features/*` | Self-contained feature modules. Each owns its presentation layer (pages, cubits/blocs, widgets), its own DI module, and its own micro-router. |
 | **Apps** | `apps/*` | Thin shell applications. Wire up DI, Firebase, routing, and theme. Contain environment configs and entry points. |
 
 ### Key Libraries
@@ -156,31 +162,35 @@ Feature Packages (presentation) --> core/domain <-- core/data
 | Concern | Library |
 |---------|---------|
 | **Dependency Injection** | `get_it` + `injectable` (with `@dev`/`@prod` environment annotations) |
-| **State Management** | `flutter_bloc` (BLoC / Cubit pattern) |
+| **State Management** | `flutter_bloc` (Cubit pattern with Freezed union states) |
 | **Routing** | `auto_route` v11 with generated type-safe routes |
-| **Immutable Models** (planned) | `freezed` + `freezed_annotation` -- not yet added to any package |
-| **JSON Serialization** (planned) | `json_annotation` + `json_serializable` (via build_runner) -- not yet added to any package |
-| **Functional Error Handling** (planned) | `dartz` (`Either` type) -- not yet added to any package |
+| **Immutable Models** | `freezed` + `freezed_annotation` |
+| **JSON Serialization** | `json_annotation` + `json_serializable` (via build_runner) |
+| **UI Hooks** | `flutter_hooks` (HookWidget for pages) |
+| **Functional Error Handling** (planned) | `dartz` (`Either` type) |
 | **Asset Generation** | `flutter_gen` (color constants from XML) |
 | **Linting** | `very_good_analysis` |
 | **Firebase** | `firebase_core`, `firebase_analytics` |
 
 ### Dependency Injection Flow
 
-Each package that registers dependencies exposes a `configure*Dependencies(GetIt, {environment})` function. The app's DI entry point (`apps/cv_app/lib/di/injection.dart`) orchestrates them:
+Each package that registers dependencies exposes a `configure*Dependencies(GetIt, {environment})` function. The app's DI entry point (`apps/cv_app/lib/di/injection.dart`) orchestrates them in order:
 
 ```dart
 Future<void> configureDependencies({required String environment}) async {
   // 1. Shared dependencies first
   await shared.configureSharedDependencies(getIt, environment: environment);
 
-  // 2. Feature modules
+  // 2. Data layer (repositories, datasources)
+  await data.configureDataDependencies(getIt, environment: environment);
+
+  // 3. Feature modules
   await cv_content.configureCvContentDependencies(getIt, environment: environment);
 
-  // 3. App-specific dependencies (IAppConfig registered per environment)
+  // 4. App-specific dependencies (IAppConfig registered per environment)
   getIt.init(environment: environment);
 
-  // 4. Register IFirebaseConfig by casting the IAppConfig instance
+  // 5. Register IFirebaseConfig by casting the IAppConfig instance
   getIt.registerSingleton<IFirebaseConfig>(
     getIt<IAppConfig>() as IFirebaseConfig,
   );
@@ -203,6 +213,87 @@ bootstrap(environment: "dev")    bootstrap(environment: "prod")
       ├── Bloc.observer = AppBlocObserver()
       └── runApp(App())
 ```
+
+---
+
+## Domain Model
+
+Entities are defined in `packages/core/domain/lib/entities/` using Freezed for immutability and JSON serialization.
+
+### Entities
+
+| Entity | Key Fields |
+|--------|------------|
+| **Profile** | fullName, title, about, email, phoneNumber?, linkedInUrl?, githubUrl?, avatarUrl?, skills (List\<Skill\>), languages (List\<Language\>), interests (List\<String\>) |
+| **Project** | id, name, company, role, description?, techStack (List\<String\>), responsibilities (List\<String\>), sortOrder |
+| **WorkExperience** | id, title, company, startDate, endDate? (null = "Present"), responsibilities (List\<String\>), sortOrder |
+| **Skill** | name, category?, sortOrder |
+| **Language** | name, proficiency (LanguageProficiency) |
+
+### LanguageProficiency Enum
+
+Uses the CEFR scale: `a1`, `a2`, `b1`, `b2`, `c1`, `c2`, `native` — each with a display `label` (e.g., `"B2"`, `"Native"`).
+
+### Repository Interfaces
+
+| Interface | Methods |
+|-----------|---------|
+| `ProfileRepository` | `Future<Profile> getProfile()` |
+| `ProjectRepository` | `Future<List<Project>> getProjects()` |
+| `WorkExperienceRepository` | `Future<List<WorkExperience>> getWorkExperiences()` |
+
+---
+
+## Data Layer
+
+`packages/core/data/` provides repository implementations. Currently uses **mock datasources** for the dev environment.
+
+### Mock Datasources (@dev)
+
+- `MockProfileDatasource` — returns sample profile data
+- `MockProjectDatasource` — returns 3 sample projects
+- `MockWorkExperienceDatasource` — returns 3 work experience entries
+
+### Mock Repositories (@dev)
+
+- `MockProfileRepository` → implements `ProfileRepository`
+- `MockProjectRepository` → implements `ProjectRepository`
+- `MockWorkExperienceRepository` → implements `WorkExperienceRepository`
+
+All registered as `@dev @LazySingleton`. When adding prod implementations, annotate with `@prod` and Injectable will swap automatically based on the environment.
+
+---
+
+## CV Content Feature
+
+`packages/features/cv_content/` — the presentation layer for the public-facing CV.
+
+### Cubits
+
+Each cubit uses **Freezed union states** (`initial`, `loading`, `loaded`, `error`):
+
+- `ProfileCubit` — loads profile data
+- `ProjectsCubit` — loads project list
+- `WorkExperienceCubit` — loads work experience list
+
+### Pages
+
+- **HomePage** (`HookWidget`) — creates cubits via `useMemoized`, triggers loading via `useEffect`, provides cubits via `MultiBlocProvider`
+- **HomeContent** (`StatelessWidget`) — scrollable CV layout with `BlocBuilder` widgets using `state.when()` for exhaustive pattern matching
+
+### Widgets
+
+Each widget is in its own file (one class per file):
+
+- `ProfileHeader` — name, title, about text, contact chips
+- `ContactChip` — icon + label row for contact info
+- `SkillsSection` — skills grouped by category as chips
+- `LanguagesSection` — language chips with CEFR proficiency labels
+- `InterestsSection` — interest chips
+- `WorkExperienceSection` — list of work experience cards
+- `WorkExperienceCard` — card with title, company, date range, responsibilities
+- `ProjectsSection` — list of project cards
+- `ProjectCard` — card with name, company/role, description, tech stack chips, responsibilities
 
 ---
 
@@ -312,12 +403,12 @@ The project uses **AutoRoute v11** with a micro-router pattern where each featur
      ];
    }
    ```
-   This generates `cv_content_router.gr.dart` containing `HomeRoute`, `HomeRouteArgs`, etc.
+   This generates `cv_content_router.gr.dart` containing `HomeRoute`, etc.
 
 2. **Page annotation** (e.g., `home_page.dart`):
    ```dart
    @RoutePage()
-   class HomePage extends StatefulWidget { ... }
+   class HomePage extends HookWidget { ... }
    ```
 
 3. **App-level router** (`apps/cv_app/lib/router/router.dart`):
@@ -379,9 +470,13 @@ environment:
 
 dependencies:
   auto_route: ^11.1.0
+  domain:
+    path: ../../core/domain
   flutter:
     sdk: flutter
   flutter_bloc: ^9.1.1
+  flutter_hooks: ^0.21.0
+  freezed_annotation: ^3.0.0
   get_it: ^9.2.0
   injectable: ^2.7.1+4
   shared: ^0.0.1
@@ -389,6 +484,9 @@ dependencies:
 dev_dependencies:
   auto_route_generator: ^10.4.0
   build_runner: ^2.10.5
+  flutter_test:
+    sdk: flutter
+  freezed: ^3.0.0
   injectable_generator: ^2.12.0
   very_good_analysis: ^10.0.0
 ```
