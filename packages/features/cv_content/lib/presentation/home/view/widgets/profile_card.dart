@@ -184,12 +184,8 @@ class _ProfileCardState extends State<ProfileCard>
                                 horizontal: 12,
                                 vertical: 6,
                               ),
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 color: ColorName.surfaceLight,
-                                borderRadius: BorderRadius.circular(8),
-                                border: Border.all(
-                                  color: ColorName.surfaceBorder,
-                                ),
                               ),
                               child: Text(
                                 skill.name,
@@ -224,12 +220,8 @@ class _ProfileCardState extends State<ProfileCard>
                                 horizontal: 12,
                                 vertical: 6,
                               ),
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 color: ColorName.surfaceLight,
-                                borderRadius: BorderRadius.circular(8),
-                                border: Border.all(
-                                  color: ColorName.surfaceBorder,
-                                ),
                               ),
                               child: Text(
                                 '${lang.name} (${lang.proficiency.label})',

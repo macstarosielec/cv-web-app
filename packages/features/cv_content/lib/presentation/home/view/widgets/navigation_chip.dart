@@ -19,66 +19,127 @@ class NavigationChip extends StatefulWidget {
   State<NavigationChip> createState() => _NavigationChipState();
 }
 
-class _NavigationChipState extends State<NavigationChip> {
-  bool _isHovered = false;
+class _NavigationChipState extends State<NavigationChip>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _hoverController;
+  late final Animation<double> _hoverAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _hoverController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 250),
+    );
+    _hoverAnimation = CurvedAnimation(
+      parent: _hoverController,
+      curve: Curves.easeOut,
+    );
+  }
+
+  @override
+  void dispose() {
+    _hoverController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didUpdateWidget(NavigationChip oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.isSelected) {
+      _hoverController.forward();
+    } else {
+      _hoverController.reverse();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final isActive = widget.isSelected || _isHovered;
-
     return MouseRegion(
-      onEnter: (_) => setState(() => _isHovered = true),
-      onExit: (_) => setState(() => _isHovered = false),
+      onEnter: (_) => _hoverController.forward(),
+      onExit: (_) {
+        if (!widget.isSelected) _hoverController.reverse();
+      },
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
         onTap: widget.onTap,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          padding: const EdgeInsets.symmetric(
-            horizontal: 20,
-            vertical: 12,
-          ),
-          decoration: BoxDecoration(
-            color: widget.isSelected
-                ? ColorName.accent.withValues(alpha: 0.15)
-                : isActive
-                    ? ColorName.surfaceLight
-                    : ColorName.surface,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: widget.isSelected
-                  ? ColorName.accent
-                  : isActive
-                      ? ColorName.textMuted
-                      : ColorName.surfaceBorder,
+        child: AnimatedBuilder(
+          animation: _hoverAnimation,
+          builder: (context, child) {
+            final fillProgress = _hoverAnimation.value;
+
+            return CustomPaint(
+              painter: _FillPainter(
+                progress: fillProgress,
+                backgroundColor: ColorName.surface,
+                fillColor: ColorName.accent,
+              ),
+              child: child,
+            );
+          },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 10,
+              vertical: 6,
             ),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                widget.icon,
-                size: 18,
-                color: widget.isSelected
-                    ? ColorName.accent
-                    : ColorName.textSecondary,
-              ),
-              const SizedBox(width: 8),
-              Text(
-                widget.label,
-                style: TextStyle(
-                  color: widget.isSelected
-                      ? ColorName.accent
-                      : ColorName.textSecondary,
-                  fontWeight: widget.isSelected
-                      ? FontWeight.w600
-                      : FontWeight.w400,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  widget.icon,
+                  size: 16,
+                  color: ColorName.textSecondary,
                 ),
-              ),
-            ],
+                const SizedBox(width: 8),
+                Padding(
+                  padding: const EdgeInsets.only(top: 2),
+                  child: Text(
+                    widget.label,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      height: 1,
+                      color: ColorName.textSecondary,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
+}
+
+class _FillPainter extends CustomPainter {
+  _FillPainter({
+    required this.progress,
+    required this.backgroundColor,
+    required this.fillColor,
+  });
+
+  final double progress;
+  final Color backgroundColor;
+  final Color fillColor;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final bgPaint = Paint()..color = backgroundColor;
+    canvas.drawRect(Offset.zero & size, bgPaint);
+
+    if (progress <= 0) return;
+
+    final fillPaint = Paint()..color = fillColor;
+    canvas.drawRect(
+      Rect.fromLTWH(0, 0, size.width * progress, size.height),
+      fillPaint,
+    );
+  }
+
+  @override
+  bool shouldRepaint(_FillPainter oldDelegate) =>
+      oldDelegate.progress != progress ||
+      oldDelegate.backgroundColor != backgroundColor ||
+      oldDelegate.fillColor != fillColor;
 }

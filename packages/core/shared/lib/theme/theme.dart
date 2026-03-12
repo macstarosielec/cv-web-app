@@ -96,10 +96,8 @@ class AppTheme {
           labelStyle: _textTheme.bodySmall?.copyWith(
             color: ColorName.textSecondary,
           ),
-          side: const BorderSide(color: ColorName.surfaceBorder),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
+          side: BorderSide.none,
+          shape: const RoundedRectangleBorder(),
         ),
         snackBarTheme: const SnackBarThemeData(
           behavior: SnackBarBehavior.floating,

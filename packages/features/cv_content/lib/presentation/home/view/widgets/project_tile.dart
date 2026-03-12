@@ -86,9 +86,8 @@ class _ProjectTileState extends State<ProjectTile> {
                           horizontal: 8,
                           vertical: 4,
                         ),
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: ColorName.surfaceLight,
-                          borderRadius: BorderRadius.circular(6),
                         ),
                         child: Text(
                           tech,
