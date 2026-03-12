@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cv_content/presentation/home/cubit/projects_cubit.dart';
 import 'package:cv_content/presentation/home/cubit/projects_state.dart';
 import 'package:cv_content/presentation/home/cubit/work_experience_cubit.dart';
@@ -10,8 +12,7 @@ import 'package:cv_content/presentation/home/view/widgets/projects_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
-class DetailPanel extends StatelessWidget {
+class DetailPanel extends StatefulWidget {
   const DetailPanel({
     required this.type,
     required this.animationProgress,
@@ -22,21 +23,106 @@ class DetailPanel extends StatelessWidget {
   final double animationProgress;
 
   @override
+  State<DetailPanel> createState() => _DetailPanelState();
+}
+
+class _DetailPanelState extends State<DetailPanel>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _flipController;
+  late final Animation<double> _flipAnimation;
+  DetailPanelType? _displayedType;
+  DetailPanelType? _nextType;
+
+  @override
+  void initState() {
+    super.initState();
+    _displayedType = widget.type;
+    _flipController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    );
+    _flipAnimation = CurvedAnimation(
+      parent: _flipController,
+      curve: Curves.easeInOut,
+    );
+    _flipController.addStatusListener(_onFlipComplete);
+  }
+
+  void _onFlipComplete(AnimationStatus status) {
+    if (status == AnimationStatus.completed) {
+      setState(() {
+        _displayedType = _nextType;
+        _flipController.reset();
+      });
+    }
+  }
+
+  @override
+  void didUpdateWidget(DetailPanel oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.type != oldWidget.type && widget.type != null) {
+      if (_displayedType == null) {
+        setState(() {
+          _displayedType = widget.type;
+        });
+      } else if (widget.type != _displayedType) {
+        _nextType = widget.type;
+        _flipController.forward();
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _flipController.removeStatusListener(_onFlipComplete);
+    _flipController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return GradientCard(
-      seed: 42,
-      child: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 300),
-          child: _buildContent(context),
-        ),
+    if (widget.animationProgress < 1) {
+      return GradientCard(seed: 42, child: const SizedBox.shrink());
+    }
+
+    return AnimatedBuilder(
+      animation: _flipAnimation,
+      builder: (context, _) {
+        final value = _flipAnimation.value;
+        final isFirstHalf = value <= 0.5;
+        final type = isFirstHalf ? _displayedType : _nextType;
+
+        final angle = isFirstHalf
+            ? value * pi
+            : (value - 1) * pi;
+
+        return Transform(
+          alignment: Alignment.center,
+          transform: Matrix4.identity()
+            ..setEntry(3, 2, 0.001)
+            ..rotateY(angle),
+          child: GradientCard(
+            seed: _seedForType(type),
+            child: _buildPanelContent(context, type),
+          ),
+        );
+      },
     );
   }
 
-  Widget _buildContent(BuildContext context) {
-    if (animationProgress < 1) {
-      return const SizedBox.shrink();
-    }
+  int _seedForType(DetailPanelType? type) {
+    return switch (type) {
+      DetailPanelType.projects => 42,
+      DetailPanelType.experience => 84,
+      DetailPanelType.contact => 126,
+      null => 42,
+    };
+  }
 
+  Widget _buildPanelContent(
+    BuildContext context,
+    DetailPanelType? type,
+  ) {
     return switch (type) {
       DetailPanelType.projects =>
         BlocBuilder<ProjectsCubit, ProjectsState>(
@@ -45,9 +131,12 @@ class DetailPanel extends StatelessWidget {
             loading: () => const Center(
               child: CircularProgressIndicator(),
             ),
-            loaded: (projects) =>
-                ProjectsList(key: const ValueKey('projects'), projects: projects),
-            error: (message) => Center(child: Text('Error: $message')),
+            loaded: (projects) => ProjectsList(
+              key: const ValueKey('projects'),
+              projects: projects,
+            ),
+            error: (message) =>
+                Center(child: Text('Error: $message')),
           ),
         ),
       DetailPanelType.experience =>
@@ -61,7 +150,8 @@ class DetailPanel extends StatelessWidget {
               key: const ValueKey('experience'),
               experiences: experiences,
             ),
-            error: (message) => Center(child: Text('Error: $message')),
+            error: (message) =>
+                Center(child: Text('Error: $message')),
           ),
         ),
       DetailPanelType.contact => const ContactPanel(
