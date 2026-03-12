@@ -4,6 +4,7 @@ import 'package:cv_content/presentation/home/view/widgets/contact_row.dart';
 import 'package:cv_content/presentation/home/view/widgets/section_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared/l10n/l10n.dart';
 
 class ContactPanel extends StatelessWidget {
   const ContactPanel({super.key});
@@ -18,40 +19,45 @@ class ContactPanel extends StatelessWidget {
         loading: () => const Center(
           child: CircularProgressIndicator(),
         ),
-        loaded: (profile) => Padding(
-          padding: const EdgeInsets.all(32),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SectionTitle('Contact'),
-              const SizedBox(height: 24),
-              ContactRow(
-                icon: Icons.email_outlined,
-                label: 'Email',
-                value: profile.email,
-              ),
-              if (profile.phoneNumber != null)
+        loaded: (profile) {
+          final l10n = AppLocalizations.of(context);
+          return Padding(
+            padding: const EdgeInsets.all(32),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SectionTitle(l10n.contact),
+                const SizedBox(height: 24),
                 ContactRow(
-                  icon: Icons.phone_outlined,
-                  label: 'Phone',
-                  value: profile.phoneNumber!,
+                  icon: Icons.email_outlined,
+                  label: l10n.email,
+                  value: profile.email,
                 ),
-              if (profile.linkedInUrl != null)
-                ContactRow(
-                  icon: Icons.link,
-                  label: 'LinkedIn',
-                  value: profile.linkedInUrl!,
-                ),
-              if (profile.githubUrl != null)
-                ContactRow(
-                  icon: Icons.code,
-                  label: 'GitHub',
-                  value: profile.githubUrl!,
-                ),
-            ],
-          ),
+                if (profile.phoneNumber != null)
+                  ContactRow(
+                    icon: Icons.phone_outlined,
+                    label: l10n.phone,
+                    value: profile.phoneNumber!,
+                  ),
+                if (profile.linkedInUrl != null)
+                  ContactRow(
+                    icon: Icons.link,
+                    label: l10n.linkedIn,
+                    value: profile.linkedInUrl!,
+                  ),
+                if (profile.githubUrl != null)
+                  ContactRow(
+                    icon: Icons.code,
+                    label: l10n.gitHub,
+                    value: profile.githubUrl!,
+                  ),
+              ],
+            ),
+          );
+        },
+        error: (message) => Center(
+          child: Text(AppLocalizations.of(context).errorMessage(message)),
         ),
-        error: (message) => Center(child: Text('Error: $message')),
       ),
     );
   }

@@ -10,6 +10,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared/config/app_config.dart';
 import 'package:shared/gen/colors.gen.dart';
+import 'package:shared/l10n/l10n.dart';
 import 'package:shared/utils/visit_tracker.dart';
 
 enum DetailPanelType { projects, experience, contact }
@@ -108,7 +109,7 @@ class HomeView extends HookWidget {
           ),
           error: (message) => Center(
             child: Text(
-              'Error: $message',
+              AppLocalizations.of(context).errorMessage(message),
               style: const TextStyle(color: ColorName.accentLight),
             ),
           ),

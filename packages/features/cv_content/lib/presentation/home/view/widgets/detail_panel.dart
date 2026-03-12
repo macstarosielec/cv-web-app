@@ -11,6 +11,7 @@ import 'package:cv_content/presentation/home/view/widgets/gradient_card.dart';
 import 'package:cv_content/presentation/home/view/widgets/projects_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared/l10n/l10n.dart';
 
 class DetailPanel extends StatefulWidget {
   const DetailPanel({
@@ -136,7 +137,11 @@ class _DetailPanelState extends State<DetailPanel>
               projects: projects,
             ),
             error: (message) =>
-                Center(child: Text('Error: $message')),
+                Center(
+                child: Text(
+                  AppLocalizations.of(context).errorMessage(message),
+                ),
+              ),
           ),
         ),
       DetailPanelType.experience =>
@@ -151,7 +156,11 @@ class _DetailPanelState extends State<DetailPanel>
               experiences: experiences,
             ),
             error: (message) =>
-                Center(child: Text('Error: $message')),
+                Center(
+                child: Text(
+                  AppLocalizations.of(context).errorMessage(message),
+                ),
+              ),
           ),
         ),
       DetailPanelType.contact => const ContactPanel(

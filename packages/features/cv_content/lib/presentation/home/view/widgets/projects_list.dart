@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:cv_content/presentation/home/view/widgets/project_tile.dart';
+import 'package:cv_content/presentation/home/view/widgets/section_title.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
-import 'package:cv_content/presentation/home/view/widgets/section_title.dart';
-import 'package:shared/gen/colors.gen.dart';
+import 'package:shared/l10n/l10n.dart';
 
 class ProjectsList extends StatefulWidget {
   const ProjectsList({required this.projects, super.key});
@@ -62,7 +62,7 @@ class _ProjectsListState extends State<ProjectsList>
     return ListView(
       padding: const EdgeInsets.all(32),
       children: [
-        const SectionTitle('Projects'),
+        SectionTitle(AppLocalizations.of(context).projects),
         const SizedBox(height: 24),
         ...List.generate(widget.projects.length, (index) {
           return AnimatedBuilder(

@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:cv_content/presentation/home/view/widgets/experience_tile.dart';
+import 'package:cv_content/presentation/home/view/widgets/section_title.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
-import 'package:cv_content/presentation/home/view/widgets/section_title.dart';
-import 'package:shared/gen/colors.gen.dart';
+import 'package:shared/l10n/l10n.dart';
 
 class ExperienceList extends StatefulWidget {
   const ExperienceList({required this.experiences, super.key});
@@ -62,7 +62,7 @@ class _ExperienceListState extends State<ExperienceList>
     return ListView(
       padding: const EdgeInsets.all(32),
       children: [
-        const SectionTitle('Experience'),
+        SectionTitle(AppLocalizations.of(context).experience),
         const SizedBox(height: 24),
         ...List.generate(widget.experiences.length, (index) {
           return AnimatedBuilder(
