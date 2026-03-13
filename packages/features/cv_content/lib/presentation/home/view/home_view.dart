@@ -65,10 +65,28 @@ class HomeView extends HookWidget {
     );
 
     final breakpoint = Breakpoints.of(context);
+    final previousBreakpoint = useRef(breakpoint);
     final isDesktop = breakpoint == ScreenBreakpoint.desktop;
     final isMobile = breakpoint == ScreenBreakpoint.mobile;
     final screenWidth = MediaQuery.sizeOf(context).width;
     final padding = _lerpPadding(screenWidth);
+
+    useEffect(
+      () {
+        final prev = previousBreakpoint.value;
+        final crossedDesktop =
+            (prev == ScreenBreakpoint.desktop) != (breakpoint == ScreenBreakpoint.desktop);
+        if (crossedDesktop && selectedPanel.value != null) {
+          animationController.reset();
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            unawaited(animationController.forward());
+          });
+        }
+        previousBreakpoint.value = breakpoint;
+        return null;
+      },
+      [breakpoint],
+    );
 
     return Scaffold(
       backgroundColor: Colors.transparent,
