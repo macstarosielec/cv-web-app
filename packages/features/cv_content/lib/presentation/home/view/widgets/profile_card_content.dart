@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:cv_content/presentation/home/view/widgets/section_title.dart';
+import 'package:cv_content/presentation/widgets/section_title.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/gen/colors.gen.dart';

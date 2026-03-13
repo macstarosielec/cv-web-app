@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:cv_content/presentation/home/view/widgets/project_tile.dart';
-import 'package:cv_content/presentation/home/view/widgets/section_title.dart';
+import 'package:cv_content/presentation/projects/view/widgets/project_tile.dart';
+import 'package:cv_content/presentation/widgets/section_title.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/l10n/l10n.dart';

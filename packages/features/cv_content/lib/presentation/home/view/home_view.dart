@@ -2,9 +2,10 @@ import 'dart:async';
 
 import 'package:cv_content/presentation/home/cubit/profile_cubit.dart';
 import 'package:cv_content/presentation/home/cubit/profile_state.dart';
-import 'package:cv_content/presentation/home/view/widgets/breakpoint_toast.dart';
 import 'package:cv_content/presentation/home/view/widgets/desktop_layout.dart';
 import 'package:cv_content/presentation/home/view/widgets/mobile_layout.dart';
+import 'package:cv_content/presentation/models/detail_panel_type.dart';
+import 'package:cv_content/presentation/widgets/breakpoint_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -14,8 +15,6 @@ import 'package:shared/gen/colors.gen.dart';
 import 'package:shared/l10n/l10n.dart';
 import 'package:shared/utils/breakpoints.dart';
 import 'package:shared/utils/visit_tracker.dart';
-
-enum DetailPanelType { projects, experience, contact }
 
 class HomeView extends HookWidget {
   const HomeView({super.key});

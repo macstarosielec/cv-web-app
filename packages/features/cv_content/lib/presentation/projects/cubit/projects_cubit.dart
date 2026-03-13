@@ -1,4 +1,4 @@
-import 'package:cv_content/presentation/home/cubit/projects_state.dart';
+import 'package:cv_content/presentation/projects/cubit/projects_state.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';

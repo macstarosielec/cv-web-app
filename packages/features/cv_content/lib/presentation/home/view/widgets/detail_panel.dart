@@ -1,14 +1,14 @@
 import 'dart:math';
 
-import 'package:cv_content/presentation/home/cubit/projects_cubit.dart';
-import 'package:cv_content/presentation/home/cubit/projects_state.dart';
-import 'package:cv_content/presentation/home/cubit/work_experience_cubit.dart';
-import 'package:cv_content/presentation/home/cubit/work_experience_state.dart';
-import 'package:cv_content/presentation/home/view/home_view.dart';
-import 'package:cv_content/presentation/home/view/widgets/contact_panel.dart';
-import 'package:cv_content/presentation/home/view/widgets/experience_list.dart';
-import 'package:cv_content/presentation/home/view/widgets/gradient_card.dart';
-import 'package:cv_content/presentation/home/view/widgets/projects_list.dart';
+import 'package:cv_content/presentation/contact/view/widgets/contact_panel.dart';
+import 'package:cv_content/presentation/experience/cubit/work_experience_cubit.dart';
+import 'package:cv_content/presentation/experience/cubit/work_experience_state.dart';
+import 'package:cv_content/presentation/experience/view/widgets/experience_list.dart';
+import 'package:cv_content/presentation/models/detail_panel_type.dart';
+import 'package:cv_content/presentation/projects/cubit/projects_cubit.dart';
+import 'package:cv_content/presentation/projects/cubit/projects_state.dart';
+import 'package:cv_content/presentation/projects/view/widgets/projects_list.dart';
+import 'package:cv_content/presentation/widgets/gradient_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/l10n/l10n.dart';
