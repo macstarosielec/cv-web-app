@@ -58,3 +58,7 @@ melos:
     run:cv:dev:
       run: melos exec --scope="cv_app" -- flutter run -d chrome -t lib/main_dev.dart
       description: Run cv app in dev mode
+
+    run:admin:dev:
+      run: melos exec --scope="admin_app" -- flutter run -d chrome -t lib/main_dev.dart
+      description: Run admin app in dev mode

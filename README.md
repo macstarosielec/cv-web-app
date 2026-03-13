@@ -23,6 +23,7 @@ The project follows **Clean Architecture** with modular feature packages, uses *
 - [Localization](#localization)
 - [Theming](#theming)
 - [Linting](#linting)
+- [CI/CD](#cicd)
 - [Firebase Setup](#firebase-setup)
 - [VS Code Configuration](#vs-code-configuration)
 
@@ -730,12 +731,53 @@ flutterfire configure \
   --platforms=web
 ```
 
+### Firebase Hosting
+
+The CV app is deployed to Firebase Hosting. Hosting config lives in `apps/cv_app/firebase.json` with SPA rewrites (all paths serve `index.html`). Project aliases are managed in `.firebaserc`.
+
 ### Firebase Services in Use
 
 - **Firebase Core** -- initialization and project wiring
+- **Firebase Hosting** -- static web app hosting with SPA support
 - **Firebase Analytics** -- event tracking (dependency added, integration pending)
 
 Additional services (Firestore, Auth, Storage, etc.) will be added as the project grows.
+
+---
+
+## CI/CD
+
+GitHub Actions workflows in `.github/workflows/` handle automated builds and deployments to Firebase Hosting.
+
+| Workflow | Trigger | Flavor | Deploys to |
+|----------|---------|--------|------------|
+| `firebase-hosting-dev.yml` | Push to `develop` | Dev (`main_dev.dart`) | `cv-web-app-dev` (live) |
+| `firebase-hosting-merge.yml` | Push to `main` | Prod (`main_prod.dart`) | `cv-web-app-prod` (live) |
+| `firebase-hosting-pull-request.yml` | Pull request | Dev (`main_dev.dart`) | `cv-web-app-dev` (preview channel) |
+
+### Build Steps
+
+Each workflow runs the same build pipeline:
+
+1. Check out code
+2. Set up Flutter (stable channel, cached)
+3. `flutter pub get` — resolve dependencies
+4. `melos run build` — code generation (Freezed, Injectable, AutoRoute, JSON)
+5. `melos run l10n` — localization generation
+6. `flutter build web --target lib/main_*.dart` — build the web app
+
+### Required GitHub Secrets
+
+| Secret | Purpose |
+|--------|---------|
+| `FIREBASE_SERVICE_ACCOUNT_CV_WEB_APP_DEV` | Service account for dev Firebase project |
+| `FIREBASE_SERVICE_ACCOUNT_CV_WEB_APP_PROD` | Service account for prod Firebase project |
+
+These are set up automatically via `firebase init hosting:github`.
+
+### SEO / Crawlers
+
+The site is not intended for search engine indexing. `index.html` includes `<meta name="robots" content="noindex, nofollow">` and `robots.txt` disallows all crawlers.
 
 ---
 
