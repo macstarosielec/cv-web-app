@@ -10,10 +10,8 @@ class ContactPanel extends StatelessWidget {
   const ContactPanel({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-
-    return BlocBuilder<ProfileCubit, ProfileState>(
+  Widget build(BuildContext context) =>
+    BlocBuilder<ProfileCubit, ProfileState>(
       builder: (context, state) => state.when(
         initial: () => const SizedBox.shrink(),
         loading: () => const Center(
@@ -60,5 +58,4 @@ class ContactPanel extends StatelessWidget {
         ),
       ),
     );
-  }
 }
