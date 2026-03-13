@@ -13,9 +13,23 @@ class FirestoreProfileDatasource {
 
   Future<Profile> getProfile() async {
     final snapshot = await _doc.get();
+    if (!snapshot.exists || snapshot.data() == null) {
+      return const Profile(
+        fullName: '',
+        title: '',
+        about: '',
+        email: '',
+      );
+    }
     return Profile.fromJson(snapshot.data()!);
   }
 
-  Future<void> saveProfile(Profile profile) =>
-      _doc.set(profile.toJson());
+  Future<void> saveProfile(Profile profile) {
+    final json = profile.toJson();
+    json['skills'] =
+        profile.skills.map((s) => s.toJson()).toList();
+    json['languages'] =
+        profile.languages.map((l) => l.toJson()).toList();
+    return _doc.set(json);
+  }
 }

@@ -22,7 +22,7 @@ extension GetItInjectableX on _i174.GetIt {
     _i526.EnvironmentFilter? environmentFilter,
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
-    gh.factory<_i227.AuthCubit>(
+    gh.lazySingleton<_i227.AuthCubit>(
       () => _i227.AuthCubit(gh<_i494.AuthRepository>()),
     );
     return this;

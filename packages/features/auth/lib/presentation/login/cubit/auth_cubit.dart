@@ -3,7 +3,7 @@ import 'package:domain/domain.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
-@injectable
+@lazySingleton
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit(this._authRepository) : super(const AuthState.initial());
 

@@ -19,11 +19,15 @@ class FirestoreProjectDatasource {
     }).toList();
   }
 
-  Future<void> addProject(Project project) =>
-      _collection.doc(project.id).set(project.toJson());
+  Future<void> addProject(Project project) {
+    final json = project.toJson()..remove('id');
+    return _collection.doc(project.id).set(json);
+  }
 
-  Future<void> updateProject(Project project) =>
-      _collection.doc(project.id).update(project.toJson());
+  Future<void> updateProject(Project project) {
+    final json = project.toJson()..remove('id');
+    return _collection.doc(project.id).update(json);
+  }
 
   Future<void> deleteProject(String id) => _collection.doc(id).delete();
 
