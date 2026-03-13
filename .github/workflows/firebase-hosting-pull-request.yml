@@ -5,7 +5,8 @@ permissions:
   contents: read
   pull-requests: write
 jobs:
-  build_and_preview:
+  build_and_preview_cv:
+    name: CV App Preview
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
     runs-on: ubuntu-latest
     steps:
@@ -39,3 +40,39 @@ jobs:
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CV_WEB_APP_DEV }}
           projectId: cv-web-app-dev
           entryPoint: apps/cv_app
+
+  build_and_preview_admin:
+    name: Admin App Preview
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Activate Melos
+        run: dart pub global activate melos
+
+      - name: Run code generation
+        run: melos run build
+
+      - name: Generate localization
+        run: melos run l10n
+
+      - name: Build admin app (dev)
+        run: cd apps/admin_app && flutter build web --target lib/main_dev.dart
+
+      - name: Deploy preview to Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CV_WEB_APP_DEV }}
+          projectId: cv-web-app-dev
+          entryPoint: apps/admin_app
