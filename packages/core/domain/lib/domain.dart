@@ -7,6 +7,7 @@ export 'entities/skill.dart';
 export 'entities/work_experience.dart';
 
 // Repositories
+export 'repositories/auth_repository.dart';
 export 'repositories/profile_repository.dart';
 export 'repositories/project_repository.dart';
 export 'repositories/work_experience_repository.dart';
