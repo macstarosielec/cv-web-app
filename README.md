@@ -121,9 +121,19 @@ cv-web-app/
 │       │   └── lib/
 │       │       ├── di/            # Feature DI module
 │       │       ├── presentation/
-│       │       │   ├── cubit/     # ProfileCubit, ProjectsCubit, WorkExperienceCubit
-│       │       │   ├── pages/     # HomePage (HookWidget), HomeContent
-│       │       │   └── widgets/   # ProfileHeader, SkillsSection, ProjectCard, etc.
+│       │       │   ├── models/    # DetailPanelType enum
+│       │       │   ├── home/      # Home page, view, cubits, layout widgets
+│       │       │   │   ├── cubit/ # ProfileCubit + state
+│       │       │   │   └── view/  # HomeView, DesktopLayout, MobileLayout, ProfileCard, DetailPanel
+│       │       │   ├── projects/  # Projects panel
+│       │       │   │   ├── cubit/ # ProjectsCubit + state
+│       │       │   │   └── view/  # ProjectsList, ProjectTile
+│       │       │   ├── experience/# Work experience panel
+│       │       │   │   ├── cubit/ # WorkExperienceCubit + state
+│       │       │   │   └── view/  # ExperienceList, ExperienceTile
+│       │       │   ├── contact/   # Contact panel
+│       │       │   │   └── view/  # ContactPanel, ContactRow
+│       │       │   └── widgets/   # Shared widgets: GradientCard, NavigationChip, MatrixRain, etc.
 │       │       └── router/        # Feature-level micro-router
 │       ├── admin_content/         # Admin content management (scaffolded)
 │       └── auth/                  # Authentication feature (scaffolded)
@@ -251,7 +261,7 @@ Uses the CEFR scale: `a1`, `a2`, `b1`, `b2`, `c1`, `c2`, `native` — each with 
 ### Mock Datasources (@dev)
 
 - `MockProfileDatasource` — returns sample profile data
-- `MockProjectDatasource` — returns 3 sample projects
+- `MockProjectDatasource` — returns 8 sample projects
 - `MockWorkExperienceDatasource` — returns 3 work experience entries
 
 ### Mock Repositories (@dev)
@@ -268,6 +278,46 @@ All registered as `@dev @LazySingleton`. When adding prod implementations, annot
 
 `packages/features/cv_content/` — the presentation layer for the public-facing CV.
 
+### Presentation Structure
+
+The presentation layer is organized by page/panel, each with its own cubit and view:
+
+```
+presentation/
+├── models/          # DetailPanelType enum
+├── home/            # Main orchestrator
+│   ├── cubit/       # ProfileCubit + ProfileState
+│   └── view/
+│       ├── home_page.dart           # Provides cubits via MultiBlocProvider
+│       ├── home_view.dart           # HookWidget: animation, breakpoint detection, layout branching
+│       └── widgets/
+│           ├── desktop_layout.dart   # Row-based layout (desktop breakpoint)
+│           ├── mobile_layout.dart    # Column-based layout (tablet + mobile breakpoints)
+│           ├── profile_card.dart     # GradientCard composing ProfileCardContent + NavigationChipsRow
+│           ├── profile_card_content.dart  # Stagger-animated profile sections
+│           └── detail_panel.dart     # 3D card flip between panel types
+├── projects/
+│   ├── cubit/       # ProjectsCubit + ProjectsState
+│   └── view/widgets/
+│       ├── projects_list.dart
+│       └── project_tile.dart
+├── experience/
+│   ├── cubit/       # WorkExperienceCubit + WorkExperienceState
+│   └── view/widgets/
+│       ├── experience_list.dart
+│       └── experience_tile.dart
+├── contact/
+│   └── view/widgets/
+│       ├── contact_panel.dart
+│       └── contact_row.dart
+└── widgets/         # Shared presentation widgets
+    ├── gradient_card.dart
+    ├── navigation_chip.dart
+    ├── navigation_chips_row.dart
+    ├── section_title.dart
+    └── matrix_rain.dart
+```
+
 ### Cubits
 
 Each cubit uses **Freezed union states** (`initial`, `loading`, `loaded`, `error`):
@@ -276,24 +326,21 @@ Each cubit uses **Freezed union states** (`initial`, `loading`, `loaded`, `error
 - `ProjectsCubit` — loads project list
 - `WorkExperienceCubit` — loads work experience list
 
-### Pages
+### Responsive Layout
 
-- **HomePage** (`HookWidget`) — creates cubits via `useMemoized`, triggers loading via `useEffect`, provides cubits via `MultiBlocProvider`
-- **HomeContent** (`StatelessWidget`) — scrollable CV layout with `BlocBuilder` widgets using `state.when()` for exhaustive pattern matching
+The app uses three breakpoints (defined in `packages/core/shared/lib/utils/breakpoints.dart`):
 
-### Widgets
+| Breakpoint | Width | Layout |
+|------------|-------|--------|
+| **Desktop** | ≥ 1024px | Side-by-side `Row` layout: profile card + detail panel (max 1200px total) |
+| **Tablet** | 600–1023px | Vertical `Column` layout: profile card collapses to chips row + detail panel below. Chips show labels. |
+| **Mobile** | < 600px | Same as tablet, but chips collapse to icon-only mode |
 
-Each widget is in its own file (one class per file):
-
-- `ProfileHeader` — name, title, about text, contact chips
-- `ContactChip` — icon + label row for contact info
-- `SkillsSection` — skills grouped by category as chips
-- `LanguagesSection` — language chips with CEFR proficiency labels
-- `InterestsSection` — interest chips
-- `WorkExperienceSection` — list of work experience cards
-- `WorkExperienceCard` — card with title, company, date range, responsibilities
-- `ProjectsSection` — list of project cards
-- `ProjectCard` — card with name, company/role, description, tech stack chips, responsibilities
+Key responsive behaviors:
+- **Profile card collapse**: When a detail panel opens, the profile content collapses vertically via `ClipRect` + `Align(heightFactor)`, leaving only the navigation chips visible
+- **Continuous padding**: Padding lerps smoothly from 16px (at 600px width) to 32px (at 1024px width), avoiding jumps at breakpoints
+- **Breakpoint-crossing reset**: When crossing the desktop ↔ non-desktop boundary with a panel open, the animation resets and replays to handle the layout switch smoothly
+- **3D card flip**: Detail panel transitions between panel types (projects, experience, contact) using `Matrix4.rotationY()` with perspective
 
 ---
 
@@ -700,3 +747,17 @@ The repository includes pre-configured VS Code settings:
 - **`.vscode/launch.json`**: Launch configurations for every app and package, including debug, profile, and release modes. The `cv_app` profile mode config uses `lib/main_dev.dart` as the program entry point.
 
 When opening the project in VS Code, the Dart extension will automatically pick up the FVM-managed SDK.
+
+---
+
+## Design Choices
+
+### StatefulWidget vs HookWidget for Animations
+
+The project generally uses `HookWidget` with `flutter_hooks` for pages and views — `useAnimationController`, `useMemoized`, `useEffect`, etc. keep the code concise and declarative. However, some widgets use a regular `StatefulWidget` with `TickerProviderStateMixin` instead.
+
+**When HookWidget works well:** A widget needs a single animation controller (e.g., `HomeView` drives one expand/collapse animation with `useAnimationController`). Hooks handle the lifecycle cleanly.
+
+**When StatefulWidget is preferred:** A widget needs **multiple independent animation controllers** that each require their own `Ticker`. For example, `NavigationChip` manages two controllers — one for the hover fill animation and one for the label visibility animation (icon-only mode transition). `TickerProviderStateMixin` provides a vsync source that supports multiple simultaneous tickers, while `useAnimationController` from `flutter_hooks` creates its own `SingleTickerProvider` per call. Although multiple `useAnimationController` calls technically work, the resulting code becomes awkward: `didUpdateWidget`-style logic (reacting to prop changes like `iconOnly` toggling) maps naturally to the `StatefulWidget` lifecycle but requires workarounds with hooks. `didUpdateWidget` lets the widget compare old and new values and trigger the right controller, which is straightforward in a `StatefulWidget` but has no direct hook equivalent.
+
+**Rule of thumb:** Use `HookWidget` for pages/views with simple animation needs. Use `StatefulWidget` with `TickerProviderStateMixin` when the widget owns multiple animation controllers or needs fine-grained lifecycle control over animations.

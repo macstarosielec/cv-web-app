@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:cv_content/presentation/contact/view/widgets/contact_panel.dart';
@@ -68,22 +69,23 @@ class _DetailPanelState extends State<DetailPanel>
         });
       } else if (widget.type != _displayedType) {
         _nextType = widget.type;
-        _flipController.forward();
+        unawaited(_flipController.forward());
       }
     }
   }
 
   @override
   void dispose() {
-    _flipController.removeStatusListener(_onFlipComplete);
-    _flipController.dispose();
+    _flipController
+      ..removeStatusListener(_onFlipComplete)
+      ..dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     if (widget.animationProgress < 1) {
-      return GradientCard(seed: 42, child: const SizedBox.shrink());
+      return const GradientCard(seed: 42, child: SizedBox.shrink());
     }
 
     return AnimatedBuilder(

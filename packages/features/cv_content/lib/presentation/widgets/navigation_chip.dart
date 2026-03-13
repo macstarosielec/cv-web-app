@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:shared/gen/colors.gen.dart';
 
@@ -61,24 +63,24 @@ class _NavigationChipState extends State<NavigationChip>
   void didUpdateWidget(NavigationChip oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.isSelected) {
-      _hoverController.forward();
+      unawaited(_hoverController.forward());
     } else {
-      _hoverController.reverse();
+      unawaited(_hoverController.reverse());
     }
     if (widget.iconOnly != oldWidget.iconOnly) {
       if (widget.iconOnly) {
-        _labelController.reverse();
+        unawaited(_labelController.reverse());
       } else {
-        _labelController.forward();
+        unawaited(_labelController.forward());
       }
     }
   }
 
   @override
   Widget build(BuildContext context) => MouseRegion(
-        onEnter: (_) => _hoverController.forward(),
+        onEnter: (_) => unawaited(_hoverController.forward()),
         onExit: (_) {
-          if (!widget.isSelected) _hoverController.reverse();
+          if (!widget.isSelected) unawaited(_hoverController.reverse());
         },
         cursor: SystemMouseCursors.click,
         child: GestureDetector(

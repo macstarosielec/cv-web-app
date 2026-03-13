@@ -1,5 +1,6 @@
 name: data
 description: Data layer implementing repository interfaces with Firebase datasources and data models
+publish_to: none
 version: 0.0.1
 homepage: null
 resolution: workspace

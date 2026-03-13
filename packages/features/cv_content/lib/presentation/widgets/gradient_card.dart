@@ -22,7 +22,7 @@ class GradientCard extends StatelessWidget {
 
     return Container(
       clipBehavior: Clip.hardEdge,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: ColorName.background,
       ),
       child: Stack(
@@ -56,7 +56,7 @@ class GradientCard extends StatelessWidget {
     const edges = [
       Alignment(-1.2, -0.8),
       Alignment(1.2, -0.6),
-      Alignment(-1.0, 0.8),
+      Alignment(-1, 0.8),
       Alignment(1.2, 0.6),
       Alignment(-0.8, -1.2),
       Alignment(0.6, 1.2),

@@ -1,5 +1,6 @@
 name: domain
 description: Core domain layer containing business entities, repository interfaces, and use cases for the CV web application
+publish_to: none
 version: 0.0.1
 homepage: null
 resolution: workspace

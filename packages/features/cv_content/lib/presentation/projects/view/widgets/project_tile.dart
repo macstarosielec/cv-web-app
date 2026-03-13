@@ -34,27 +34,12 @@ class _ProjectTileState extends State<ProjectTile> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    widget.project.name,
-                    style: textTheme.titleMedium?.copyWith(
-                      color: ColorName.textPrimary,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-                AnimatedOpacity(
-                  opacity: _isHovered ? 1.0 : 0.0,
-                  duration: const Duration(milliseconds: 200),
-                  child: const Icon(
-                    Icons.arrow_forward_rounded,
-                    size: 18,
-                    color: ColorName.accent,
-                  ),
-                ),
-              ],
+            Text(
+              widget.project.name,
+              style: textTheme.titleMedium?.copyWith(
+                color: ColorName.textPrimary,
+                fontWeight: FontWeight.w600,
+              ),
             ),
             const SizedBox(height: 4),
             Text(

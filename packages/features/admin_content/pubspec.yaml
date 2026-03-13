@@ -1,5 +1,6 @@
 name: admin_content
 description: Content management feature with presentation layer for the admin dashboard
+publish_to: none
 version: 0.0.1
 homepage: null
 resolution: workspace

@@ -25,11 +25,10 @@ Future<void> configureDependencies({required String environment}) async {
     environment: environment,
   );
 
-  // Initialize app-specific dependencies
-  getIt.init(environment: environment);
-
-  // Register IFirebaseConfig by casting the IAppConfig instance
-  getIt.registerSingleton<IFirebaseConfig>(
-    getIt<IAppConfig>() as IFirebaseConfig,
-  );
+  // Initialize app-specific dependencies and register IFirebaseConfig
+  getIt
+    ..init(environment: environment)
+    ..registerSingleton<IFirebaseConfig>(
+      getIt<IAppConfig>() as IFirebaseConfig,
+    );
 }

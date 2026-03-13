@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -21,7 +22,8 @@ class _MatrixRainState extends State<MatrixRain>
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
-    )..repeat();
+    );
+    unawaited(_controller.repeat());
   }
 
   @override
@@ -92,7 +94,7 @@ class _MatrixPainter extends CustomPainter {
             (col.charOffsets[j] + (time * col.charSpeed).floor()) %
                 _chars.length;
 
-        final textPainter = TextPainter(
+        TextPainter(
           text: TextSpan(
             text: String.fromCharCode(_chars.codeUnitAt(charIndex)),
             style: TextStyle(
@@ -102,9 +104,9 @@ class _MatrixPainter extends CustomPainter {
             ),
           ),
           textDirection: TextDirection.ltr,
-        )..layout();
-
-        textPainter.paint(canvas, Offset(x, y));
+        )
+          ..layout()
+          ..paint(canvas, Offset(x, y));
       }
     }
   }
