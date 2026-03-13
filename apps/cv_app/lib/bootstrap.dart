@@ -8,6 +8,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/config/app_config.dart';
+import 'package:shared/config/firebase_config.dart';
 import 'package:shared/observers/app_bloc_observer.dart';
 
 Future<void> bootstrap({required String environment}) async => runZonedGuarded(
@@ -16,7 +17,7 @@ Future<void> bootstrap({required String environment}) async => runZonedGuarded(
 
     await configureDependencies(environment: environment);
     await Firebase.initializeApp(
-      options: getIt<IAppConfig>().getFirebaseOptions(),
+      options: getIt<IFirebaseConfig>().getFirebaseOptions(),
     );
 
     log('Firebase initialized for environment: $environment');

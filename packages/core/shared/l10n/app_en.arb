@@ -35,5 +35,37 @@
         "format": "compact"
       }
     }
-  }
+  },
+  "projects": "Projects",
+  "commercialProjects": "Commercial Projects",
+  "personalProjects": "Personal Projects",
+  "experience": "Experience",
+  "contact": "Contact",
+  "skills": "Skills",
+  "languages": "Languages",
+  "phone": "Phone",
+  "linkedIn": "LinkedIn",
+  "gitHub": "GitHub",
+  "present": "Present",
+  "current": "Current",
+  "errorMessage": "Error: {message}",
+  "@errorMessage": {
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "monthJan": "Jan",
+  "monthFeb": "Feb",
+  "monthMar": "Mar",
+  "monthApr": "Apr",
+  "monthMay": "May",
+  "monthJun": "Jun",
+  "monthJul": "Jul",
+  "monthAug": "Aug",
+  "monthSep": "Sep",
+  "monthOct": "Oct",
+  "monthNov": "Nov",
+  "monthDec": "Dec"
 }

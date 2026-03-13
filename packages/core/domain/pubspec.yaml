@@ -1,21 +1,26 @@
 name: domain
 description: Core domain layer containing business entities, repository interfaces, and use cases for the CV web application
+publish_to: none
 version: 0.0.1
 homepage: null
 resolution: workspace
 
 environment:
   sdk: ^3.10.7
-  flutter: ">=1.17.0"
+  flutter: ">=3.10.0"
 
 dependencies:
   flutter:
     sdk: flutter
+  freezed_annotation: ^3.0.0
+  json_annotation: ^4.9.0
 
 dev_dependencies:
   build_runner: ^2.10.5
   flutter_test:
     sdk: flutter
+  freezed: ^3.0.0
+  json_serializable: ^6.9.0
   very_good_analysis: ^10.0.0
 
 flutter: null

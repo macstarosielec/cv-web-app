@@ -5,6 +5,7 @@ analyzer:
     - "**/build/**"
     - "**/*.freezed.dart"
     - "**/*.g.dart"
+    - "**/*.gr.dart"
     - "**/*.mocks.dart"
   errors:
     lines_longer_than_80_chars: ignore

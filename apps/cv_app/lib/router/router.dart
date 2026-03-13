@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:cv_content/cv_content.dart';
 
 @AutoRouterConfig(
   replaceInRouteName: 'Page,Route',
@@ -8,7 +9,7 @@ class AppRouter extends RootStackRouter {
   RouteType get defaultRouteType => const RouteType.material();
 
   @override
-  final List<AutoRoute> routes = [
-    //AutoRoute(page: HomeRoute.page, initial: true),
+  List<AutoRoute> get routes => [
+    AutoRoute(page: HomeRoute.page, initial: true),
   ];
 }
