@@ -1,6 +1,7 @@
 name: cv_content
 description: Content display feature with presentation layer for the
   public-facing CV application
+publish_to: none
 version: 0.0.1
 homepage: null
 resolution: workspace

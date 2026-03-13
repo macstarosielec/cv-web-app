@@ -1,21 +1,21 @@
 import 'dart:async';
 
-import 'package:cv_content/presentation/home/view/widgets/project_tile.dart';
-import 'package:cv_content/presentation/home/view/widgets/section_title.dart';
+import 'package:cv_content/presentation/experience/view/widgets/experience_tile.dart';
+import 'package:cv_content/presentation/widgets/section_title.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/l10n/l10n.dart';
 
-class ProjectsList extends StatefulWidget {
-  const ProjectsList({required this.projects, super.key});
+class ExperienceList extends StatefulWidget {
+  const ExperienceList({required this.experiences, super.key});
 
-  final List<Project> projects;
+  final List<WorkExperience> experiences;
 
   @override
-  State<ProjectsList> createState() => _ProjectsListState();
+  State<ExperienceList> createState() => _ExperienceListState();
 }
 
-class _ProjectsListState extends State<ProjectsList>
+class _ExperienceListState extends State<ExperienceList>
     with TickerProviderStateMixin {
   late final List<AnimationController> _controllers;
   late final List<Animation<double>> _animations;
@@ -24,7 +24,7 @@ class _ProjectsListState extends State<ProjectsList>
   void initState() {
     super.initState();
     _controllers = List.generate(
-      widget.projects.length,
+      widget.experiences.length,
       (index) => AnimationController(
         vsync: this,
         duration: const Duration(milliseconds: 400),
@@ -62,9 +62,9 @@ class _ProjectsListState extends State<ProjectsList>
     return ListView(
       padding: const EdgeInsets.all(32),
       children: [
-        SectionTitle(AppLocalizations.of(context).projects),
+        SectionTitle(AppLocalizations.of(context).experience),
         const SizedBox(height: 24),
-        ...List.generate(widget.projects.length, (index) {
+        ...List.generate(widget.experiences.length, (index) {
           return AnimatedBuilder(
             animation: _animations[index],
             builder: (context, child) => Transform.translate(
@@ -74,7 +74,9 @@ class _ProjectsListState extends State<ProjectsList>
                 child: child,
               ),
             ),
-            child: ProjectTile(project: widget.projects[index]),
+            child: ExperienceTile(
+              experience: widget.experiences[index],
+            ),
           );
         }),
       ],

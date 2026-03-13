@@ -1,6 +1,7 @@
 name: shared
 description: Shared utilities, constants, configurations, and common
   functionality used across all packages
+publish_to: none
 version: 0.0.1
 homepage: null
 resolution: workspace

@@ -1,5 +1,5 @@
-import 'package:cv_content/presentation/home/view/home_view.dart';
-import 'package:cv_content/presentation/home/view/widgets/navigation_chip.dart';
+import 'package:cv_content/presentation/models/detail_panel_type.dart';
+import 'package:cv_content/presentation/widgets/navigation_chip.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/l10n/l10n.dart';
 

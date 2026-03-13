@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:cv_content/presentation/home/view/widgets/matrix_rain.dart';
+import 'package:cv_content/presentation/widgets/matrix_rain.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/gen/colors.gen.dart';
 
@@ -22,7 +22,7 @@ class GradientCard extends StatelessWidget {
 
     return Container(
       clipBehavior: Clip.hardEdge,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: ColorName.background,
       ),
       child: Stack(
@@ -56,7 +56,7 @@ class GradientCard extends StatelessWidget {
     const edges = [
       Alignment(-1.2, -0.8),
       Alignment(1.2, -0.6),
-      Alignment(-1.0, 0.8),
+      Alignment(-1, 0.8),
       Alignment(1.2, 0.6),
       Alignment(-0.8, -1.2),
       Alignment(0.6, 1.2),

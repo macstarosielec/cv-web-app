@@ -1,8 +1,8 @@
-import 'package:cv_content/presentation/home/view/home_view.dart';
 import 'package:cv_content/presentation/home/view/widgets/detail_panel.dart';
-import 'package:cv_content/presentation/home/view/widgets/gradient_card.dart';
-import 'package:cv_content/presentation/home/view/widgets/navigation_chips_row.dart';
 import 'package:cv_content/presentation/home/view/widgets/profile_card_content.dart';
+import 'package:cv_content/presentation/models/detail_panel_type.dart';
+import 'package:cv_content/presentation/widgets/gradient_card.dart';
+import 'package:cv_content/presentation/widgets/navigation_chips_row.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 

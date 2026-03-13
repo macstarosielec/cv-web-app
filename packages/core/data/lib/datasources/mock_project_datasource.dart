@@ -5,7 +5,7 @@ import 'package:injectable/injectable.dart';
 @lazySingleton
 class MockProjectDatasource {
   List<Project> getProjects() => const [
-        Project(
+        Project.commercial(
           id: '1',
           name: 'E-Commerce Platform',
           company: 'TechCorp',
@@ -26,7 +26,7 @@ class MockProjectDatasource {
             'Achieved 99.5% crash-free rate in production',
           ],
         ),
-        Project(
+        Project.commercial(
           id: '2',
           name: 'Health & Fitness Tracker',
           company: 'WellnessApp Inc.',
@@ -45,7 +45,7 @@ class MockProjectDatasource {
           ],
           sortOrder: 1,
         ),
-        Project(
+        Project.commercial(
           id: '3',
           name: 'Banking Dashboard',
           company: 'FinServ Solutions',
@@ -66,7 +66,7 @@ class MockProjectDatasource {
           ],
           sortOrder: 2,
         ),
-        Project(
+        Project.commercial(
           id: '4',
           name: 'Smart Home Controller',
           company: 'IoT Systems Ltd.',
@@ -87,7 +87,7 @@ class MockProjectDatasource {
           ],
           sortOrder: 3,
         ),
-        Project(
+        Project.commercial(
           id: '5',
           name: 'Logistics Fleet Tracker',
           company: 'CargoFlow',
@@ -109,7 +109,7 @@ class MockProjectDatasource {
           ],
           sortOrder: 4,
         ),
-        Project(
+        Project.commercial(
           id: '6',
           name: 'EdTech Learning Platform',
           company: 'LearnSpace',
@@ -132,7 +132,7 @@ class MockProjectDatasource {
           ],
           sortOrder: 5,
         ),
-        Project(
+        Project.commercial(
           id: '7',
           name: 'Insurance Claims Portal',
           company: 'SecureLife Insurance',
@@ -151,7 +151,7 @@ class MockProjectDatasource {
           ],
           sortOrder: 6,
         ),
-        Project(
+        Project.commercial(
           id: '8',
           name: 'Restaurant POS System',
           company: 'DineFlow',
@@ -171,6 +171,51 @@ class MockProjectDatasource {
             'Implemented offline-first POS with background sync',
           ],
           sortOrder: 7,
+        ),
+        Project.personal(
+          id: '9',
+          name: 'CV Web App',
+          description: 'This very portfolio site — a Flutter web monorepo '
+              'with responsive layouts, 3D card flip transitions, and '
+              'clean architecture.',
+          techStack: [
+            'Flutter Web',
+            'Dart',
+            'Firebase',
+            'BLoC',
+            'Freezed',
+            'GetIt',
+          ],
+          githubUrl: 'https://github.com/example/cv-web-app',
+          sortOrder: 8,
+        ),
+        Project.personal(
+          id: '10',
+          name: 'Dart CLI Toolkit',
+          description: 'A collection of command-line utilities for automating '
+              'common development workflows.',
+          techStack: [
+            'Dart',
+            'CLI',
+            'YAML',
+            'JSON',
+          ],
+          githubUrl: 'https://github.com/example/dart-cli-toolkit',
+          sortOrder: 9,
+        ),
+        Project.personal(
+          id: '11',
+          name: 'Flutter Widget Playground',
+          description: 'An open-source gallery of custom Flutter widgets '
+              'with interactive demos and code samples.',
+          techStack: [
+            'Flutter',
+            'Dart',
+            'Custom Paint',
+            'Animations',
+          ],
+          githubUrl: 'https://github.com/example/widget-playground',
+          sortOrder: 10,
         ),
       ];
 }

@@ -1,7 +1,7 @@
+import 'package:cv_content/presentation/contact/view/widgets/contact_row.dart';
 import 'package:cv_content/presentation/home/cubit/profile_cubit.dart';
 import 'package:cv_content/presentation/home/cubit/profile_state.dart';
-import 'package:cv_content/presentation/home/view/widgets/contact_row.dart';
-import 'package:cv_content/presentation/home/view/widgets/section_title.dart';
+import 'package:cv_content/presentation/widgets/section_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/l10n/l10n.dart';
