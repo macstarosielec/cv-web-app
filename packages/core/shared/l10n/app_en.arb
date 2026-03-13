@@ -37,6 +37,8 @@
     }
   },
   "projects": "Projects",
+  "commercialProjects": "Commercial Projects",
+  "personalProjects": "Personal Projects",
   "experience": "Experience",
   "contact": "Contact",
   "skills": "Skills",

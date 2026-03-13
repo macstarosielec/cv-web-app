@@ -172,6 +172,18 @@ abstract class AppLocalizations {
   /// **'Projects'**
   String get projects;
 
+  /// No description provided for @commercialProjects.
+  ///
+  /// In en, this message translates to:
+  /// **'Commercial Projects'**
+  String get commercialProjects;
+
+  /// No description provided for @personalProjects.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal Projects'**
+  String get personalProjects;
+
   /// No description provided for @experience.
   ///
   /// In en, this message translates to:

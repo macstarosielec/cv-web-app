@@ -24,7 +24,7 @@ class _ProjectsListState extends State<ProjectsList>
   void initState() {
     super.initState();
     _controllers = List.generate(
-      widget.projects.length,
+      _totalItemCount,
       (index) => AnimationController(
         vsync: this,
         duration: const Duration(milliseconds: 400),
@@ -40,6 +40,17 @@ class _ProjectsListState extends State<ProjectsList>
         .toList();
 
     unawaited(_staggerAnimations());
+  }
+
+  int get _totalItemCount {
+    final commercial =
+        widget.projects.whereType<CommercialProject>().toList();
+    final personal =
+        widget.projects.whereType<PersonalProject>().toList();
+    var count = 0;
+    if (commercial.isNotEmpty) count += 1 + commercial.length;
+    if (personal.isNotEmpty) count += 1 + personal.length;
+    return count;
   }
 
   Future<void> _staggerAnimations() async {
@@ -59,25 +70,62 @@ class _ProjectsListState extends State<ProjectsList>
 
   @override
   Widget build(BuildContext context) {
+    final commercial =
+        widget.projects.whereType<CommercialProject>().toList();
+    final personal =
+        widget.projects.whereType<PersonalProject>().toList();
+
+    final items = <Widget>[];
+    var animIndex = 0;
+
+    if (commercial.isNotEmpty) {
+      items.add(
+        _animatedItem(
+          animIndex++,
+          SectionTitle(AppLocalizations.of(context).commercialProjects),
+        ),
+      );
+      for (final project in commercial) {
+        items.add(
+          _animatedItem(animIndex++, ProjectTile(project: project)),
+        );
+      }
+    }
+
+    if (personal.isNotEmpty) {
+      items.add(
+        _animatedItem(
+          animIndex++,
+          Padding(
+            padding: EdgeInsets.only(top: commercial.isNotEmpty ? 32 : 0),
+            child: SectionTitle(
+              AppLocalizations.of(context).personalProjects,
+            ),
+          ),
+        ),
+      );
+      for (final project in personal) {
+        items.add(
+          _animatedItem(animIndex++, ProjectTile(project: project)),
+        );
+      }
+    }
+
     return ListView(
       padding: const EdgeInsets.all(32),
-      children: [
-        SectionTitle(AppLocalizations.of(context).projects),
-        const SizedBox(height: 24),
-        ...List.generate(widget.projects.length, (index) {
-          return AnimatedBuilder(
-            animation: _animations[index],
-            builder: (context, child) => Transform.translate(
-              offset: Offset(0, 20 * (1 - _animations[index].value)),
-              child: Opacity(
-                opacity: _animations[index].value,
-                child: child,
-              ),
-            ),
-            child: ProjectTile(project: widget.projects[index]),
-          );
-        }),
-      ],
+      children: items,
     );
   }
+
+  Widget _animatedItem(int index, Widget child) => AnimatedBuilder(
+        animation: _animations[index],
+        builder: (context, child) => Transform.translate(
+          offset: Offset(0, 20 * (1 - _animations[index].value)),
+          child: Opacity(
+            opacity: _animations[index].value,
+            child: child,
+          ),
+        ),
+        child: child,
+      );
 }

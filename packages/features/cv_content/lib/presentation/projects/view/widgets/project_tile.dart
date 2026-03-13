@@ -1,6 +1,7 @@
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/gen/colors.gen.dart';
+import 'package:shared/l10n/l10n.dart';
 
 class ProjectTile extends StatefulWidget {
   const ProjectTile({required this.project, super.key});
@@ -17,6 +18,7 @@ class _ProjectTileState extends State<ProjectTile> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final project = widget.project;
 
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),
@@ -34,24 +36,45 @@ class _ProjectTileState extends State<ProjectTile> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              widget.project.name,
-              style: textTheme.titleMedium?.copyWith(
-                color: ColorName.textPrimary,
-                fontWeight: FontWeight.w600,
-              ),
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    project.name,
+                    style: textTheme.titleMedium?.copyWith(
+                      color: ColorName.textPrimary,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                if (project case PersonalProject(:final githubUrl?)
+                    when githubUrl.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8),
+                    child: Tooltip(
+                      message: AppLocalizations.of(context).gitHub,
+                      child: const Icon(
+                        Icons.code,
+                        size: 18,
+                        color: ColorName.textMuted,
+                      ),
+                    ),
+                  ),
+              ],
             ),
-            const SizedBox(height: 4),
-            Text(
-              '${widget.project.company} \u2022 ${widget.project.role}',
-              style: textTheme.bodySmall?.copyWith(
-                color: ColorName.textMuted,
+            if (project case CommercialProject(:final company, :final role)) ...[
+              const SizedBox(height: 4),
+              Text(
+                '$company \u2022 $role',
+                style: textTheme.bodySmall?.copyWith(
+                  color: ColorName.textMuted,
+                ),
               ),
-            ),
-            if (widget.project.description != null) ...[
+            ],
+            if (project.description != null) ...[
               const SizedBox(height: 8),
               Text(
-                widget.project.description!,
+                project.description!,
                 style: textTheme.bodyMedium?.copyWith(
                   color: ColorName.textSecondary,
                 ),
@@ -59,12 +82,12 @@ class _ProjectTileState extends State<ProjectTile> {
                 overflow: TextOverflow.ellipsis,
               ),
             ],
-            if (widget.project.techStack.isNotEmpty) ...[
+            if (project.techStack.isNotEmpty) ...[
               const SizedBox(height: 12),
               Wrap(
                 spacing: 6,
                 runSpacing: 6,
-                children: widget.project.techStack
+                children: project.techStack
                     .map(
                       (tech) => Container(
                         padding: const EdgeInsets.symmetric(

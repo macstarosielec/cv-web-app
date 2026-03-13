@@ -64,6 +64,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get projects => 'Projects';
 
   @override
+  String get commercialProjects => 'Commercial Projects';
+
+  @override
+  String get personalProjects => 'Personal Projects';
+
+  @override
   String get experience => 'Experience';
 
   @override
