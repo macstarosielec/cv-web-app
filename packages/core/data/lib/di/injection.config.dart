@@ -16,6 +16,7 @@ import 'package:injectable/injectable.dart' as _i526;
 import '../datasources/mock_profile_datasource.dart' as _i962;
 import '../datasources/mock_project_datasource.dart' as _i979;
 import '../datasources/mock_work_experience_datasource.dart' as _i34;
+import '../repositories/mock_auth_repository.dart' as _i690;
 import '../repositories/mock_profile_repository.dart' as _i37;
 import '../repositories/mock_project_repository.dart' as _i881;
 import '../repositories/mock_work_experience_repository.dart' as _i355;
@@ -41,18 +42,22 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i34.MockWorkExperienceDatasource(),
       registerFor: {_dev},
     );
-    gh.lazySingleton<_i494.WorkExperienceRepository>(
+    gh.lazySingleton<_i494.AuthRepository>(
+      () => _i690.MockAuthRepository(),
+      registerFor: {_dev},
+    );
+    gh.lazySingleton<_i494.AdminProjectRepository>(
+      () => _i881.MockProjectRepository(gh<_i979.MockProjectDatasource>()),
+      registerFor: {_dev},
+    );
+    gh.lazySingleton<_i494.AdminWorkExperienceRepository>(
       () => _i355.MockWorkExperienceRepository(
         gh<_i34.MockWorkExperienceDatasource>(),
       ),
       registerFor: {_dev},
     );
-    gh.lazySingleton<_i494.ProfileRepository>(
+    gh.lazySingleton<_i494.AdminProfileRepository>(
       () => _i37.MockProfileRepository(gh<_i962.MockProfileDatasource>()),
-      registerFor: {_dev},
-    );
-    gh.lazySingleton<_i494.ProjectRepository>(
-      () => _i881.MockProjectRepository(gh<_i979.MockProjectDatasource>()),
       registerFor: {_dev},
     );
     return this;

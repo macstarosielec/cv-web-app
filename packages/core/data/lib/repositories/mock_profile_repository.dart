@@ -3,12 +3,15 @@ import 'package:domain/domain.dart';
 import 'package:injectable/injectable.dart';
 
 @dev
-@LazySingleton(as: ProfileRepository)
-class MockProfileRepository implements ProfileRepository {
+@LazySingleton(as: AdminProfileRepository)
+class MockProfileRepository implements AdminProfileRepository {
   MockProfileRepository(this._datasource);
 
   final MockProfileDatasource _datasource;
 
   @override
   Future<Profile> getProfile() async => _datasource.getProfile();
+
+  @override
+  Future<void> saveProfile(Profile profile) async {}
 }
