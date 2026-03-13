@@ -2,8 +2,9 @@ import 'dart:async';
 
 import 'package:cv_content/presentation/home/cubit/profile_cubit.dart';
 import 'package:cv_content/presentation/home/cubit/profile_state.dart';
-import 'package:cv_content/presentation/home/view/widgets/detail_panel.dart';
-import 'package:cv_content/presentation/home/view/widgets/profile_card.dart';
+import 'package:cv_content/presentation/home/view/widgets/breakpoint_toast.dart';
+import 'package:cv_content/presentation/home/view/widgets/desktop_layout.dart';
+import 'package:cv_content/presentation/home/view/widgets/mobile_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -11,6 +12,7 @@ import 'package:get_it/get_it.dart';
 import 'package:shared/config/app_config.dart';
 import 'package:shared/gen/colors.gen.dart';
 import 'package:shared/l10n/l10n.dart';
+import 'package:shared/utils/breakpoints.dart';
 import 'package:shared/utils/visit_tracker.dart';
 
 enum DetailPanelType { projects, experience, contact }
@@ -28,6 +30,7 @@ class HomeView extends HookWidget {
       return first;
     });
 
+    final hasAnimated = useState(false);
     final selectedPanel = useState<DetailPanelType?>(null);
     final animationController = useAnimationController(
       duration: const Duration(milliseconds: 500),
@@ -52,6 +55,39 @@ class HomeView extends HookWidget {
       }
     }
 
+    final animate = shouldAnimate && !hasAnimated.value;
+    useEffect(
+      () {
+        if (shouldAnimate) hasAnimated.value = true;
+        return null;
+      },
+      const [],
+    );
+
+    final breakpoint = Breakpoints.of(context);
+    final previousBreakpoint = useRef(breakpoint);
+    final isDesktop = breakpoint == ScreenBreakpoint.desktop;
+    final isMobile = breakpoint == ScreenBreakpoint.mobile;
+    final screenWidth = MediaQuery.sizeOf(context).width;
+    final padding = _lerpPadding(screenWidth);
+
+    useEffect(
+      () {
+        final prev = previousBreakpoint.value;
+        final crossedDesktop =
+            (prev == ScreenBreakpoint.desktop) != (breakpoint == ScreenBreakpoint.desktop);
+        if (crossedDesktop && selectedPanel.value != null) {
+          animationController.reset();
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            unawaited(animationController.forward());
+          });
+        }
+        previousBreakpoint.value = breakpoint;
+        return null;
+      },
+      [breakpoint],
+    );
+
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: BlocBuilder<ProfileCubit, ProfileState>(
@@ -60,52 +96,31 @@ class HomeView extends HookWidget {
           loading: () => const Center(
             child: CircularProgressIndicator(),
           ),
-          loaded: (profile) => Center(
-            child: Padding(
-              padding: const EdgeInsets.all(32),
-              child: AnimatedBuilder(
-                animation: animation,
-                builder: (context, child) {
-                  final expandProgress = animation.value;
-
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      AnimatedContainer(
-                        duration: Duration.zero,
-                        width: _profileCardWidth(
-                          context,
-                          expandProgress,
-                        ),
-                        child: ProfileCard(
+          loaded: (profile) => Stack(
+            children: [
+              Center(
+                child: Padding(
+                  padding: EdgeInsets.all(padding),
+                  child: !isDesktop
+                      ? MobileLayout(
                           profile: profile,
                           selectedPanel: selectedPanel.value,
                           onChipSelected: onChipSelected,
-                          animate: shouldAnimate,
+                          animation: animation,
+                          shouldAnimate: animate,
+                          iconOnlyChips: isMobile,
+                        )
+                      : DesktopLayout(
+                          profile: profile,
+                          selectedPanel: selectedPanel.value,
+                          onChipSelected: onChipSelected,
+                          animation: animation,
+                          shouldAnimate: animate,
                         ),
-                      ),
-                      if (expandProgress > 0) ...[
-                        const SizedBox(width: 24),
-                        SizedBox(
-                          width: _detailPanelWidth(
-                            context,
-                            expandProgress,
-                          ),
-                          child: Opacity(
-                            opacity: expandProgress,
-                            child: DetailPanel(
-                              type: selectedPanel.value,
-                              animationProgress: expandProgress,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ],
-                  );
-                },
+                ),
               ),
-            ),
+              const BreakpointToast(),
+            ],
           ),
           error: (message) => Center(
             child: Text(
@@ -118,21 +133,12 @@ class HomeView extends HookWidget {
     );
   }
 
-  double _profileCardWidth(
-    BuildContext context,
-    double expandProgress,
-  ) {
-    final screenWidth = MediaQuery.sizeOf(context).width;
-    final maxCardWidth = (screenWidth - 80).clamp(0.0, 600.0);
-    final halfWidth = (screenWidth - 80) * 0.45;
-    return maxCardWidth - (maxCardWidth - halfWidth) * expandProgress;
-  }
-
-  double _detailPanelWidth(
-    BuildContext context,
-    double expandProgress,
-  ) {
-    final screenWidth = MediaQuery.sizeOf(context).width;
-    return ((screenWidth - 80) * 0.5) * expandProgress;
+  double _lerpPadding(double screenWidth) {
+    const minPadding = 16.0;
+    const maxPadding = 32.0;
+    const minWidth = 600.0;
+    const maxWidth = 1024.0;
+    final t = ((screenWidth - minWidth) / (maxWidth - minWidth)).clamp(0.0, 1.0);
+    return minPadding + (maxPadding - minPadding) * t;
   }
 }

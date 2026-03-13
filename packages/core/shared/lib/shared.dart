@@ -12,6 +12,7 @@ export 'observers/route_observer.dart';
 export 'theme/theme.dart';
 
 // Utils
+export 'utils/breakpoints.dart';
 export 'utils/visit_tracker.dart';
 
 // Exceptions
