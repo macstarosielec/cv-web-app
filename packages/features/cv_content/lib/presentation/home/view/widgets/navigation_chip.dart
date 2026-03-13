@@ -7,6 +7,7 @@ class NavigationChip extends StatefulWidget {
     required this.icon,
     required this.isSelected,
     required this.onTap,
+    this.iconOnly = false,
     super.key,
   });
 
@@ -14,15 +15,18 @@ class NavigationChip extends StatefulWidget {
   final IconData icon;
   final bool isSelected;
   final VoidCallback onTap;
+  final bool iconOnly;
 
   @override
   State<NavigationChip> createState() => _NavigationChipState();
 }
 
 class _NavigationChipState extends State<NavigationChip>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   late final AnimationController _hoverController;
   late final Animation<double> _hoverAnimation;
+  late final AnimationController _labelController;
+  late final Animation<double> _labelAnimation;
 
   @override
   void initState() {
@@ -35,11 +39,21 @@ class _NavigationChipState extends State<NavigationChip>
       parent: _hoverController,
       curve: Curves.easeOut,
     );
+    _labelController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 250),
+      value: widget.iconOnly ? 0.0 : 1.0,
+    );
+    _labelAnimation = CurvedAnimation(
+      parent: _labelController,
+      curve: Curves.easeOut,
+    );
   }
 
   @override
   void dispose() {
     _hoverController.dispose();
+    _labelController.dispose();
     super.dispose();
   }
 
@@ -51,65 +65,77 @@ class _NavigationChipState extends State<NavigationChip>
     } else {
       _hoverController.reverse();
     }
+    if (widget.iconOnly != oldWidget.iconOnly) {
+      if (widget.iconOnly) {
+        _labelController.reverse();
+      } else {
+        _labelController.forward();
+      }
+    }
   }
 
   @override
-  Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (_) => _hoverController.forward(),
-      onExit: (_) {
-        if (!widget.isSelected) _hoverController.reverse();
-      },
-      cursor: SystemMouseCursors.click,
-      child: GestureDetector(
-        onTap: widget.onTap,
-        child: AnimatedBuilder(
-          animation: _hoverAnimation,
-          builder: (context, child) {
-            final fillProgress = _hoverAnimation.value;
-
-            return CustomPaint(
+  Widget build(BuildContext context) => MouseRegion(
+        onEnter: (_) => _hoverController.forward(),
+        onExit: (_) {
+          if (!widget.isSelected) _hoverController.reverse();
+        },
+        cursor: SystemMouseCursors.click,
+        child: GestureDetector(
+          onTap: widget.onTap,
+          child: AnimatedBuilder(
+            animation: Listenable.merge([_hoverAnimation, _labelAnimation]),
+            builder: (context, _) => CustomPaint(
               painter: _FillPainter(
-                progress: fillProgress,
+                progress: _hoverAnimation.value,
                 backgroundColor: ColorName.surface,
                 fillColor: ColorName.accent,
               ),
-              child: child,
-            );
-          },
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 10,
-              vertical: 6,
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  widget.icon,
-                  size: 16,
-                  color: ColorName.textSecondary,
-                ),
-                const SizedBox(width: 8),
-                Padding(
-                  padding: const EdgeInsets.only(top: 2),
-                  child: Text(
-                    widget.label,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      height: 1,
-                      color: ColorName.textSecondary,
-                      fontWeight: FontWeight.w500,
-                    ),
+              child: AnimatedSize(
+                duration: const Duration(milliseconds: 250),
+                curve: Curves.easeOut,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: _labelAnimation.value > 0 ? 10 : 8,
+                    vertical: 6,
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        widget.icon,
+                        size: 16,
+                        color: ColorName.textSecondary,
+                      ),
+                      if (_labelAnimation.value > 0) ...[
+                        const SizedBox(width: 8),
+                        Opacity(
+                          opacity: _labelAnimation.value,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 2),
+                            child: Text(
+                              widget.label,
+                              style: const TextStyle(
+                                fontSize: 18,
+                                height: 1,
+                                color: ColorName.textSecondary,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.clip,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ],
                   ),
                 ),
-              ],
+              ),
             ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }
 
 class _FillPainter extends CustomPainter {
