@@ -58,21 +58,28 @@ class DesktopLayout extends StatelessWidget {
         },
       );
 
+  static const _maxTotalWidth = 1200.0;
+  static const _maxCollapsedWidth = 600.0;
+  static const _gap = 24.0;
+
   double _profileCardWidth(
     BuildContext context,
     double expandProgress,
   ) {
-    final screenWidth = MediaQuery.sizeOf(context).width;
-    final maxCardWidth = (screenWidth - 80).clamp(0.0, 600.0);
-    final halfWidth = (screenWidth - 80) * 0.45;
-    return maxCardWidth - (maxCardWidth - halfWidth) * expandProgress;
+    final available =
+        (MediaQuery.sizeOf(context).width - 80).clamp(0.0, _maxTotalWidth);
+    final collapsedWidth = available.clamp(0.0, _maxCollapsedWidth);
+    final expandedWidth = (available - _gap) * 0.5;
+    return collapsedWidth -
+        (collapsedWidth - expandedWidth) * expandProgress;
   }
 
   double _detailPanelWidth(
     BuildContext context,
     double expandProgress,
   ) {
-    final screenWidth = MediaQuery.sizeOf(context).width;
-    return ((screenWidth - 80) * 0.5) * expandProgress;
+    final available =
+        (MediaQuery.sizeOf(context).width - 80).clamp(0.0, _maxTotalWidth);
+    return ((available - _gap) * 0.5) * expandProgress;
   }
 }
