@@ -2,7 +2,6 @@ import 'package:data/datasources/firebase_auth_datasource.dart';
 import 'package:domain/domain.dart';
 import 'package:injectable/injectable.dart';
 
-@prod
 @LazySingleton(as: AuthRepository)
 class FirebaseAuthRepository implements AuthRepository {
   FirebaseAuthRepository(this._datasource);

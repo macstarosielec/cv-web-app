@@ -2,7 +2,6 @@ import 'package:data/datasources/firestore_work_experience_datasource.dart';
 import 'package:domain/domain.dart';
 import 'package:injectable/injectable.dart';
 
-@prod
 @LazySingleton(as: AdminWorkExperienceRepository)
 class FirestoreWorkExperienceRepository
     implements AdminWorkExperienceRepository {

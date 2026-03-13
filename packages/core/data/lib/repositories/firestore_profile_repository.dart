@@ -2,7 +2,6 @@ import 'package:data/datasources/firestore_profile_datasource.dart';
 import 'package:domain/domain.dart';
 import 'package:injectable/injectable.dart';
 
-@prod
 @LazySingleton(as: AdminProfileRepository)
 class FirestoreProfileRepository implements AdminProfileRepository {
   FirestoreProfileRepository(this._datasource);

@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:domain/domain.dart';
 import 'package:injectable/injectable.dart';
 
-@prod
 @lazySingleton
 class FirestoreProjectDatasource {
   FirestoreProjectDatasource(this._firestore);
