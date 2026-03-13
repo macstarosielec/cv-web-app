@@ -18,11 +18,14 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Activate Melos
+        run: dart pub global activate melos
+
       - name: Run code generation
-        run: dart run melos run build
+        run: melos run build
 
       - name: Generate localization
-        run: dart run melos run l10n
+        run: melos run l10n
 
       - name: Build web app (prod)
         run: cd apps/cv_app && flutter build web --target lib/main_prod.dart
