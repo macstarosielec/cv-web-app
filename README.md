@@ -46,7 +46,7 @@ The project follows **Clean Architecture** with modular feature packages, uses *
 
 ```bash
 # 1. Clone the repository
-git clone <repo-url>
+git clone https://github.com/macstarosielec/cv-web-app.git
 cd cv-web-app
 
 # 2. Install the pinned Flutter version via FVM
@@ -235,7 +235,7 @@ Entities are defined in `packages/core/domain/lib/entities/` using Freezed for i
 | Entity | Key Fields |
 |--------|------------|
 | **Profile** | fullName, title, about, email, phoneNumber?, linkedInUrl?, githubUrl?, avatarUrl?, skills (List\<Skill\>), languages (List\<Language\>), interests (List\<String\>) |
-| **Project** | id, name, company, role, description?, techStack (List\<String\>), responsibilities (List\<String\>), sortOrder |
+| **Project** (union) | Freezed union with two variants: `Project.commercial` (id, name, company, role, description?, techStack, responsibilities, sortOrder) and `Project.personal` (id, name, description?, techStack, githubUrl?, sortOrder) |
 | **WorkExperience** | id, title, company, startDate, endDate? (null = "Present"), responsibilities (List\<String\>), sortOrder |
 | **Skill** | name, category?, sortOrder |
 | **Language** | name, proficiency (LanguageProficiency) |
@@ -261,7 +261,7 @@ Uses the CEFR scale: `a1`, `a2`, `b1`, `b2`, `c1`, `c2`, `native` — each with 
 ### Mock Datasources (@dev)
 
 - `MockProfileDatasource` — returns sample profile data
-- `MockProjectDatasource` — returns 8 sample projects
+- `MockProjectDatasource` — returns 8 commercial + 3 personal sample projects
 - `MockWorkExperienceDatasource` — returns 3 work experience entries
 
 ### Mock Repositories (@dev)
