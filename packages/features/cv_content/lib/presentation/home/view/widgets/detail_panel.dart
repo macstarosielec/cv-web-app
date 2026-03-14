@@ -106,21 +106,12 @@ class _DetailPanelState extends State<DetailPanel>
             ..setEntry(3, 2, 0.001)
             ..rotateY(angle),
           child: GradientCard(
-            seed: _seedForType(type),
+            seed: 42,
             child: _buildPanelContent(context, type),
           ),
         );
       },
     );
-  }
-
-  int _seedForType(DetailPanelType? type) {
-    return switch (type) {
-      DetailPanelType.projects => 42,
-      DetailPanelType.experience => 84,
-      DetailPanelType.contact => 126,
-      null => 42,
-    };
   }
 
   Widget _buildPanelContent(
