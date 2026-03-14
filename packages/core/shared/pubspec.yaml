@@ -12,6 +12,8 @@ environment:
 
 dependencies:
   auto_route: ^11.1.0
+  domain:
+    path: ../domain
   firebase_core: ^4.4.0
   flutter:
     sdk: flutter

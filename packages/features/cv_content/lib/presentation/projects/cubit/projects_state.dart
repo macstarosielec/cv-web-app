@@ -14,6 +14,6 @@ class ProjectsState with _$ProjectsState {
   }) = _LoadedState;
 
   const factory ProjectsState.error({
-    required String message,
+    required AppException exception,
   }) = _ErrorState;
 }

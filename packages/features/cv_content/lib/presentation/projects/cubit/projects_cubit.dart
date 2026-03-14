@@ -15,8 +15,8 @@ class ProjectsCubit extends Cubit<ProjectsState> {
     try {
       final projects = await _projectRepository.getProjects();
       emit(ProjectsState.loaded(projects: projects));
-    } on Exception catch (e) {
-      emit(ProjectsState.error(message: e.toString()));
+    } on AppException catch (e) {
+      emit(ProjectsState.error(exception: e));
     }
   }
 }

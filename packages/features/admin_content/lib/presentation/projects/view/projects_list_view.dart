@@ -8,6 +8,7 @@ import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/widgets/dot_loader.dart';
+import 'package:shared/widgets/section_error.dart';
 
 class ProjectsListView extends StatefulWidget {
   const ProjectsListView({super.key});
@@ -72,13 +73,10 @@ class _ProjectsListViewState extends State<ProjectsListView>
           loading: () => const Center(child: DotLoader()),
           loaded: _buildContent,
           saving: _buildContent,
-          error: (message) => Center(
-            child: Text(
-              message,
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.secondary,
-              ),
-            ),
+          error: (exception) => SectionError(
+            exception: exception,
+            onRetry: () =>
+                context.read<AdminProjectsCubit>().loadProjects(),
           ),
         ),
       );

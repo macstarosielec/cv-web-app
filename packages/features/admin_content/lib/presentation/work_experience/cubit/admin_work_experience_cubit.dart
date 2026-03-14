@@ -16,8 +16,8 @@ class AdminWorkExperienceCubit extends Cubit<AdminWorkExperienceState> {
       final workExperiences =
           await _workExperienceRepository.getWorkExperiences();
       emit(AdminWorkExperienceState.loaded(workExperiences: workExperiences));
-    } on Exception catch (e) {
-      emit(AdminWorkExperienceState.error(message: e.toString()));
+    } on AppException catch (e) {
+      emit(AdminWorkExperienceState.error(exception: e));
     }
   }
 
@@ -28,8 +28,8 @@ class AdminWorkExperienceCubit extends Cubit<AdminWorkExperienceState> {
       await _workExperienceRepository.addWorkExperience(workExperience);
       final updated = await _workExperienceRepository.getWorkExperiences();
       emit(AdminWorkExperienceState.loaded(workExperiences: updated));
-    } on Exception catch (e) {
-      emit(AdminWorkExperienceState.error(message: e.toString()));
+    } on AppException catch (e) {
+      emit(AdminWorkExperienceState.error(exception: e));
     }
   }
 
@@ -40,8 +40,8 @@ class AdminWorkExperienceCubit extends Cubit<AdminWorkExperienceState> {
       await _workExperienceRepository.updateWorkExperience(workExperience);
       final updated = await _workExperienceRepository.getWorkExperiences();
       emit(AdminWorkExperienceState.loaded(workExperiences: updated));
-    } on Exception catch (e) {
-      emit(AdminWorkExperienceState.error(message: e.toString()));
+    } on AppException catch (e) {
+      emit(AdminWorkExperienceState.error(exception: e));
     }
   }
 
@@ -52,8 +52,8 @@ class AdminWorkExperienceCubit extends Cubit<AdminWorkExperienceState> {
       await _workExperienceRepository.deleteWorkExperience(id);
       final updated = await _workExperienceRepository.getWorkExperiences();
       emit(AdminWorkExperienceState.loaded(workExperiences: updated));
-    } on Exception catch (e) {
-      emit(AdminWorkExperienceState.error(message: e.toString()));
+    } on AppException catch (e) {
+      emit(AdminWorkExperienceState.error(exception: e));
     }
   }
 

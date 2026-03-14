@@ -11,9 +11,9 @@ import 'package:cv_content/presentation/projects/cubit/projects_state.dart';
 import 'package:cv_content/presentation/projects/view/widgets/projects_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared/l10n/l10n.dart';
 import 'package:shared/widgets/dot_loader.dart';
 import 'package:shared/widgets/gradient_card.dart';
+import 'package:shared/widgets/section_error.dart';
 
 class DetailPanel extends StatefulWidget {
   const DetailPanel({
@@ -35,6 +35,7 @@ class _DetailPanelState extends State<DetailPanel>
   late final Animation<double> _flipAnimation;
   DetailPanelType? _displayedType;
   DetailPanelType? _nextType;
+  bool _seedFlipped = false;
 
   @override
   void initState() {
@@ -86,7 +87,10 @@ class _DetailPanelState extends State<DetailPanel>
   @override
   Widget build(BuildContext context) {
     if (widget.animationProgress < 1) {
-      return const GradientCard(seed: 42, child: SizedBox.shrink());
+      return GradientCard(
+        seed: _seedForType(_displayedType),
+        child: const SizedBox.shrink(),
+      );
     }
 
     return AnimatedBuilder(
@@ -95,6 +99,17 @@ class _DetailPanelState extends State<DetailPanel>
         final value = _flipAnimation.value;
         final isFirstHalf = value <= 0.5;
         final type = isFirstHalf ? _displayedType : _nextType;
+
+        // Only switch the seed once the card is edge-on (invisible)
+        if (!isFirstHalf && !_seedFlipped) {
+          _seedFlipped = true;
+        } else if (isFirstHalf && _seedFlipped) {
+          _seedFlipped = false;
+        }
+
+        final seed = _seedFlipped
+            ? _seedForType(_nextType)
+            : _seedForType(_displayedType);
 
         final angle = isFirstHalf
             ? value * pi
@@ -106,13 +121,20 @@ class _DetailPanelState extends State<DetailPanel>
             ..setEntry(3, 2, 0.001)
             ..rotateY(angle),
           child: GradientCard(
-            seed: 42,
+            seed: seed,
             child: _buildPanelContent(context, type),
           ),
         );
       },
     );
   }
+
+  int _seedForType(DetailPanelType? type) => switch (type) {
+        DetailPanelType.projects => 42,
+        DetailPanelType.experience => 84,
+        DetailPanelType.contact => 126,
+        null => 42,
+      };
 
   Widget _buildPanelContent(
     BuildContext context,
@@ -130,12 +152,11 @@ class _DetailPanelState extends State<DetailPanel>
               key: const ValueKey('projects'),
               projects: projects,
             ),
-            error: (message) =>
-                Center(
-                child: Text(
-                  AppLocalizations.of(context).errorMessage(message),
-                ),
-              ),
+            error: (exception) => SectionError(
+              exception: exception,
+              onRetry: () =>
+                  context.read<ProjectsCubit>().loadProjects(),
+            ),
           ),
         ),
       DetailPanelType.experience =>
@@ -149,12 +170,11 @@ class _DetailPanelState extends State<DetailPanel>
               key: const ValueKey('experience'),
               experiences: experiences,
             ),
-            error: (message) =>
-                Center(
-                child: Text(
-                  AppLocalizations.of(context).errorMessage(message),
-                ),
-              ),
+            error: (exception) => SectionError(
+              exception: exception,
+              onRetry: () =>
+                  context.read<WorkExperienceCubit>().loadWorkExperiences(),
+            ),
           ),
         ),
       DetailPanelType.contact => const ContactPanel(
