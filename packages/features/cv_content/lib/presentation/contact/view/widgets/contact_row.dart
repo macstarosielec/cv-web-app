@@ -28,7 +28,11 @@ class ContactRow extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               border: Border.all(color: ColorName.surfaceBorder),
             ),
-            child: Icon(icon, size: 20, color: ColorName.accent),
+            child: Icon(
+              icon,
+              size: 20,
+              color: Theme.of(context).colorScheme.primary,
+            ),
           ),
           const SizedBox(width: 16),
           Column(

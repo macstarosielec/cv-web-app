@@ -46,9 +46,8 @@ class _ExperienceTileState extends State<ExperienceTile> {
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           color: _isHovered
-              ? ColorName.accent.withValues(alpha: 0.06)
+              ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.06)
               : Colors.transparent,
-          borderRadius: BorderRadius.circular(12),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,13 +71,15 @@ class _ExperienceTileState extends State<ExperienceTile> {
                       vertical: 4,
                     ),
                     decoration: BoxDecoration(
-                      color: ColorName.accent.withValues(alpha: 0.15),
-                      borderRadius: BorderRadius.circular(6),
+                      color: Theme.of(context)
+                          .colorScheme
+                          .primary
+                          .withValues(alpha: 0.15),
                     ),
                     child: Text(
                       l10n.current,
                       style: textTheme.labelSmall?.copyWith(
-                        color: ColorName.accent,
+                        color: Theme.of(context).colorScheme.primary,
                         fontWeight: FontWeight.w600,
                       ),
                     ),

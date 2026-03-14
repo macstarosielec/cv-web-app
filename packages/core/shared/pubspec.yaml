@@ -19,7 +19,6 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   get_it: ^9.2.0
-  google_fonts: ^6.2.1
   injectable: ^2.7.1+4
   intl: ^0.20.2
   web: ^1.1.1
@@ -45,3 +44,11 @@ flutter_gen:
 
 flutter:
   generate: true
+  fonts:
+    - family: Teko
+      fonts:
+        - asset: assets/fonts/Teko.ttf
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto-Black.ttf
+          weight: 900

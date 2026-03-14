@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:shared/gen/colors.gen.dart';
+import 'package:shared/gen/fonts.gen.dart';
 
 class AppTheme {
-  static final TextTheme _baseTextTheme = GoogleFonts.tekoTextTheme();
+  static const _tekoFamily = 'packages/shared/${FontFamily.teko}';
+  static const _robotoFamily = 'packages/shared/${FontFamily.roboto}';
 
-  static TextStyle accentStyle({double? fontSize}) =>
-      GoogleFonts.roboto(
+  static final TextTheme _baseTextTheme =
+      ThemeData.dark().textTheme.apply(fontFamily: _tekoFamily);
+
+  static TextStyle accentStyle({double? fontSize}) => TextStyle(
+        fontFamily: _robotoFamily,
         fontSize: fontSize,
         fontWeight: FontWeight.w900,
       );
@@ -71,15 +75,21 @@ class AppTheme {
         ),
       );
 
-  static ThemeData get dark => ThemeData(
+  static ThemeData dark({
+    Color accent = ColorName.accent,
+    Color accentLight = ColorName.accentLight,
+    Color accentDark = ColorName.accentDark,
+  }) =>
+      ThemeData(
         brightness: Brightness.dark,
+        fontFamily: _tekoFamily,
         scaffoldBackgroundColor: Colors.transparent,
         textTheme: _textTheme,
-        colorScheme: const ColorScheme.dark(
+        colorScheme: ColorScheme.dark(
           surface: ColorName.surface,
-          primary: ColorName.accent,
-          secondary: ColorName.accentLight,
-          error: ColorName.accentLight,
+          primary: accent,
+          secondary: accentLight,
+          error: accentLight,
           onSurface: ColorName.textPrimary,
           onPrimary: ColorName.textPrimary,
           outline: ColorName.surfaceBorder,

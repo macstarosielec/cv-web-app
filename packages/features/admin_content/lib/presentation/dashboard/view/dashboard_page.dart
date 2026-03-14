@@ -7,41 +7,41 @@ import 'package:admin_content/presentation/work_experience/cubit/admin_work_expe
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:get_it/get_it.dart';
 
 @RoutePage()
-class DashboardPage extends HookWidget {
-  const DashboardPage({super.key});
+class DashboardPage extends StatelessWidget {
+  const DashboardPage({this.onSignOut, super.key});
+
+  final VoidCallback? onSignOut;
 
   @override
-  Widget build(BuildContext context) {
-    final profileCubit =
-        useMemoized(() => GetIt.instance<AdminProfileCubit>());
-    final projectsCubit =
-        useMemoized(() => GetIt.instance<AdminProjectsCubit>());
-    final workExperienceCubit =
-        useMemoized(() => GetIt.instance<AdminWorkExperienceCubit>());
-
-    useEffect(
-      () {
-        unawaited(profileCubit.loadProfile());
-        unawaited(projectsCubit.loadProjects());
-        unawaited(workExperienceCubit.loadWorkExperiences());
-        return null;
-      },
-      [],
-    );
-
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider.value(value: profileCubit),
-        BlocProvider.value(value: projectsCubit),
-        BlocProvider.value(value: workExperienceCubit),
-      ],
-      child: DashboardView(
-        onSignOut: () => context.router.root.replaceAll([]),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (_) {
+              final cubit = GetIt.instance<AdminProfileCubit>();
+              unawaited(cubit.loadProfile());
+              return cubit;
+            },
+          ),
+          BlocProvider(
+            create: (_) {
+              final cubit = GetIt.instance<AdminProjectsCubit>();
+              unawaited(cubit.loadProjects());
+              return cubit;
+            },
+          ),
+          BlocProvider(
+            create: (_) {
+              final cubit = GetIt.instance<AdminWorkExperienceCubit>();
+              unawaited(cubit.loadWorkExperiences());
+              return cubit;
+            },
+          ),
+        ],
+        child: DashboardView(
+          onSignOut: onSignOut ?? () {},
+        ),
+      );
 }

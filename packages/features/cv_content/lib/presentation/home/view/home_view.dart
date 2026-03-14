@@ -10,10 +10,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared/config/app_config.dart';
-import 'package:shared/gen/colors.gen.dart';
 import 'package:shared/l10n/l10n.dart';
 import 'package:shared/utils/breakpoints.dart';
 import 'package:shared/utils/visit_tracker.dart';
+import 'package:shared/widgets/dot_loader.dart';
 
 class HomeView extends HookWidget {
   const HomeView({super.key});
@@ -92,7 +92,7 @@ class HomeView extends HookWidget {
         builder: (context, state) => state.when(
           initial: () => const SizedBox.shrink(),
           loading: () => const Center(
-            child: CircularProgressIndicator(),
+            child: DotLoader(),
           ),
           loaded: (profile) => Center(
             child: Padding(
@@ -118,7 +118,9 @@ class HomeView extends HookWidget {
           error: (message) => Center(
             child: Text(
               AppLocalizations.of(context).errorMessage(message),
-              style: const TextStyle(color: ColorName.accentLight),
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.secondary,
+              ),
             ),
           ),
         ),

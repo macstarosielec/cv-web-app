@@ -38,24 +38,24 @@ class _ProjectTileState extends State<ProjectTile>
     super.dispose();
   }
 
-  List<Shadow> _textGlow(double progress) => [
+  List<Shadow> _textGlow(Color accent, double progress) => [
         Shadow(
-          color: ColorName.accent.withValues(alpha: 0.9 * progress),
+          color: accent.withValues(alpha: 0.9 * progress),
           blurRadius: 20 * progress,
         ),
         Shadow(
-          color: ColorName.accent.withValues(alpha: 0.6 * progress),
+          color: accent.withValues(alpha: 0.6 * progress),
           blurRadius: 40 * progress,
         ),
       ];
 
-  List<BoxShadow> _chipGlow(double progress) => [
+  List<BoxShadow> _chipGlow(Color accent, double progress) => [
         BoxShadow(
-          color: ColorName.accent.withValues(alpha: 0.35 * progress),
+          color: accent.withValues(alpha: 0.35 * progress),
           blurRadius: 10 * progress,
         ),
         BoxShadow(
-          color: ColorName.accent.withValues(alpha: 0.2 * progress),
+          color: accent.withValues(alpha: 0.2 * progress),
           blurRadius: 20 * progress,
         ),
       ];
@@ -63,6 +63,7 @@ class _ProjectTileState extends State<ProjectTile>
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final accent = Theme.of(context).colorScheme.primary;
     final project = widget.project;
 
     return RepaintBoundary(
@@ -74,8 +75,8 @@ class _ProjectTileState extends State<ProjectTile>
         builder: (context, _) {
           final progress = _hoverAnimation.value;
           final scale = 1.0 + (_scale - 1.0) * progress;
-          final textShadows = _textGlow(progress);
-          final chipShadows = _chipGlow(progress);
+          final textShadows = _textGlow(accent, progress);
+          final chipShadows = _chipGlow(accent, progress);
 
           return Container(
             margin: const EdgeInsets.only(bottom: 4),

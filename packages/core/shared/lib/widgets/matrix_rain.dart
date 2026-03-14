@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:shared/gen/colors.gen.dart';
 
 class MatrixRain extends StatefulWidget {
   const MatrixRain({super.key});
@@ -34,10 +33,11 @@ class _MatrixRainState extends State<MatrixRain>
 
   @override
   Widget build(BuildContext context) {
+    final accent = Theme.of(context).colorScheme.primary;
     return AnimatedBuilder(
       animation: _controller,
       builder: (context, _) => CustomPaint(
-        painter: _MatrixPainter(data: _paintData),
+        painter: _MatrixPainter(data: _paintData, accentColor: accent),
         size: Size.infinite,
       ),
     );
@@ -51,9 +51,10 @@ class _MatrixPaintData {
 }
 
 class _MatrixPainter extends CustomPainter {
-  _MatrixPainter({required this.data});
+  _MatrixPainter({required this.data, required this.accentColor});
 
   final _MatrixPaintData data;
+  final Color accentColor;
 
   static const _chars = 'アイウエオカキクケコサシスセソタチツテト'
       'ナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン'
@@ -98,7 +99,7 @@ class _MatrixPainter extends CustomPainter {
           text: TextSpan(
             text: String.fromCharCode(_chars.codeUnitAt(charIndex)),
             style: TextStyle(
-              color: ColorName.accent.withValues(alpha: opacity),
+              color: accentColor.withValues(alpha: opacity),
               fontSize: _fontSize,
               fontWeight: FontWeight.w500,
             ),

@@ -15,5 +15,13 @@ export 'theme/theme.dart';
 export 'utils/breakpoints.dart';
 export 'utils/visit_tracker.dart';
 
+// Widgets
+export 'widgets/action_chip.dart';
+export 'widgets/dot_loader.dart';
+export 'widgets/fill_painter.dart';
+export 'widgets/gradient_card.dart';
+export 'widgets/matrix_rain.dart';
+export 'widgets/stagger_item.dart';
+
 // Exceptions
 // export 'src/exceptions/app_exceptions.dart';

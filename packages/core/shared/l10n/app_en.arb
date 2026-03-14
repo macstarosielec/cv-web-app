@@ -1,41 +1,10 @@
 {
   "@@locale": "en",
-  "appTitle": "CV Application",
-  "@appTitle": {
-    "description": "The title of the application"
-  },
-  "welcome": "Welcome",
-  "@welcome": {
-    "description": "Welcome message"
-  },
-  "login": "Login",
-  "logout": "Logout",
   "email": "Email",
   "password": "Password",
-  "save": "Save",
   "cancel": "Cancel",
   "delete": "Delete",
   "edit": "Edit",
-  "greeting": "Hello {name}",
-  "@greeting": {
-    "description": "A greeting message",
-    "placeholders": {
-      "name": {
-        "type": "String",
-        "example": "John"
-      }
-    }
-  },
-  "itemCount": "{count, plural, =0{No items} =1{1 item} other{{count} items}}",
-  "@itemCount": {
-    "description": "Number of items",
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "format": "compact"
-      }
-    }
-  },
   "projects": "Projects",
   "commercialProjects": "Commercial Projects",
   "personalProjects": "Personal Projects",
@@ -67,5 +36,58 @@
   "monthSep": "Sep",
   "monthOct": "Oct",
   "monthNov": "Nov",
-  "monthDec": "Dec"
+  "monthDec": "Dec",
+  "dashboard": "Dashboard",
+  "signOut": "Sign Out",
+  "signIn": "Sign In",
+  "profile": "Profile",
+  "basicInfo": "BASIC INFO",
+  "fullName": "Full Name",
+  "title": "Title",
+  "about": "About",
+  "phoneNumber": "Phone Number (optional)",
+  "linkedInUrl": "LinkedIn URL (optional)",
+  "githubUrl": "GitHub URL (optional)",
+  "saveProfile": "Save Profile",
+  "skillName": "Skill name",
+  "categoryOptional": "Category (optional)",
+  "add": "Add",
+  "languageName": "Language name",
+  "addInterest": "Add interest",
+  "interests": "Interests",
+  "addProject": "Add Project",
+  "editProject": "Edit Project",
+  "projectType": "Type:",
+  "commercial": "Commercial",
+  "personal": "Personal",
+  "techStack": "TECH STACK",
+  "addTechnology": "Add technology",
+  "responsibilities": "RESPONSIBILITIES",
+  "addResponsibility": "Add responsibility",
+  "addExperience": "Add Experience",
+  "editExperience": "Edit Experience",
+  "dates": "DATES",
+  "startDate": "Start:",
+  "endDate": "End:",
+  "deleteProject": "Delete Project",
+  "deleteExperience": "Delete Experience",
+  "confirmDeleteItem": "Are you sure you want to delete \"{name}\"?",
+  "@confirmDeleteItem": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "emailRequired": "Email is required",
+  "enterValidEmail": "Enter a valid email",
+  "passwordRequired": "Password is required",
+  "adminPanel": "Admin Panel",
+  "signInToContinue": "Sign in to continue",
+  "personalProject": "Personal project",
+  "discard": "Discard",
+  "projectName": "Project name",
+  "descriptionOptional": "Description (optional)",
+  "company": "Company",
+  "role": "Role"
 }

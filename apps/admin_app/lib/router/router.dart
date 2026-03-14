@@ -1,4 +1,3 @@
-import 'package:admin_app/guards/auth_guard.dart';
 import 'package:admin_content/admin_content.dart';
 import 'package:auth/auth.dart';
 import 'package:auto_route/auto_route.dart';
@@ -16,12 +15,6 @@ class AppRouter extends RootStackRouter {
     AutoRoute(
       page: DashboardRoute.page,
       initial: true,
-      guards: [AuthGuard()],
-      children: [
-        AutoRoute(page: ProfileEditorRoute.page, initial: true),
-        AutoRoute(page: ProjectsListRoute.page),
-        AutoRoute(page: WorkExperienceListRoute.page),
-      ],
     ),
   ];
 }

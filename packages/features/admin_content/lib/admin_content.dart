@@ -1,4 +1,5 @@
 export 'di/injection.dart';
+export 'presentation/dashboard/admin_nav_item.dart';
 export 'presentation/dashboard/view/dashboard_page.dart';
 export 'presentation/profile/cubit/admin_profile_cubit.dart';
 export 'presentation/profile/cubit/admin_profile_state.dart';
