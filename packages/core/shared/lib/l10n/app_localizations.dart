@@ -94,30 +94,6 @@ abstract class AppLocalizations {
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[Locale('en')];
 
-  /// The title of the application
-  ///
-  /// In en, this message translates to:
-  /// **'CV Application'**
-  String get appTitle;
-
-  /// Welcome message
-  ///
-  /// In en, this message translates to:
-  /// **'Welcome'**
-  String get welcome;
-
-  /// No description provided for @login.
-  ///
-  /// In en, this message translates to:
-  /// **'Login'**
-  String get login;
-
-  /// No description provided for @logout.
-  ///
-  /// In en, this message translates to:
-  /// **'Logout'**
-  String get logout;
-
   /// No description provided for @email.
   ///
   /// In en, this message translates to:
@@ -129,12 +105,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Password'**
   String get password;
-
-  /// No description provided for @save.
-  ///
-  /// In en, this message translates to:
-  /// **'Save'**
-  String get save;
 
   /// No description provided for @cancel.
   ///
@@ -153,18 +123,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Edit'**
   String get edit;
-
-  /// A greeting message
-  ///
-  /// In en, this message translates to:
-  /// **'Hello {name}'**
-  String greeting(String name);
-
-  /// Number of items
-  ///
-  /// In en, this message translates to:
-  /// **'{count, plural, =0{No items} =1{1 item} other{{count} items}}'**
-  String itemCount(int count);
 
   /// No description provided for @projects.
   ///

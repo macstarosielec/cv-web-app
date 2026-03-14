@@ -30,7 +30,7 @@ fvm dart run melos run run:cv:dev
 cv-web-app/
 ├── apps/
 │   ├── cv_app/              # Public CV/portfolio web app
-│   └── admin_app/           # Admin dashboard (auth, animated transitions, content management)
+│   └── admin_app/           # Admin dashboard (desktop-only, auth, animated transitions, CRUD)
 ├── packages/
 │   ├── core/
 │   │   ├── domain/          # Entities (Freezed), repository interfaces
@@ -38,7 +38,7 @@ cv-web-app/
 │   │   └── shared/          # Theme, DI, localization, shared widgets, config interfaces
 │   └── features/
 │       ├── cv_content/      # CV display: responsive layouts, animations, detail panels
-│       ├── admin_content/   # Admin dashboard: nav + content panels, CRUD forms
+│       ├── admin_content/   # Admin: profile editor, projects + experience two-column CRUD
 │       └── auth/            # Authentication: login card, form validation, sanitization
 ├── .github/workflows/       # CI/CD for both apps (dev, prod, PR previews)
 └── docs/                    # Detailed documentation

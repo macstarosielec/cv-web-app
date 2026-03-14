@@ -2,10 +2,11 @@ import 'dart:async';
 
 import 'package:cv_content/presentation/home/view/widgets/profile_card_content.dart';
 import 'package:cv_content/presentation/models/detail_panel_type.dart';
-import 'package:shared/widgets/gradient_card.dart';
 import 'package:cv_content/presentation/widgets/navigation_chips_row.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
+import 'package:shared/widgets/gradient_card.dart';
+import 'package:shared/widgets/stagger_item.dart';
 
 class ProfileCard extends StatefulWidget {
   const ProfileCard({
@@ -74,15 +75,8 @@ class _ProfileCardState extends State<ProfileCard>
                 animate: widget.animate,
               ),
               const SizedBox(height: 32),
-              AnimatedBuilder(
+              StaggerItem(
                 animation: _chipsAnimation,
-                builder: (context, child) => Transform.translate(
-                  offset: Offset(0, 16 * (1 - _chipsAnimation.value)),
-                  child: Opacity(
-                    opacity: _chipsAnimation.value,
-                    child: child,
-                  ),
-                ),
                 child: NavigationChipsRow(
                   selectedPanel: widget.selectedPanel,
                   onChipSelected: widget.onChipSelected,

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:shared/gen/colors.gen.dart';
 import 'package:shared/l10n/l10n.dart';
 import 'package:shared/theme/theme.dart';
+import 'package:shared/widgets/stagger_item.dart';
 
 class ProfileCardContent extends StatefulWidget {
   const ProfileCardContent({
@@ -77,7 +78,7 @@ class _ProfileCardContentState extends State<ProfileCardContent>
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        _StaggerItem(
+        StaggerItem(
           animation: _animations[0],
           child: Text(
             profile.fullName,
@@ -88,7 +89,7 @@ class _ProfileCardContentState extends State<ProfileCardContent>
           ),
         ),
         const SizedBox(height: 8),
-        _StaggerItem(
+        StaggerItem(
           animation: _animations[1],
           child: Text(
             profile.title,
@@ -99,7 +100,7 @@ class _ProfileCardContentState extends State<ProfileCardContent>
           ),
         ),
         const SizedBox(height: 24),
-        _StaggerItem(
+        StaggerItem(
           animation: _animations[2],
           child: Text(
             profile.about,
@@ -111,7 +112,7 @@ class _ProfileCardContentState extends State<ProfileCardContent>
         ),
         if (profile.skills.isNotEmpty) ...[
           const SizedBox(height: 32),
-          _StaggerItem(
+          StaggerItem(
             animation: _animations[3],
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -147,7 +148,7 @@ class _ProfileCardContentState extends State<ProfileCardContent>
         ],
         if (profile.languages.isNotEmpty) ...[
           const SizedBox(height: 24),
-          _StaggerItem(
+          StaggerItem(
             animation: _animations[4],
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -184,27 +185,4 @@ class _ProfileCardContentState extends State<ProfileCardContent>
       ],
     );
   }
-}
-
-class _StaggerItem extends StatelessWidget {
-  const _StaggerItem({
-    required this.animation,
-    required this.child,
-  });
-
-  final Animation<double> animation;
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) => AnimatedBuilder(
-        animation: animation,
-        builder: (context, c) => Transform.translate(
-          offset: Offset(0, 16 * (1 - animation.value)),
-          child: Opacity(
-            opacity: animation.value,
-            child: c,
-          ),
-        ),
-        child: child,
-      );
 }

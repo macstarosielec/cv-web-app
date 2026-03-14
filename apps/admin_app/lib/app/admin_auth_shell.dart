@@ -8,11 +8,9 @@ import 'package:auth/presentation/login/view/widgets/login_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/gen/colors.gen.dart';
-import 'package:shared/widgets/dot_loader.dart';
 import 'package:shared/widgets/gradient_card.dart';
 
 enum _Phase {
-  initializing,
   login,
   fadeOutContent,
   morphCard,
@@ -95,14 +93,6 @@ class _AdminAuthShellState extends State<AdminAuthShell>
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (_phase == _Phase.initializing) {
-      _onAuthStateChanged(context.read<AuthCubit>().state);
-    }
-  }
-
-  @override
   void dispose() {
     _fadeController.dispose();
     _morphController.dispose();
@@ -116,25 +106,18 @@ class _AdminAuthShellState extends State<AdminAuthShell>
       initial: () {},
       loading: () {},
       authenticated: () {
-        if (_phase == _Phase.initializing) {
-          // Already logged in on load — skip to dashboard
-          setState(() => _phase = _Phase.dashboard);
-        } else if (_phase == _Phase.login) {
+        if (_phase == _Phase.login) {
           unawaited(_startLoginTransition());
         }
       },
       unauthenticated: () {
-        if (_phase == _Phase.initializing || _phase == _Phase.login) {
+        if (_phase == _Phase.login) {
           setState(() => _phase = _Phase.login);
         } else if (_phase == _Phase.dashboard) {
           unawaited(_startLogoutTransition());
         }
       },
-      error: (_) {
-        if (_phase == _Phase.initializing) {
-          setState(() => _phase = _Phase.login);
-        }
-      },
+      error: (_) {},
     );
   }
 
@@ -195,12 +178,6 @@ class _AdminAuthShellState extends State<AdminAuthShell>
       );
 
   Widget _buildPhase(BuildContext context) => switch (_phase) {
-        _Phase.initializing => Scaffold(
-            backgroundColor: Colors.transparent,
-            body: const Center(
-              child: DotLoader(),
-            ),
-          ),
         _Phase.login => const LoginView(),
         _Phase.dashboard => DashboardPage(
             onSignOut: () => context.read<AuthCubit>().signOut(),

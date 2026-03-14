@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared/gen/colors.gen.dart';
+import 'package:shared/l10n/l10n.dart';
 
 class LoginCardPlaceholder extends StatelessWidget {
   const LoginCardPlaceholder({super.key});
@@ -12,7 +13,7 @@ class LoginCardPlaceholder extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              'Admin Panel',
+              AppLocalizations.of(context).adminPanel,
               style:
                   Theme.of(context).textTheme.headlineMedium?.copyWith(
                         color: ColorName.textPrimary,
@@ -22,7 +23,7 @@ class LoginCardPlaceholder extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'Sign in to continue',
+              AppLocalizations.of(context).signInToContinue,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: ColorName.textSecondary,
                   ),

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:shared/gen/colors.gen.dart';
+import 'package:shared/widgets/fill_painter.dart';
 
 class NavigationChip extends StatefulWidget {
   const NavigationChip({
@@ -89,7 +90,7 @@ class _NavigationChipState extends State<NavigationChip>
           child: AnimatedBuilder(
             animation: Listenable.merge([_hoverAnimation, _labelAnimation]),
             builder: (context, _) => CustomPaint(
-              painter: _FillPainter(
+              painter: FillPainter(
                 progress: _hoverAnimation.value,
                 backgroundColor: ColorName.surface,
                 fillColor: Theme.of(context).colorScheme.primary,
@@ -139,36 +140,4 @@ class _NavigationChipState extends State<NavigationChip>
           ),
         ),
       );
-}
-
-class _FillPainter extends CustomPainter {
-  _FillPainter({
-    required this.progress,
-    required this.backgroundColor,
-    required this.fillColor,
-  });
-
-  final double progress;
-  final Color backgroundColor;
-  final Color fillColor;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final bgPaint = Paint()..color = backgroundColor;
-    canvas.drawRect(Offset.zero & size, bgPaint);
-
-    if (progress <= 0) return;
-
-    final fillPaint = Paint()..color = fillColor;
-    canvas.drawRect(
-      Rect.fromLTWH(0, 0, size.width * progress, size.height),
-      fillPaint,
-    );
-  }
-
-  @override
-  bool shouldRepaint(_FillPainter oldDelegate) =>
-      oldDelegate.progress != progress ||
-      oldDelegate.backgroundColor != backgroundColor ||
-      oldDelegate.fillColor != fillColor;
 }

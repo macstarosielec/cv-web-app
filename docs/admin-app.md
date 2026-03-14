@@ -1,6 +1,6 @@
 # Admin App
 
-`apps/admin_app/` — admin dashboard for managing CV content. Uses Firebase Auth for authentication and features animated login-to-dashboard transitions.
+`apps/admin_app/` — admin dashboard for managing CV content. **Designed for desktop browsers** (not optimized for tablet/mobile). Uses Firebase Auth for authentication and features animated login-to-dashboard transitions.
 
 ## Theme
 
@@ -44,7 +44,33 @@ The auth feature (`packages/features/auth/`) provides:
 ## Dashboard Layout
 
 Two-panel layout with `Row`:
-- **Nav card** (left, 250px): GradientCard with NavigationChips + ActionChip sign out button
+- **Nav card** (left, 250px): GradientCard with NavigationChips (stretched, full-width) + ActionChip sign out button pinned to bottom via `Spacer`
 - **Content card** (right, fills remaining): GradientCard with selected content panel
+- **Card transitions**: Old content card slides down off-screen, new card slides in from top (full-viewport animation using `Positioned` in a `Stack`)
 
 Both panels use `CrossAxisAlignment.stretch` to fill available height.
+
+## Content Pages
+
+All content pages use a **two-column layout** (form left, item list right) with stagger animations on initial load.
+
+### Profile
+
+Inline editor with grouped fields:
+- Name + Title in one row, About below
+- Email + Phone in one row, LinkedIn + GitHub in one row
+- Skills editor (chip-based with optional category)
+- Languages + Interests editors side by side
+
+### Projects
+
+- **Left column**: Always-visible project form with type selector (Commercial/Personal), name, description, company/role or GitHub URL, tech stack (chip-based), responsibilities
+- **Right column**: Scrollable project list with edit/delete actions
+- **Add/Edit mode**: Button label changes; Discard button appears when form is dirty or editing
+- Form populates/clears in-place via `didUpdateWidget` (no widget rebuild)
+
+### Work Experience
+
+- **Left column**: Always-visible experience form with title + company, date pickers (start/end with "Present" option), responsibilities
+- **Right column**: Scrollable experience list with edit/delete actions
+- Same Add/Edit/Discard behavior as Projects
