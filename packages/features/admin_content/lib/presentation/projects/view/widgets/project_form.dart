@@ -50,40 +50,67 @@ class _ProjectFormState extends State<ProjectForm>
     );
     unawaited(_staggerController.forward());
 
-    final p = widget.project;
-    _isCommercial = p is CommercialProject || p == null;
+    _name = TextEditingController();
+    _description = TextEditingController();
+    _company = TextEditingController();
+    _role = TextEditingController();
+    _githubUrl = TextEditingController();
+    _techStack = [];
+    _responsibilities = [];
+    _isCommercial = true;
 
-    if (p is CommercialProject) {
-      _name = TextEditingController(text: p.name);
-      _description = TextEditingController(text: p.description ?? '');
-      _company = TextEditingController(text: p.company);
-      _role = TextEditingController(text: p.role);
-      _githubUrl = TextEditingController();
-      _techStack = List.from(p.techStack);
-      _responsibilities = List.from(p.responsibilities);
-      _isDirty = true;
-    } else if (p is PersonalProject) {
-      _isCommercial = false;
-      _name = TextEditingController(text: p.name);
-      _description = TextEditingController(text: p.description ?? '');
-      _company = TextEditingController();
-      _role = TextEditingController();
-      _githubUrl = TextEditingController(text: p.githubUrl ?? '');
-      _techStack = List.from(p.techStack);
-      _responsibilities = [];
-      _isDirty = true;
-    } else {
-      _name = TextEditingController();
-      _description = TextEditingController();
-      _company = TextEditingController();
-      _role = TextEditingController();
-      _githubUrl = TextEditingController();
-      _techStack = [];
-      _responsibilities = [];
-    }
+    _populateFrom(widget.project);
 
     for (final c in [_name, _description, _company, _role, _githubUrl]) {
       c.addListener(_markDirty);
+    }
+  }
+
+  @override
+  void didUpdateWidget(ProjectForm oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.project != oldWidget.project) {
+      _populateFrom(widget.project);
+    }
+  }
+
+  void _populateFrom(Project? p) {
+    if (p is CommercialProject) {
+      _name.text = p.name;
+      _description.text = p.description ?? '';
+      _company.text = p.company;
+      _role.text = p.role;
+      _githubUrl.text = '';
+      setState(() {
+        _isCommercial = true;
+        _techStack = List.from(p.techStack);
+        _responsibilities = List.from(p.responsibilities);
+        _isDirty = true;
+      });
+    } else if (p is PersonalProject) {
+      _name.text = p.name;
+      _description.text = p.description ?? '';
+      _company.text = '';
+      _role.text = '';
+      _githubUrl.text = p.githubUrl ?? '';
+      setState(() {
+        _isCommercial = false;
+        _techStack = List.from(p.techStack);
+        _responsibilities = [];
+        _isDirty = true;
+      });
+    } else {
+      _name.clear();
+      _description.clear();
+      _company.clear();
+      _role.clear();
+      _githubUrl.clear();
+      setState(() {
+        _isCommercial = true;
+        _techStack = [];
+        _responsibilities = [];
+        _isDirty = false;
+      });
     }
   }
 

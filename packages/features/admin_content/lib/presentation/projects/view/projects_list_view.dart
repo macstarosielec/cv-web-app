@@ -19,7 +19,6 @@ class ProjectsListView extends StatefulWidget {
 class _ProjectsListViewState extends State<ProjectsListView>
     with SingleTickerProviderStateMixin {
   Project? _editingProject;
-  int _formKey = 0;
   late final AnimationController _listStagger;
 
   @override
@@ -38,17 +37,11 @@ class _ProjectsListViewState extends State<ProjectsListView>
   }
 
   void _onEdit(Project project) {
-    setState(() {
-      _editingProject = project;
-      _formKey++;
-    });
+    setState(() => _editingProject = project);
   }
 
   void _onDiscard() {
-    setState(() {
-      _editingProject = null;
-      _formKey++;
-    });
+    setState(() => _editingProject = null);
   }
 
   void _onSave(Project project) {
@@ -58,10 +51,7 @@ class _ProjectsListViewState extends State<ProjectsListView>
     } else {
       unawaited(cubit.addProject(project));
     }
-    setState(() {
-      _editingProject = null;
-      _formKey++;
-    });
+    setState(() => _editingProject = null);
   }
 
   Animation<double> _listItemAnimation(int index, int total) {
@@ -103,7 +93,6 @@ class _ProjectsListViewState extends State<ProjectsListView>
       children: [
         Expanded(
           child: ProjectForm(
-            key: ValueKey('form_$_formKey'),
             project: _editingProject,
             onSave: _onSave,
             onDiscard: _onDiscard,

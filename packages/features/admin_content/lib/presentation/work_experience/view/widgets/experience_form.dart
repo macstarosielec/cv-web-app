@@ -46,16 +46,45 @@ class _ExperienceFormState extends State<ExperienceForm>
     );
     unawaited(_staggerController.forward());
 
-    final we = widget.workExperience;
-    _title = TextEditingController(text: we?.title ?? '');
-    _company = TextEditingController(text: we?.company ?? '');
-    _startDate = we?.startDate ?? DateTime.now();
-    _endDate = we?.endDate;
-    _responsibilities = List.from(we?.responsibilities ?? []);
-    _isDirty = _isEditing;
+    _title = TextEditingController();
+    _company = TextEditingController();
+    _startDate = DateTime.now();
+    _responsibilities = [];
+
+    _populateFrom(widget.workExperience);
 
     for (final c in [_title, _company]) {
       c.addListener(_markDirty);
+    }
+  }
+
+  @override
+  void didUpdateWidget(ExperienceForm oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.workExperience != oldWidget.workExperience) {
+      _populateFrom(widget.workExperience);
+    }
+  }
+
+  void _populateFrom(WorkExperience? we) {
+    if (we != null) {
+      _title.text = we.title;
+      _company.text = we.company;
+      setState(() {
+        _startDate = we.startDate;
+        _endDate = we.endDate;
+        _responsibilities = List.from(we.responsibilities);
+        _isDirty = true;
+      });
+    } else {
+      _title.clear();
+      _company.clear();
+      setState(() {
+        _startDate = DateTime.now();
+        _endDate = null;
+        _responsibilities = [];
+        _isDirty = false;
+      });
     }
   }
 

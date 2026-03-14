@@ -20,7 +20,6 @@ class WorkExperienceListView extends StatefulWidget {
 class _WorkExperienceListViewState extends State<WorkExperienceListView>
     with SingleTickerProviderStateMixin {
   WorkExperience? _editingExperience;
-  int _formKey = 0;
   late final AnimationController _listStagger;
 
   @override
@@ -39,17 +38,11 @@ class _WorkExperienceListViewState extends State<WorkExperienceListView>
   }
 
   void _onEdit(WorkExperience experience) {
-    setState(() {
-      _editingExperience = experience;
-      _formKey++;
-    });
+    setState(() => _editingExperience = experience);
   }
 
   void _onDiscard() {
-    setState(() {
-      _editingExperience = null;
-      _formKey++;
-    });
+    setState(() => _editingExperience = null);
   }
 
   void _onSave(WorkExperience experience) {
@@ -59,10 +52,7 @@ class _WorkExperienceListViewState extends State<WorkExperienceListView>
     } else {
       unawaited(cubit.addWorkExperience(experience));
     }
-    setState(() {
-      _editingExperience = null;
-      _formKey++;
-    });
+    setState(() => _editingExperience = null);
   }
 
   Animation<double> _listItemAnimation(int index, int total) {
@@ -104,7 +94,6 @@ class _WorkExperienceListViewState extends State<WorkExperienceListView>
       children: [
         Expanded(
           child: ExperienceForm(
-            key: ValueKey('form_$_formKey'),
             workExperience: _editingExperience,
             onSave: _onSave,
             onDiscard: _onDiscard,
