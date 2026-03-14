@@ -26,12 +26,12 @@ class ProjectsListView extends StatelessWidget {
             error: (message) => Center(
               child: Text(
                 message,
-                style: const TextStyle(color: ColorName.accentLight),
+                style: TextStyle(color: Theme.of(context).colorScheme.secondary),
               ),
             ),
           ),
           floatingActionButton: FloatingActionButton(
-            backgroundColor: ColorName.accent,
+            backgroundColor: Theme.of(context).colorScheme.primary,
             onPressed: () => unawaited(
               ProjectEditorDialog.show(
                 context,

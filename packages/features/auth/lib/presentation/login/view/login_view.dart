@@ -10,15 +10,15 @@ class LoginView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        backgroundColor: ColorName.background,
+        backgroundColor: Colors.transparent,
         body: Center(
           child: BlocBuilder<AuthCubit, AuthState>(
             builder: (context, state) => state.when(
               initial: () => const LoginCard(),
-              loading: () =>
-                  const CircularProgressIndicator(color: ColorName.accent),
-              authenticated: () =>
-                  const CircularProgressIndicator(color: ColorName.accent),
+              loading: () => const LoginCard(isLoading: true),
+              authenticated: () => CircularProgressIndicator(
+                color: Theme.of(context).colorScheme.primary,
+              ),
               unauthenticated: () => const LoginCard(),
               error: (message) => LoginCard(errorMessage: message),
             ),

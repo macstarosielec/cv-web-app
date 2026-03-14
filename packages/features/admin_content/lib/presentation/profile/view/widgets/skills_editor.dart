@@ -1,6 +1,8 @@
+import 'package:admin_content/presentation/widgets/admin_input_decoration.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/gen/colors.gen.dart';
+import 'package:shared/widgets/action_chip.dart' as shared;
 
 class SkillsEditor extends StatefulWidget {
   const SkillsEditor({
@@ -55,16 +57,37 @@ class _SkillsEditorState extends State<SkillsEditor> {
             runSpacing: 8,
             children: [
               for (var i = 0; i < widget.skills.length; i++)
-                Chip(
-                  backgroundColor: ColorName.surfaceLight,
-                  label: Text(
-                    widget.skills[i].category != null
-                        ? '${widget.skills[i].name} (${widget.skills[i].category})'
-                        : widget.skills[i].name,
-                    style: const TextStyle(color: ColorName.textPrimary),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 6,
                   ),
-                  deleteIconColor: ColorName.textMuted,
-                  onDeleted: () => _remove(i),
+                  decoration: const BoxDecoration(
+                    color: ColorName.surfaceLight,
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        widget.skills[i].category != null
+                            ? '${widget.skills[i].name} '
+                                '(${widget.skills[i].category})'
+                            : widget.skills[i].name,
+                        style: const TextStyle(
+                          color: ColorName.textPrimary,
+                        ),
+                      ),
+                      const SizedBox(width: 4),
+                      GestureDetector(
+                        onTap: () => _remove(i),
+                        child: const Icon(
+                          Icons.close,
+                          size: 14,
+                          color: ColorName.textMuted,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
             ],
           ),
@@ -74,8 +97,8 @@ class _SkillsEditorState extends State<SkillsEditor> {
               Expanded(
                 child: TextField(
                   controller: _nameController,
-                  decoration: const InputDecoration(
-                    hintText: 'Skill name',
+                  decoration: adminInputDecoration(context: context, 
+                    label: 'Skill name',
                     isDense: true,
                   ),
                   style: const TextStyle(color: ColorName.textPrimary),
@@ -85,17 +108,18 @@ class _SkillsEditorState extends State<SkillsEditor> {
               Expanded(
                 child: TextField(
                   controller: _categoryController,
-                  decoration: const InputDecoration(
-                    hintText: 'Category (optional)',
+                  decoration: adminInputDecoration(context: context, 
+                    label: 'Category (optional)',
                     isDense: true,
                   ),
                   style: const TextStyle(color: ColorName.textPrimary),
                 ),
               ),
               const SizedBox(width: 8),
-              TextButton(
-                onPressed: _add,
-                child: const Text('Add'),
+              shared.ActionChip(
+                label: 'Add',
+                icon: Icons.add,
+                onTap: _add,
               ),
             ],
           ),

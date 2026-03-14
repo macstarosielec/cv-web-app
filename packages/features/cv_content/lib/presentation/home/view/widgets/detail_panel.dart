@@ -9,7 +9,7 @@ import 'package:cv_content/presentation/models/detail_panel_type.dart';
 import 'package:cv_content/presentation/projects/cubit/projects_cubit.dart';
 import 'package:cv_content/presentation/projects/cubit/projects_state.dart';
 import 'package:cv_content/presentation/projects/view/widgets/projects_list.dart';
-import 'package:cv_content/presentation/widgets/gradient_card.dart';
+import 'package:shared/widgets/gradient_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/l10n/l10n.dart';

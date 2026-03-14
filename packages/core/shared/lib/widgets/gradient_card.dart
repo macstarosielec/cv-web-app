@@ -1,8 +1,8 @@
 import 'dart:math';
 
-import 'package:cv_content/presentation/widgets/matrix_rain.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/gen/colors.gen.dart';
+import 'package:shared/widgets/matrix_rain.dart';
 
 class GradientCard extends StatelessWidget {
   const GradientCard({
@@ -19,6 +19,7 @@ class GradientCard extends StatelessWidget {
     final random = Random(seed);
     final alignment = _randomEdgeAlignment(random);
     final radius = 0.6 + random.nextDouble() * 0.4;
+    final accent = Theme.of(context).colorScheme.primary;
 
     return Container(
       clipBehavior: Clip.hardEdge,
@@ -34,8 +35,8 @@ class GradientCard extends StatelessWidget {
                   center: alignment,
                   radius: radius,
                   colors: [
-                    ColorName.accent.withValues(alpha: 0.55),
-                    ColorName.accent.withValues(alpha: 0.2),
+                    accent.withValues(alpha: 0.55),
+                    accent.withValues(alpha: 0.2),
                     Colors.transparent,
                   ],
                   stops: const [0.0, 0.4, 1.0],

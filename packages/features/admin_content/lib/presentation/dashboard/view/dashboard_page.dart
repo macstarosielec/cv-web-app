@@ -12,7 +12,9 @@ import 'package:get_it/get_it.dart';
 
 @RoutePage()
 class DashboardPage extends HookWidget {
-  const DashboardPage({super.key});
+  const DashboardPage({this.onSignOut, super.key});
+
+  final VoidCallback? onSignOut;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +42,7 @@ class DashboardPage extends HookWidget {
         BlocProvider.value(value: workExperienceCubit),
       ],
       child: DashboardView(
-        onSignOut: () => context.router.root.replaceAll([]),
+        onSignOut: onSignOut ?? () {},
       ),
     );
   }

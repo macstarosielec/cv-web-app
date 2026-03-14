@@ -1,5 +1,7 @@
+import 'package:admin_content/presentation/widgets/admin_input_decoration.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/gen/colors.gen.dart';
+import 'package:shared/widgets/action_chip.dart' as shared;
 
 class InterestsEditor extends StatefulWidget {
   const InterestsEditor({
@@ -45,14 +47,34 @@ class _InterestsEditorState extends State<InterestsEditor> {
             runSpacing: 8,
             children: [
               for (var i = 0; i < widget.interests.length; i++)
-                Chip(
-                  backgroundColor: ColorName.surfaceLight,
-                  label: Text(
-                    widget.interests[i],
-                    style: const TextStyle(color: ColorName.textPrimary),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 6,
                   ),
-                  deleteIconColor: ColorName.textMuted,
-                  onDeleted: () => _remove(i),
+                  decoration: const BoxDecoration(
+                    color: ColorName.surfaceLight,
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        widget.interests[i],
+                        style: const TextStyle(
+                          color: ColorName.textPrimary,
+                        ),
+                      ),
+                      const SizedBox(width: 4),
+                      GestureDetector(
+                        onTap: () => _remove(i),
+                        child: const Icon(
+                          Icons.close,
+                          size: 14,
+                          color: ColorName.textMuted,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
             ],
           ),
@@ -62,8 +84,8 @@ class _InterestsEditorState extends State<InterestsEditor> {
               Expanded(
                 child: TextField(
                   controller: _controller,
-                  decoration: const InputDecoration(
-                    hintText: 'Add interest',
+                  decoration: adminInputDecoration(context: context, 
+                    label: 'Add interest',
                     isDense: true,
                   ),
                   style: const TextStyle(color: ColorName.textPrimary),
@@ -71,9 +93,10 @@ class _InterestsEditorState extends State<InterestsEditor> {
                 ),
               ),
               const SizedBox(width: 8),
-              TextButton(
-                onPressed: _add,
-                child: const Text('Add'),
+              shared.ActionChip(
+                label: 'Add',
+                icon: Icons.add,
+                onTap: _add,
               ),
             ],
           ),

@@ -29,7 +29,7 @@ class ProfileEditorView extends StatelessWidget {
           error: (message) => Center(
             child: Text(
               message,
-              style: const TextStyle(color: ColorName.accentLight),
+              style: TextStyle(color: Theme.of(context).colorScheme.secondary),
             ),
           ),
         ),

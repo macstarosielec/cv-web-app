@@ -2,17 +2,27 @@ import 'package:auth/presentation/login/cubit/auth_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/gen/colors.gen.dart';
+import 'package:shared/widgets/action_chip.dart' as shared;
 
 class LoginForm extends StatefulWidget {
-  const LoginForm({super.key});
+  const LoginForm({super.key, this.isLoading = false});
+
+  final bool isLoading;
 
   @override
   State<LoginForm> createState() => _LoginFormState();
 }
 
 class _LoginFormState extends State<LoginForm> {
+  final _formKey = GlobalKey<FormState>();
   late final TextEditingController _emailController;
   late final TextEditingController _passwordController;
+  bool _obscurePassword = true;
+  bool _submitted = false;
+
+  static final _emailRegex = RegExp(
+    r'^[a-zA-Z0-9.!#$%&*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$',
+  );
 
   @override
   void initState() {
@@ -28,69 +38,122 @@ class _LoginFormState extends State<LoginForm> {
     super.dispose();
   }
 
-  void _submit() => context.read<AuthCubit>().signIn(
-        _emailController.text.trim(),
-        _passwordController.text,
-      );
+  String _sanitize(String input) =>
+      input.replaceAll(RegExp(r'[<>"{}|\\^`]'), '').trim();
+
+  String? _validateEmail(String? value) {
+    if (value == null || value.trim().isEmpty) return 'Email is required';
+    if (!_emailRegex.hasMatch(value.trim())) return 'Enter a valid email';
+    return null;
+  }
+
+  String? _validatePassword(String? value) {
+    if (value == null || value.isEmpty) return 'Password is required';
+    return null;
+  }
+
+  void _submit() {
+    setState(() => _submitted = true);
+    if (!_formKey.currentState!.validate()) return;
+
+    final email = _sanitize(_emailController.text);
+    context.read<AuthCubit>().signIn(email, _passwordController.text);
+  }
 
   @override
-  Widget build(BuildContext context) => Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text(
-            'Sign In',
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  color: ColorName.textPrimary,
-                  fontWeight: FontWeight.w600,
+  Widget build(BuildContext context) => Form(
+        key: _formKey,
+        autovalidateMode: _submitted
+            ? AutovalidateMode.onUserInteraction
+            : AutovalidateMode.disabled,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            TextFormField(
+              controller: _emailController,
+              keyboardType: TextInputType.emailAddress,
+              autocorrect: false,
+              enableSuggestions: false,
+              style: const TextStyle(color: ColorName.textPrimary),
+              validator: _validateEmail,
+              decoration: _inputDecoration(
+                label: 'Email',
+                prefixIcon: Icons.email_outlined,
+              ),
+              onFieldSubmitted: (_) => _submit(),
+            ),
+            const SizedBox(height: 16),
+            TextFormField(
+              controller: _passwordController,
+              obscureText: _obscurePassword,
+              autocorrect: false,
+              enableSuggestions: false,
+              style: const TextStyle(color: ColorName.textPrimary),
+              validator: _validatePassword,
+              decoration: _inputDecoration(
+                label: 'Password',
+                prefixIcon: Icons.lock_outlined,
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    _obscurePassword
+                        ? Icons.visibility_outlined
+                        : Icons.visibility_off_outlined,
+                    color: ColorName.textSecondary,
+                    size: 16,
+                  ),
+                  onPressed: () =>
+                      setState(() => _obscurePassword = !_obscurePassword),
                 ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 32),
-          TextField(
-            controller: _emailController,
-            keyboardType: TextInputType.emailAddress,
-            style: const TextStyle(color: ColorName.textPrimary),
-            decoration: const InputDecoration(
-              labelText: 'Email',
-              labelStyle: TextStyle(color: ColorName.textSecondary),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: ColorName.surfaceBorder),
               ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: ColorName.accent),
+              onFieldSubmitted: (_) => _submit(),
+            ),
+            const SizedBox(height: 24),
+            Center(
+              child: shared.ActionChip(
+                label: 'Sign In',
+                icon: Icons.login,
+                isLoading: widget.isLoading,
+                onTap: widget.isLoading ? null : _submit,
               ),
             ),
-            onSubmitted: (_) => _submit(),
-          ),
-          const SizedBox(height: 16),
-          TextField(
-            controller: _passwordController,
-            obscureText: true,
-            style: const TextStyle(color: ColorName.textPrimary),
-            decoration: const InputDecoration(
-              labelText: 'Password',
-              labelStyle: TextStyle(color: ColorName.textSecondary),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: ColorName.surfaceBorder),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: ColorName.accent),
-              ),
-            ),
-            onSubmitted: (_) => _submit(),
-          ),
-          const SizedBox(height: 24),
-          ElevatedButton(
-            onPressed: _submit,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: ColorName.accent,
-              foregroundColor: ColorName.textPrimary,
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              shape: const RoundedRectangleBorder(),
-            ),
-            child: const Text('Sign In'),
-          ),
-        ],
+          ],
+        ),
       );
+
+  InputDecoration _inputDecoration({
+    required String label,
+    required IconData prefixIcon,
+    Widget? suffixIcon,
+  }) {
+    final colors = Theme.of(context).colorScheme;
+    return InputDecoration(
+      labelText: label,
+      labelStyle: const TextStyle(color: ColorName.textSecondary),
+      prefixIcon: Padding(
+        padding: const EdgeInsets.only(bottom: 2),
+        child: Icon(prefixIcon, color: ColorName.textSecondary, size: 16),
+      ),
+      suffixIcon: suffixIcon,
+      filled: true,
+      fillColor: ColorName.background.withValues(alpha: 0.5),
+      enabledBorder: const OutlineInputBorder(
+        borderRadius: BorderRadius.zero,
+        borderSide: BorderSide(color: ColorName.surfaceBorder),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.zero,
+        borderSide: BorderSide(color: colors.primary),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.zero,
+        borderSide: BorderSide(color: colors.secondary),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.zero,
+        borderSide: BorderSide(color: colors.secondary),
+      ),
+      errorStyle: TextStyle(color: colors.secondary),
+    );
+  }
 }

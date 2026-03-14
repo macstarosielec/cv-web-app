@@ -71,15 +71,20 @@ class AppTheme {
         ),
       );
 
-  static ThemeData get dark => ThemeData(
+  static ThemeData dark({
+    Color accent = ColorName.accent,
+    Color accentLight = ColorName.accentLight,
+    Color accentDark = ColorName.accentDark,
+  }) =>
+      ThemeData(
         brightness: Brightness.dark,
         scaffoldBackgroundColor: Colors.transparent,
         textTheme: _textTheme,
-        colorScheme: const ColorScheme.dark(
+        colorScheme: ColorScheme.dark(
           surface: ColorName.surface,
-          primary: ColorName.accent,
-          secondary: ColorName.accentLight,
-          error: ColorName.accentLight,
+          primary: accent,
+          secondary: accentLight,
+          error: accentLight,
           onSurface: ColorName.textPrimary,
           onPrimary: ColorName.textPrimary,
           outline: ColorName.surfaceBorder,

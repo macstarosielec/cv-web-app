@@ -4,11 +4,13 @@ import 'package:admin_content/presentation/profile/cubit/admin_profile_cubit.dar
 import 'package:admin_content/presentation/profile/view/widgets/interests_editor.dart';
 import 'package:admin_content/presentation/profile/view/widgets/languages_editor.dart';
 import 'package:admin_content/presentation/profile/view/widgets/skills_editor.dart';
+import 'package:admin_content/presentation/widgets/admin_input_decoration.dart';
 import 'package:admin_content/presentation/widgets/form_section.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/gen/colors.gen.dart';
+import 'package:shared/widgets/action_chip.dart' as shared;
 
 class ProfileForm extends StatefulWidget {
   const ProfileForm({required this.profile, super.key});
@@ -134,12 +136,10 @@ class _ProfileFormState extends State<ProfileForm> {
             ),
             Align(
               alignment: Alignment.centerRight,
-              child: FilledButton(
-                onPressed: _save,
-                style: FilledButton.styleFrom(
-                  backgroundColor: ColorName.accent,
-                ),
-                child: const Text('Save Profile'),
+              child: shared.ActionChip(
+                label: 'Save Profile',
+                icon: Icons.save_outlined,
+                onTap: _save,
               ),
             ),
           ],
@@ -154,7 +154,7 @@ class _ProfileFormState extends State<ProfileForm> {
       TextField(
         controller: controller,
         maxLines: maxLines,
-        decoration: InputDecoration(labelText: label),
+        decoration: adminInputDecoration(context: context, label: label),
         style: const TextStyle(color: ColorName.textPrimary),
       );
 }

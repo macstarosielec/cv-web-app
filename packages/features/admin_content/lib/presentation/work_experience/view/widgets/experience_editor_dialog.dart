@@ -1,11 +1,13 @@
 import 'dart:async';
 
+import 'package:admin_content/presentation/widgets/admin_input_decoration.dart';
 import 'package:admin_content/presentation/widgets/form_section.dart';
 import 'package:admin_content/presentation/work_experience/cubit/admin_work_experience_cubit.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/gen/colors.gen.dart';
+import 'package:shared/widgets/action_chip.dart' as shared;
 
 class ExperienceEditorDialog extends StatefulWidget {
   const ExperienceEditorDialog({this.workExperience, super.key});
@@ -92,7 +94,8 @@ class _ExperienceEditorDialogState extends State<ExperienceEditorDialog> {
   }
 
   void _removeResponsibility(int index) => setState(
-        () => _responsibilities = List.from(_responsibilities)..removeAt(index),
+        () =>
+            _responsibilities = List.from(_responsibilities)..removeAt(index),
       );
 
   void _save() {
@@ -120,6 +123,7 @@ class _ExperienceEditorDialogState extends State<ExperienceEditorDialog> {
 
   @override
   Widget build(BuildContext context) => Dialog(
+        shape: const RoundedRectangleBorder(),
         backgroundColor: ColorName.surface,
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 600, maxHeight: 700),
@@ -194,14 +198,13 @@ class _ExperienceEditorDialogState extends State<ExperienceEditorDialog> {
                                     ),
                                   ),
                                   if (_endDate != null)
-                                    IconButton(
-                                      icon: const Icon(
+                                    GestureDetector(
+                                      onTap: _clearEndDate,
+                                      child: const Icon(
                                         Icons.close,
-                                        size: 16,
+                                        size: 14,
                                         color: ColorName.textMuted,
                                       ),
-                                      tooltip: 'Set to Present',
-                                      onPressed: _clearEndDate,
                                     ),
                                 ],
                               ),
@@ -228,14 +231,14 @@ class _ExperienceEditorDialogState extends State<ExperienceEditorDialog> {
                                           ),
                                         ),
                                       ),
-                                      IconButton(
-                                        icon: const Icon(
+                                      GestureDetector(
+                                        onTap: () =>
+                                            _removeResponsibility(i),
+                                        child: const Icon(
                                           Icons.close,
-                                          size: 16,
+                                          size: 14,
                                           color: ColorName.textMuted,
                                         ),
-                                        onPressed: () =>
-                                            _removeResponsibility(i),
                                       ),
                                     ],
                                   ),
@@ -245,20 +248,22 @@ class _ExperienceEditorDialogState extends State<ExperienceEditorDialog> {
                                   Expanded(
                                     child: TextField(
                                       controller: _responsibilityController,
-                                      decoration: const InputDecoration(
-                                        hintText: 'Add responsibility',
+                                      decoration: adminInputDecoration(context: context, 
+                                        label: 'Add responsibility',
                                         isDense: true,
                                       ),
                                       style: const TextStyle(
                                         color: ColorName.textPrimary,
                                       ),
-                                      onSubmitted: (_) => _addResponsibility(),
+                                      onSubmitted: (_) =>
+                                          _addResponsibility(),
                                     ),
                                   ),
                                   const SizedBox(width: 8),
-                                  TextButton(
-                                    onPressed: _addResponsibility,
-                                    child: const Text('Add'),
+                                  shared.ActionChip(
+                                    label: 'Add',
+                                    icon: Icons.add,
+                                    onTap: _addResponsibility,
                                   ),
                                 ],
                               ),
@@ -273,20 +278,16 @@ class _ExperienceEditorDialogState extends State<ExperienceEditorDialog> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    TextButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: const Text(
-                        'Cancel',
-                        style: TextStyle(color: ColorName.textSecondary),
-                      ),
+                    shared.ActionChip(
+                      label: 'Cancel',
+                      icon: Icons.close,
+                      onTap: () => Navigator.of(context).pop(),
                     ),
                     const SizedBox(width: 8),
-                    FilledButton(
-                      onPressed: _save,
-                      style: FilledButton.styleFrom(
-                        backgroundColor: ColorName.accent,
-                      ),
-                      child: const Text('Save'),
+                    shared.ActionChip(
+                      label: 'Save',
+                      icon: Icons.save_outlined,
+                      onTap: _save,
                     ),
                   ],
                 ),
@@ -298,7 +299,7 @@ class _ExperienceEditorDialogState extends State<ExperienceEditorDialog> {
 
   Widget _field(TextEditingController controller, String label) => TextField(
         controller: controller,
-        decoration: InputDecoration(labelText: label, isDense: true),
+        decoration: adminInputDecoration(context: context, label: label, isDense: true),
         style: const TextStyle(color: ColorName.textPrimary),
       );
 }

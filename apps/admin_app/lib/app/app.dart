@@ -1,8 +1,5 @@
-import 'dart:async';
-
+import 'package:admin_app/app/admin_auth_shell.dart';
 import 'package:admin_app/di/injection.dart';
-import 'package:admin_app/router/router.dart';
-import 'package:admin_content/admin_content.dart';
 import 'package:auth/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,45 +15,29 @@ class App extends StatelessWidget {
       );
 }
 
-class AppView extends StatefulWidget {
+class AppView extends StatelessWidget {
   const AppView({super.key});
 
-  @override
-  State<AppView> createState() => _AppViewState();
-}
-
-class _AppViewState extends State<AppView> {
-  final _appRouter = AppRouter();
+  static const _accent = Color(0xFF2563EB);
+  static const _accentLight = Color(0xFF3B82F6);
+  static const _accentDark = Color(0xFF1D4ED8);
 
   @override
-  Widget build(BuildContext context) =>
-      BlocListener<AuthCubit, AuthState>(
-        listener: (context, state) {
-          state.when(
-            initial: () {},
-            loading: () {},
-            authenticated: () => unawaited(
-                  _appRouter.replaceAll([const DashboardRoute()]),
-                ),
-            unauthenticated: () => unawaited(
-                  _appRouter.replaceAll([const LoginRoute()]),
-                ),
-            error: (_) {},
-          );
-        },
-        child: MaterialApp.router(
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          title: getIt<IAppConfig>().appName,
-          theme: AppTheme.dark,
-          darkTheme: AppTheme.dark,
-          themeMode: ThemeMode.dark,
-          routerDelegate: _appRouter.delegate(
-            navigatorObservers: () => [
-              AppRouteObserver(),
-            ],
-          ),
-          routeInformationParser: _appRouter.defaultRouteParser(),
+  Widget build(BuildContext context) => MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        title: getIt<IAppConfig>().appName,
+        theme: AppTheme.dark(
+          accent: _accent,
+          accentLight: _accentLight,
+          accentDark: _accentDark,
         ),
+        darkTheme: AppTheme.dark(
+          accent: _accent,
+          accentLight: _accentLight,
+          accentDark: _accentDark,
+        ),
+        themeMode: ThemeMode.dark,
+        home: const AdminAuthShell(),
       );
 }

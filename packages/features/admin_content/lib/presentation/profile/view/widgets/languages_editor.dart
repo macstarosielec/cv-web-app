@@ -1,6 +1,8 @@
+import 'package:admin_content/presentation/widgets/admin_input_decoration.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/gen/colors.gen.dart';
+import 'package:shared/widgets/action_chip.dart' as shared;
 
 class LanguagesEditor extends StatefulWidget {
   const LanguagesEditor({
@@ -59,13 +61,14 @@ class _LanguagesEditorState extends State<LanguagesEditor> {
                     widget.languages[i].proficiency.label,
                     style: const TextStyle(color: ColorName.textSecondary),
                   ),
-                  IconButton(
-                    icon: const Icon(
+                  const SizedBox(width: 4),
+                  GestureDetector(
+                    onTap: () => _remove(i),
+                    child: const Icon(
                       Icons.close,
-                      size: 16,
+                      size: 14,
                       color: ColorName.textMuted,
                     ),
-                    onPressed: () => _remove(i),
                   ),
                 ],
               ),
@@ -76,8 +79,8 @@ class _LanguagesEditorState extends State<LanguagesEditor> {
               Expanded(
                 child: TextField(
                   controller: _nameController,
-                  decoration: const InputDecoration(
-                    hintText: 'Language name',
+                  decoration: adminInputDecoration(context: context, 
+                    label: 'Language name',
                     isDense: true,
                   ),
                   style: const TextStyle(color: ColorName.textPrimary),
@@ -101,9 +104,10 @@ class _LanguagesEditorState extends State<LanguagesEditor> {
                 },
               ),
               const SizedBox(width: 8),
-              TextButton(
-                onPressed: _add,
-                child: const Text('Add'),
+              shared.ActionChip(
+                label: 'Add',
+                icon: Icons.add,
+                onTap: _add,
               ),
             ],
           ),

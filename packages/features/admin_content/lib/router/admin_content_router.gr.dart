@@ -12,64 +12,49 @@ part of 'admin_content_router.dart';
 
 /// generated route for
 /// [DashboardPage]
-class DashboardRoute extends PageRouteInfo<void> {
-  const DashboardRoute({List<PageRouteInfo>? children})
-    : super(DashboardRoute.name, initialChildren: children);
+class DashboardRoute extends PageRouteInfo<DashboardRouteArgs> {
+  DashboardRoute({
+    VoidCallback? onSignOut,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+         DashboardRoute.name,
+         args: DashboardRouteArgs(onSignOut: onSignOut, key: key),
+         initialChildren: children,
+       );
 
   static const String name = 'DashboardRoute';
 
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const DashboardPage();
+      final args = data.argsAs<DashboardRouteArgs>(
+        orElse: () => const DashboardRouteArgs(),
+      );
+      return DashboardPage(onSignOut: args.onSignOut, key: args.key);
     },
   );
 }
 
-/// generated route for
-/// [ProfileEditorPage]
-class ProfileEditorRoute extends PageRouteInfo<void> {
-  const ProfileEditorRoute({List<PageRouteInfo>? children})
-    : super(ProfileEditorRoute.name, initialChildren: children);
+class DashboardRouteArgs {
+  const DashboardRouteArgs({this.onSignOut, this.key});
 
-  static const String name = 'ProfileEditorRoute';
+  final VoidCallback? onSignOut;
 
-  static PageInfo page = PageInfo(
-    name,
-    builder: (data) {
-      return const ProfileEditorPage();
-    },
-  );
-}
+  final Key? key;
 
-/// generated route for
-/// [ProjectsListPage]
-class ProjectsListRoute extends PageRouteInfo<void> {
-  const ProjectsListRoute({List<PageRouteInfo>? children})
-    : super(ProjectsListRoute.name, initialChildren: children);
+  @override
+  String toString() {
+    return 'DashboardRouteArgs{onSignOut: $onSignOut, key: $key}';
+  }
 
-  static const String name = 'ProjectsListRoute';
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! DashboardRouteArgs) return false;
+    return onSignOut == other.onSignOut && key == other.key;
+  }
 
-  static PageInfo page = PageInfo(
-    name,
-    builder: (data) {
-      return const ProjectsListPage();
-    },
-  );
-}
-
-/// generated route for
-/// [WorkExperienceListPage]
-class WorkExperienceListRoute extends PageRouteInfo<void> {
-  const WorkExperienceListRoute({List<PageRouteInfo>? children})
-    : super(WorkExperienceListRoute.name, initialChildren: children);
-
-  static const String name = 'WorkExperienceListRoute';
-
-  static PageInfo page = PageInfo(
-    name,
-    builder: (data) {
-      return const WorkExperienceListPage();
-    },
-  );
+  @override
+  int get hashCode => onSignOut.hashCode ^ key.hashCode;
 }

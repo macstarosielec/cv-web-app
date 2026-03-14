@@ -91,7 +91,7 @@ class _NavigationChipState extends State<NavigationChip>
               painter: _FillPainter(
                 progress: _hoverAnimation.value,
                 backgroundColor: ColorName.surface,
-                fillColor: ColorName.accent,
+                fillColor: Theme.of(context).colorScheme.primary,
               ),
               child: AnimatedSize(
                 duration: const Duration(milliseconds: 250),

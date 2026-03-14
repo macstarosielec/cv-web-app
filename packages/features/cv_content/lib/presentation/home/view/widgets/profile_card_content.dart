@@ -93,7 +93,7 @@ class _ProfileCardContentState extends State<ProfileCardContent>
           child: Text(
             profile.title,
             style: AppTheme.accentStyle(fontSize: 24).copyWith(
-              color: ColorName.accent,
+              color: Theme.of(context).colorScheme.primary,
               letterSpacing: 2,
             ),
           ),

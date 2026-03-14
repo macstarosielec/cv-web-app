@@ -33,7 +33,7 @@ class AdminExperienceCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: ColorName.surfaceLight,
         border: Border.all(color: ColorName.surfaceBorder),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.zero,
       ),
       child: Row(
         children: [

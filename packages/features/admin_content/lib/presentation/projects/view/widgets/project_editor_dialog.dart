@@ -1,11 +1,13 @@
 import 'dart:async';
 
 import 'package:admin_content/presentation/projects/cubit/admin_projects_cubit.dart';
+import 'package:admin_content/presentation/widgets/admin_input_decoration.dart';
 import 'package:admin_content/presentation/widgets/form_section.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/gen/colors.gen.dart';
+import 'package:shared/widgets/action_chip.dart' as shared;
 
 class ProjectEditorDialog extends StatefulWidget {
   const ProjectEditorDialog({this.project, super.key});
@@ -147,11 +149,13 @@ class _ProjectEditorDialogState extends State<ProjectEditorDialog> {
   }
 
   void _removeResponsibility(int index) => setState(
-        () => _responsibilities = List.from(_responsibilities)..removeAt(index),
+        () =>
+            _responsibilities = List.from(_responsibilities)..removeAt(index),
       );
 
   @override
   Widget build(BuildContext context) => Dialog(
+        shape: const RoundedRectangleBorder(),
         backgroundColor: ColorName.surface,
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 600, maxHeight: 700),
@@ -179,13 +183,17 @@ class _ProjectEditorDialogState extends State<ProjectEditorDialog> {
                     ChoiceChip(
                       label: const Text('Commercial'),
                       selected: _isCommercial,
-                      onSelected: (_) => setState(() => _isCommercial = true),
+                      shape: const RoundedRectangleBorder(),
+                      onSelected: (_) =>
+                          setState(() => _isCommercial = true),
                     ),
                     const SizedBox(width: 8),
                     ChoiceChip(
                       label: const Text('Personal'),
                       selected: !_isCommercial,
-                      onSelected: (_) => setState(() => _isCommercial = false),
+                      shape: const RoundedRectangleBorder(),
+                      onSelected: (_) =>
+                          setState(() => _isCommercial = false),
                     ),
                   ],
                 ),
@@ -197,8 +205,11 @@ class _ProjectEditorDialogState extends State<ProjectEditorDialog> {
                       children: [
                         _field(_name, 'Name'),
                         const SizedBox(height: 12),
-                        _field(_description, 'Description (optional)',
-                            maxLines: 3),
+                        _field(
+                          _description,
+                          'Description (optional)',
+                          maxLines: 3,
+                        ),
                         if (_isCommercial) ...[
                           const SizedBox(height: 12),
                           _field(_company, 'Company'),
@@ -238,20 +249,16 @@ class _ProjectEditorDialogState extends State<ProjectEditorDialog> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    TextButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: const Text(
-                        'Cancel',
-                        style: TextStyle(color: ColorName.textSecondary),
-                      ),
+                    shared.ActionChip(
+                      label: 'Cancel',
+                      icon: Icons.close,
+                      onTap: () => Navigator.of(context).pop(),
                     ),
                     const SizedBox(width: 8),
-                    FilledButton(
-                      onPressed: _save,
-                      style: FilledButton.styleFrom(
-                        backgroundColor: ColorName.accent,
-                      ),
-                      child: const Text('Save'),
+                    shared.ActionChip(
+                      label: 'Save',
+                      icon: Icons.save_outlined,
+                      onTap: _save,
                     ),
                   ],
                 ),
@@ -269,7 +276,7 @@ class _ProjectEditorDialogState extends State<ProjectEditorDialog> {
       TextField(
         controller: controller,
         maxLines: maxLines,
-        decoration: InputDecoration(labelText: label, isDense: true),
+        decoration: adminInputDecoration(context: context, label: label, isDense: true),
         style: const TextStyle(color: ColorName.textPrimary),
       );
 
@@ -294,13 +301,13 @@ class _ProjectEditorDialogState extends State<ProjectEditorDialog> {
                       style: const TextStyle(color: ColorName.textPrimary),
                     ),
                   ),
-                  IconButton(
-                    icon: const Icon(
+                  GestureDetector(
+                    onTap: () => onRemove(i),
+                    child: const Icon(
                       Icons.close,
-                      size: 16,
+                      size: 14,
                       color: ColorName.textMuted,
                     ),
-                    onPressed: () => onRemove(i),
                   ),
                 ],
               ),
@@ -310,14 +317,20 @@ class _ProjectEditorDialogState extends State<ProjectEditorDialog> {
               Expanded(
                 child: TextField(
                   controller: controller,
-                  decoration:
-                      InputDecoration(hintText: hint, isDense: true),
+                  decoration: adminInputDecoration(context: context, 
+                    label: hint,
+                    isDense: true,
+                  ),
                   style: const TextStyle(color: ColorName.textPrimary),
                   onSubmitted: (_) => onAdd(),
                 ),
               ),
               const SizedBox(width: 8),
-              TextButton(onPressed: onAdd, child: const Text('Add')),
+              shared.ActionChip(
+                label: 'Add',
+                icon: Icons.add,
+                onTap: onAdd,
+              ),
             ],
           ),
         ],

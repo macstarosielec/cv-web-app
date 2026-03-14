@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared/gen/colors.gen.dart';
+import 'package:shared/widgets/action_chip.dart' as shared;
 
 class ConfirmDeleteDialog extends StatelessWidget {
   const ConfirmDeleteDialog({
@@ -25,6 +26,7 @@ class ConfirmDeleteDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => AlertDialog(
+        shape: const RoundedRectangleBorder(),
         backgroundColor: ColorName.surface,
         title: Text(
           title,
@@ -35,19 +37,15 @@ class ConfirmDeleteDialog extends StatelessWidget {
           style: const TextStyle(color: ColorName.textSecondary),
         ),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: const Text(
-              'Cancel',
-              style: TextStyle(color: ColorName.textSecondary),
-            ),
+          shared.ActionChip(
+            label: 'Cancel',
+            icon: Icons.close,
+            onTap: () => Navigator.of(context).pop(false),
           ),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            child: const Text(
-              'Delete',
-              style: TextStyle(color: ColorName.accent),
-            ),
+          shared.ActionChip(
+            label: 'Delete',
+            icon: Icons.delete_outline,
+            onTap: () => Navigator.of(context).pop(true),
           ),
         ],
       );
