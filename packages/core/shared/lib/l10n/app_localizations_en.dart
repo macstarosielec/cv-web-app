@@ -136,4 +136,144 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get monthDec => 'Dec';
+
+  @override
+  String get dashboard => 'Dashboard';
+
+  @override
+  String get signOut => 'Sign Out';
+
+  @override
+  String get signIn => 'Sign In';
+
+  @override
+  String get profile => 'Profile';
+
+  @override
+  String get basicInfo => 'BASIC INFO';
+
+  @override
+  String get fullName => 'Full Name';
+
+  @override
+  String get title => 'Title';
+
+  @override
+  String get about => 'About';
+
+  @override
+  String get phoneNumber => 'Phone Number (optional)';
+
+  @override
+  String get linkedInUrl => 'LinkedIn URL (optional)';
+
+  @override
+  String get githubUrl => 'GitHub URL (optional)';
+
+  @override
+  String get saveProfile => 'Save Profile';
+
+  @override
+  String get skillName => 'Skill name';
+
+  @override
+  String get categoryOptional => 'Category (optional)';
+
+  @override
+  String get add => 'Add';
+
+  @override
+  String get languageName => 'Language name';
+
+  @override
+  String get addInterest => 'Add interest';
+
+  @override
+  String get interests => 'Interests';
+
+  @override
+  String get addProject => 'Add Project';
+
+  @override
+  String get editProject => 'Edit Project';
+
+  @override
+  String get projectType => 'Type:';
+
+  @override
+  String get commercial => 'Commercial';
+
+  @override
+  String get personal => 'Personal';
+
+  @override
+  String get techStack => 'TECH STACK';
+
+  @override
+  String get addTechnology => 'Add technology';
+
+  @override
+  String get responsibilities => 'RESPONSIBILITIES';
+
+  @override
+  String get addResponsibility => 'Add responsibility';
+
+  @override
+  String get addExperience => 'Add Experience';
+
+  @override
+  String get editExperience => 'Edit Experience';
+
+  @override
+  String get dates => 'DATES';
+
+  @override
+  String get startDate => 'Start:';
+
+  @override
+  String get endDate => 'End:';
+
+  @override
+  String get deleteProject => 'Delete Project';
+
+  @override
+  String get deleteExperience => 'Delete Experience';
+
+  @override
+  String confirmDeleteItem(String name) {
+    return 'Are you sure you want to delete \"$name\"?';
+  }
+
+  @override
+  String get emailRequired => 'Email is required';
+
+  @override
+  String get enterValidEmail => 'Enter a valid email';
+
+  @override
+  String get passwordRequired => 'Password is required';
+
+  @override
+  String get adminPanel => 'Admin Panel';
+
+  @override
+  String get signInToContinue => 'Sign in to continue';
+
+  @override
+  String get personalProject => 'Personal project';
+
+  @override
+  String get discard => 'Discard';
+
+  @override
+  String get projectName => 'Project name';
+
+  @override
+  String get descriptionOptional => 'Description (optional)';
+
+  @override
+  String get company => 'Company';
+
+  @override
+  String get role => 'Role';
 }

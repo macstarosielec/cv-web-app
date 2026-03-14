@@ -13,7 +13,7 @@ InputDecoration adminInputDecoration({
     hintText: hint,
     isDense: isDense,
     labelStyle: const TextStyle(color: ColorName.textSecondary),
-    hintStyle: const TextStyle(color: ColorName.textMuted),
+    hintStyle: TextStyle(color: ColorName.textMuted.withValues(alpha: 0.4)),
     filled: true,
     fillColor: ColorName.background.withValues(alpha: 0.5),
     enabledBorder: const OutlineInputBorder(

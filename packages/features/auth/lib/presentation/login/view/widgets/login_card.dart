@@ -1,6 +1,7 @@
 import 'package:auth/presentation/login/view/widgets/login_form.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/gen/colors.gen.dart';
+import 'package:shared/l10n/l10n.dart';
 import 'package:shared/widgets/gradient_card.dart';
 
 class LoginCard extends StatelessWidget {
@@ -17,7 +18,9 @@ class LoginCard extends StatelessWidget {
   static const double cardHeight = 380;
 
   @override
-  Widget build(BuildContext context) => SizedBox(
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    return SizedBox(
         width: cardWidth,
         height: cardHeight,
         child: GradientCard(
@@ -28,7 +31,7 @@ class LoginCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
-                  'Admin Panel',
+                  l10n.adminPanel,
                   style:
                       Theme.of(context).textTheme.headlineMedium?.copyWith(
                             color: ColorName.textPrimary,
@@ -38,7 +41,7 @@ class LoginCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Sign in to continue',
+                  l10n.signInToContinue,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: ColorName.textSecondary,
                       ),
@@ -61,4 +64,5 @@ class LoginCard extends StatelessWidget {
           ),
         ),
       );
+  }
 }

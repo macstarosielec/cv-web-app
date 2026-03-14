@@ -1,9 +1,10 @@
 import 'dart:async';
 
 import 'package:admin_app/app/widgets/stagger_item.dart';
-import 'package:admin_content/presentation/models/admin_nav_item.dart';
+import 'package:admin_content/presentation/dashboard/admin_nav_item.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/gen/colors.gen.dart';
+import 'package:shared/l10n/l10n.dart';
 import 'package:shared/widgets/action_chip.dart' as shared;
 import 'package:shared/widgets/navigation_chip.dart';
 
@@ -67,8 +68,17 @@ class _TransitionNavContentState extends State<TransitionNavContent>
     super.dispose();
   }
 
+  String _localizedLabel(AppLocalizations l10n, AdminNavItem item) =>
+      switch (item) {
+        AdminNavItem.profile => l10n.profile,
+        AdminNavItem.projects => l10n.projects,
+        AdminNavItem.workExperience => l10n.experience,
+      };
+
   @override
-  Widget build(BuildContext context) => Padding(
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    return Padding(
         padding: const EdgeInsets.all(40),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -76,7 +86,8 @@ class _TransitionNavContentState extends State<TransitionNavContent>
             StaggerItem(
               animation: _animations[0],
               child: Text(
-                'Dashboard',
+                l10n.dashboard,
+                textAlign: TextAlign.center,
                 style:
                     Theme.of(context).textTheme.headlineMedium?.copyWith(
                           color: ColorName.textPrimary,
@@ -91,7 +102,7 @@ class _TransitionNavContentState extends State<TransitionNavContent>
                     child: StaggerItem(
                       animation: _animations[entry.key + 1],
                       child: NavigationChip(
-                        label: entry.value.label,
+                        label: _localizedLabel(l10n, entry.value),
                         icon: entry.value.icon,
                         isSelected: entry.key == 0,
                         onTap: () {},
@@ -103,7 +114,7 @@ class _TransitionNavContentState extends State<TransitionNavContent>
             StaggerItem(
               animation: _animations[4],
               child: shared.ActionChip(
-                label: 'Sign Out',
+                label: l10n.signOut,
                 icon: Icons.logout,
                 onTap: () {},
               ),
@@ -111,4 +122,5 @@ class _TransitionNavContentState extends State<TransitionNavContent>
           ],
         ),
       );
+  }
 }

@@ -1,6 +1,7 @@
 import 'package:admin_content/presentation/widgets/admin_input_decoration.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/gen/colors.gen.dart';
+import 'package:shared/l10n/l10n.dart';
 import 'package:shared/widgets/action_chip.dart' as shared;
 
 class InterestsEditor extends StatefulWidget {
@@ -39,7 +40,9 @@ class _InterestsEditorState extends State<InterestsEditor> {
   }
 
   @override
-  Widget build(BuildContext context) => Column(
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Wrap(
@@ -84,8 +87,8 @@ class _InterestsEditorState extends State<InterestsEditor> {
               Expanded(
                 child: TextField(
                   controller: _controller,
-                  decoration: adminInputDecoration(context: context, 
-                    label: 'Add interest',
+                  decoration: adminInputDecoration(context: context,
+                    label: l10n.addInterest,
                     isDense: true,
                   ),
                   style: const TextStyle(color: ColorName.textPrimary),
@@ -94,7 +97,7 @@ class _InterestsEditorState extends State<InterestsEditor> {
               ),
               const SizedBox(width: 8),
               shared.ActionChip(
-                label: 'Add',
+                label: l10n.add,
                 icon: Icons.add,
                 onTap: _add,
               ),
@@ -102,4 +105,5 @@ class _InterestsEditorState extends State<InterestsEditor> {
           ),
         ],
       );
+  }
 }

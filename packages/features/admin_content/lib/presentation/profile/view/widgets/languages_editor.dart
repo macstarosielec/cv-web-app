@@ -2,6 +2,7 @@ import 'package:admin_content/presentation/widgets/admin_input_decoration.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/gen/colors.gen.dart';
+import 'package:shared/l10n/l10n.dart';
 import 'package:shared/widgets/action_chip.dart' as shared;
 
 class LanguagesEditor extends StatefulWidget {
@@ -43,7 +44,9 @@ class _LanguagesEditorState extends State<LanguagesEditor> {
   }
 
   @override
-  Widget build(BuildContext context) => Column(
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           for (var i = 0; i < widget.languages.length; i++)
@@ -79,8 +82,8 @@ class _LanguagesEditorState extends State<LanguagesEditor> {
               Expanded(
                 child: TextField(
                   controller: _nameController,
-                  decoration: adminInputDecoration(context: context, 
-                    label: 'Language name',
+                  decoration: adminInputDecoration(context: context,
+                    label: l10n.languageName,
                     isDense: true,
                   ),
                   style: const TextStyle(color: ColorName.textPrimary),
@@ -105,7 +108,7 @@ class _LanguagesEditorState extends State<LanguagesEditor> {
               ),
               const SizedBox(width: 8),
               shared.ActionChip(
-                label: 'Add',
+                label: l10n.add,
                 icon: Icons.add,
                 onTap: _add,
               ),
@@ -113,4 +116,5 @@ class _LanguagesEditorState extends State<LanguagesEditor> {
           ),
         ],
       );
+  }
 }

@@ -2,6 +2,7 @@ import 'package:admin_content/presentation/widgets/admin_input_decoration.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/gen/colors.gen.dart';
+import 'package:shared/l10n/l10n.dart';
 import 'package:shared/widgets/action_chip.dart' as shared;
 
 class SkillsEditor extends StatefulWidget {
@@ -49,7 +50,9 @@ class _SkillsEditorState extends State<SkillsEditor> {
   }
 
   @override
-  Widget build(BuildContext context) => Column(
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Wrap(
@@ -97,8 +100,8 @@ class _SkillsEditorState extends State<SkillsEditor> {
               Expanded(
                 child: TextField(
                   controller: _nameController,
-                  decoration: adminInputDecoration(context: context, 
-                    label: 'Skill name',
+                  decoration: adminInputDecoration(context: context,
+                    label: l10n.skillName,
                     isDense: true,
                   ),
                   style: const TextStyle(color: ColorName.textPrimary),
@@ -108,8 +111,8 @@ class _SkillsEditorState extends State<SkillsEditor> {
               Expanded(
                 child: TextField(
                   controller: _categoryController,
-                  decoration: adminInputDecoration(context: context, 
-                    label: 'Category (optional)',
+                  decoration: adminInputDecoration(context: context,
+                    label: l10n.categoryOptional,
                     isDense: true,
                   ),
                   style: const TextStyle(color: ColorName.textPrimary),
@@ -117,7 +120,7 @@ class _SkillsEditorState extends State<SkillsEditor> {
               ),
               const SizedBox(width: 8),
               shared.ActionChip(
-                label: 'Add',
+                label: l10n.add,
                 icon: Icons.add,
                 onTap: _add,
               ),
@@ -125,4 +128,5 @@ class _SkillsEditorState extends State<SkillsEditor> {
           ),
         ],
       );
+  }
 }

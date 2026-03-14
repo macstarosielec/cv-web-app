@@ -2,6 +2,7 @@ import 'package:auth/presentation/login/cubit/auth_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/gen/colors.gen.dart';
+import 'package:shared/l10n/l10n.dart';
 import 'package:shared/widgets/action_chip.dart' as shared;
 
 class LoginForm extends StatefulWidget {
@@ -42,13 +43,15 @@ class _LoginFormState extends State<LoginForm> {
       input.replaceAll(RegExp(r'[<>"{}|\\^`]'), '').trim();
 
   String? _validateEmail(String? value) {
-    if (value == null || value.trim().isEmpty) return 'Email is required';
-    if (!_emailRegex.hasMatch(value.trim())) return 'Enter a valid email';
+    final l10n = AppLocalizations.of(context);
+    if (value == null || value.trim().isEmpty) return l10n.emailRequired;
+    if (!_emailRegex.hasMatch(value.trim())) return l10n.enterValidEmail;
     return null;
   }
 
   String? _validatePassword(String? value) {
-    if (value == null || value.isEmpty) return 'Password is required';
+    final l10n = AppLocalizations.of(context);
+    if (value == null || value.isEmpty) return l10n.passwordRequired;
     return null;
   }
 
@@ -61,7 +64,9 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   @override
-  Widget build(BuildContext context) => Form(
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    return Form(
         key: _formKey,
         autovalidateMode: _submitted
             ? AutovalidateMode.onUserInteraction
@@ -78,7 +83,7 @@ class _LoginFormState extends State<LoginForm> {
               style: const TextStyle(color: ColorName.textPrimary),
               validator: _validateEmail,
               decoration: _inputDecoration(
-                label: 'Email',
+                label: l10n.email,
                 prefixIcon: Icons.email_outlined,
               ),
               onFieldSubmitted: (_) => _submit(),
@@ -92,7 +97,7 @@ class _LoginFormState extends State<LoginForm> {
               style: const TextStyle(color: ColorName.textPrimary),
               validator: _validatePassword,
               decoration: _inputDecoration(
-                label: 'Password',
+                label: l10n.password,
                 prefixIcon: Icons.lock_outlined,
                 suffixIcon: IconButton(
                   icon: Icon(
@@ -111,7 +116,7 @@ class _LoginFormState extends State<LoginForm> {
             const SizedBox(height: 24),
             Center(
               child: shared.ActionChip(
-                label: 'Sign In',
+                label: l10n.signIn,
                 icon: Icons.login,
                 isLoading: widget.isLoading && _submitted,
                 onTap: widget.isLoading ? null : _submit,
@@ -120,6 +125,7 @@ class _LoginFormState extends State<LoginForm> {
           ],
         ),
       );
+  }
 
   InputDecoration _inputDecoration({
     required String label,

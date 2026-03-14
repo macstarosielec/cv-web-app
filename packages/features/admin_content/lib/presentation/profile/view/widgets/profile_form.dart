@@ -10,6 +10,7 @@ import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/gen/colors.gen.dart';
+import 'package:shared/l10n/l10n.dart';
 import 'package:shared/widgets/action_chip.dart' as shared;
 
 class ProfileForm extends StatefulWidget {
@@ -81,63 +82,103 @@ class _ProfileFormState extends State<ProfileForm> {
   }
 
   @override
-  Widget build(BuildContext context) => SingleChildScrollView(
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    return SingleChildScrollView(
         padding: const EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             FormSection(
-              title: 'BASIC INFO',
+              title: l10n.basicInfo,
               child: Column(
                 children: [
-                  _field(_fullName, 'Full Name'),
+                  Row(
+                    children: [
+                      Expanded(child: _field(_fullName, l10n.fullName)),
+                      const SizedBox(width: 12),
+                      Expanded(child: _field(_title, l10n.title)),
+                    ],
+                  ),
                   const SizedBox(height: 12),
-                  _field(_title, 'Title'),
-                  const SizedBox(height: 12),
-                  _field(_about, 'About', maxLines: 5),
+                  _field(_about, l10n.about, maxLines: 5),
                 ],
               ),
             ),
             FormSection(
-              title: 'CONTACT',
+              title: l10n.contact,
               child: Column(
                 children: [
-                  _field(_email, 'Email'),
+                  Row(
+                    children: [
+                      Expanded(child: _field(_email, l10n.email)),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: _field(
+                          _phoneNumber,
+                          l10n.phoneNumber,
+                        ),
+                      ),
+                    ],
+                  ),
                   const SizedBox(height: 12),
-                  _field(_phoneNumber, 'Phone Number (optional)'),
-                  const SizedBox(height: 12),
-                  _field(_linkedInUrl, 'LinkedIn URL (optional)'),
-                  const SizedBox(height: 12),
-                  _field(_githubUrl, 'GitHub URL (optional)'),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _field(
+                          _linkedInUrl,
+                          l10n.linkedInUrl,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: _field(
+                          _githubUrl,
+                          l10n.githubUrl,
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),
             FormSection(
-              title: 'SKILLS',
+              title: l10n.skills,
               child: SkillsEditor(
                 skills: _skills,
                 onChanged: (skills) => setState(() => _skills = skills),
               ),
             ),
-            FormSection(
-              title: 'LANGUAGES',
-              child: LanguagesEditor(
-                languages: _languages,
-                onChanged: (langs) => setState(() => _languages = langs),
-              ),
-            ),
-            FormSection(
-              title: 'INTERESTS',
-              child: InterestsEditor(
-                interests: _interests,
-                onChanged: (interests) =>
-                    setState(() => _interests = interests),
-              ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: FormSection(
+                    title: l10n.languages,
+                    child: LanguagesEditor(
+                      languages: _languages,
+                      onChanged: (langs) =>
+                          setState(() => _languages = langs),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: FormSection(
+                    title: l10n.interests,
+                    child: InterestsEditor(
+                      interests: _interests,
+                      onChanged: (interests) =>
+                          setState(() => _interests = interests),
+                    ),
+                  ),
+                ),
+              ],
             ),
             Align(
               alignment: Alignment.centerRight,
               child: shared.ActionChip(
-                label: 'Save Profile',
+                label: l10n.saveProfile,
                 icon: Icons.save_outlined,
                 onTap: _save,
               ),
@@ -145,6 +186,7 @@ class _ProfileFormState extends State<ProfileForm> {
           ],
         ),
       );
+  }
 
   Widget _field(
     TextEditingController controller,
