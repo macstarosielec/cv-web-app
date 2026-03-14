@@ -4,7 +4,6 @@ import 'package:shared/gen/colors.gen.dart';
 import 'package:shared/l10n/l10n.dart';
 import 'package:shared/widgets/action_chip.dart' as shared;
 import 'package:shared/widgets/gradient_card.dart';
-import 'package:shared/widgets/navigation_chip.dart';
 
 class DashboardNavCard extends StatelessWidget {
   const DashboardNavCard({
@@ -47,7 +46,7 @@ class DashboardNavCard extends StatelessWidget {
               ...AdminNavItem.values.map(
                 (item) => Padding(
                   padding: const EdgeInsets.only(bottom: 12),
-                  child: NavigationChip(
+                  child: shared.ActionChip(
                     label: _localizedLabel(l10n, item),
                     icon: item.icon,
                     isSelected: selectedItem == item,

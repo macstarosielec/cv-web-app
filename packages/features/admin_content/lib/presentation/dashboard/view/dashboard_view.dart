@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:admin_content/presentation/dashboard/view/widgets/dashboard_nav_card.dart';
 import 'package:admin_content/presentation/dashboard/admin_nav_item.dart';
+import 'package:admin_content/presentation/dashboard/view/widgets/dashboard_nav_card.dart';
 import 'package:admin_content/presentation/profile/view/profile_editor_view.dart';
 import 'package:admin_content/presentation/projects/view/projects_list_view.dart';
 import 'package:admin_content/presentation/work_experience/view/work_experience_list_view.dart';

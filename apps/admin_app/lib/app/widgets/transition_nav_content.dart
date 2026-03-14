@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:shared/gen/colors.gen.dart';
 import 'package:shared/l10n/l10n.dart';
 import 'package:shared/widgets/action_chip.dart' as shared;
-import 'package:shared/widgets/navigation_chip.dart';
 
 class TransitionNavContent extends StatefulWidget {
   const TransitionNavContent({
@@ -101,7 +100,7 @@ class _TransitionNavContentState extends State<TransitionNavContent>
                     padding: const EdgeInsets.only(bottom: 12),
                     child: StaggerItem(
                       animation: _animations[entry.key + 1],
-                      child: NavigationChip(
+                      child: shared.ActionChip(
                         label: _localizedLabel(l10n, entry.value),
                         icon: entry.value.icon,
                         isSelected: entry.key == 0,

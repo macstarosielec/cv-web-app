@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:shared/gen/colors.gen.dart';
 
@@ -22,7 +24,8 @@ class _DotLoaderState extends State<DotLoader>
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1200),
-    )..repeat();
+    );
+    unawaited(_controller.repeat());
   }
 
   @override

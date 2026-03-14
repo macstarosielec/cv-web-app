@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auth/presentation/login/cubit/auth_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -60,7 +62,7 @@ class _LoginFormState extends State<LoginForm> {
     if (!_formKey.currentState!.validate()) return;
 
     final email = _sanitize(_emailController.text);
-    context.read<AuthCubit>().signIn(email, _passwordController.text);
+    unawaited(context.read<AuthCubit>().signIn(email, _passwordController.text));
   }
 
   @override

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:admin_content/presentation/dashboard/view/dashboard_view.dart';
 import 'package:admin_content/presentation/profile/cubit/admin_profile_cubit.dart';
 import 'package:admin_content/presentation/projects/cubit/admin_projects_cubit.dart';
@@ -17,17 +19,25 @@ class DashboardPage extends StatelessWidget {
   Widget build(BuildContext context) => MultiBlocProvider(
         providers: [
           BlocProvider(
-            create: (_) =>
-                GetIt.instance<AdminProfileCubit>()..loadProfile(),
+            create: (_) {
+              final cubit = GetIt.instance<AdminProfileCubit>();
+              unawaited(cubit.loadProfile());
+              return cubit;
+            },
           ),
           BlocProvider(
-            create: (_) =>
-                GetIt.instance<AdminProjectsCubit>()..loadProjects(),
+            create: (_) {
+              final cubit = GetIt.instance<AdminProjectsCubit>();
+              unawaited(cubit.loadProjects());
+              return cubit;
+            },
           ),
           BlocProvider(
-            create: (_) =>
-                GetIt.instance<AdminWorkExperienceCubit>()
-                  ..loadWorkExperiences(),
+            create: (_) {
+              final cubit = GetIt.instance<AdminWorkExperienceCubit>();
+              unawaited(cubit.loadWorkExperiences());
+              return cubit;
+            },
           ),
         ],
         child: DashboardView(

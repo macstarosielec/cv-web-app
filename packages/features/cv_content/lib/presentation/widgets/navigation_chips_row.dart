@@ -1,7 +1,7 @@
 import 'package:cv_content/presentation/models/detail_panel_type.dart';
-import 'package:shared/widgets/navigation_chip.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/l10n/l10n.dart';
+import 'package:shared/widgets/action_chip.dart' as shared;
 
 class NavigationChipsRow extends StatelessWidget {
   const NavigationChipsRow({
@@ -22,7 +22,7 @@ class NavigationChipsRow extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: NavigationChip(
+          child: shared.ActionChip(
             label: l10n.projects,
             icon: Icons.code_rounded,
             isSelected: selectedPanel == DetailPanelType.projects,
@@ -32,7 +32,7 @@ class NavigationChipsRow extends StatelessWidget {
         ),
         const SizedBox(width: 12),
         Expanded(
-          child: NavigationChip(
+          child: shared.ActionChip(
             label: l10n.experience,
             icon: Icons.work_outline_rounded,
             isSelected: selectedPanel == DetailPanelType.experience,
@@ -42,7 +42,7 @@ class NavigationChipsRow extends StatelessWidget {
         ),
         const SizedBox(width: 12),
         Expanded(
-          child: NavigationChip(
+          child: shared.ActionChip(
             label: l10n.contact,
             icon: Icons.mail_outline_rounded,
             isSelected: selectedPanel == DetailPanelType.contact,

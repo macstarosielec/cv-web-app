@@ -207,15 +207,31 @@ class _ProjectFormState extends State<ProjectForm>
                 ),
                 const SizedBox(width: 12),
                 ChoiceChip(
-                  label: Text(l10n.commercial),
+                  label: Text(
+                    l10n.commercial,
+                    style: TextStyle(
+                      color: _isCommercial
+                          ? ColorName.background
+                          : ColorName.textSecondary,
+                    ),
+                  ),
                   selected: _isCommercial,
+                  selectedColor: Theme.of(context).colorScheme.primary,
                   shape: const RoundedRectangleBorder(),
                   onSelected: (_) => setState(() => _isCommercial = true),
                 ),
                 const SizedBox(width: 8),
                 ChoiceChip(
-                  label: Text(l10n.personal),
+                  label: Text(
+                    l10n.personal,
+                    style: TextStyle(
+                      color: !_isCommercial
+                          ? ColorName.background
+                          : ColorName.textSecondary,
+                    ),
+                  ),
                   selected: !_isCommercial,
+                  selectedColor: Theme.of(context).colorScheme.primary,
                   shape: const RoundedRectangleBorder(),
                   onSelected: (_) => setState(() => _isCommercial = false),
                 ),

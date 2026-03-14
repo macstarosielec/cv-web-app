@@ -10,10 +10,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared/config/app_config.dart';
-import 'package:shared/widgets/dot_loader.dart';
 import 'package:shared/l10n/l10n.dart';
 import 'package:shared/utils/breakpoints.dart';
 import 'package:shared/utils/visit_tracker.dart';
+import 'package:shared/widgets/dot_loader.dart';
 
 class HomeView extends HookWidget {
   const HomeView({super.key});

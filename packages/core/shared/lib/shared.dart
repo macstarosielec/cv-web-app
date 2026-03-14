@@ -21,7 +21,6 @@ export 'widgets/dot_loader.dart';
 export 'widgets/fill_painter.dart';
 export 'widgets/gradient_card.dart';
 export 'widgets/matrix_rain.dart';
-export 'widgets/navigation_chip.dart';
 export 'widgets/stagger_item.dart';
 
 // Exceptions

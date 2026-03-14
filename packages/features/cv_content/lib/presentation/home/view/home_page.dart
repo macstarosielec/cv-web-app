@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:cv_content/presentation/experience/cubit/work_experience_cubit.dart';
 import 'package:cv_content/presentation/home/cubit/profile_cubit.dart';
@@ -15,14 +17,25 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) => MultiBlocProvider(
         providers: [
           BlocProvider(
-            create: (_) => GetIt.instance<ProfileCubit>()..loadProfile(),
+            create: (_) {
+              final cubit = GetIt.instance<ProfileCubit>();
+              unawaited(cubit.loadProfile());
+              return cubit;
+            },
           ),
           BlocProvider(
-            create: (_) => GetIt.instance<ProjectsCubit>()..loadProjects(),
+            create: (_) {
+              final cubit = GetIt.instance<ProjectsCubit>();
+              unawaited(cubit.loadProjects());
+              return cubit;
+            },
           ),
           BlocProvider(
-            create: (_) =>
-                GetIt.instance<WorkExperienceCubit>()..loadWorkExperiences(),
+            create: (_) {
+              final cubit = GetIt.instance<WorkExperienceCubit>();
+              unawaited(cubit.loadWorkExperiences());
+              return cubit;
+            },
           ),
         ],
         child: const HomeView(),

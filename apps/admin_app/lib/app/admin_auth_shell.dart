@@ -7,7 +7,6 @@ import 'package:auth/auth.dart';
 import 'package:auth/presentation/login/view/widgets/login_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared/gen/colors.gen.dart';
 import 'package:shared/widgets/gradient_card.dart';
 
 enum _Phase {
@@ -36,8 +35,8 @@ class _AdminAuthShellState extends State<AdminAuthShell>
 
   static const _margin = 24.0;
   static const _navCardWidth = 250.0;
-  static const _loginCardWidth = LoginCard.cardWidth;
-  static const _loginCardHeight = LoginCard.cardHeight;
+  static const double _loginCardWidth = LoginCard.cardWidth;
+  static const double _loginCardHeight = LoginCard.cardHeight;
 
   late final AnimationController _fadeController;
   late final Animation<double> _fadeAnimation;

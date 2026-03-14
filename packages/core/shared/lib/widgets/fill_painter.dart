@@ -31,3 +31,17 @@ class FillPainter extends CustomPainter {
       oldDelegate.backgroundColor != backgroundColor ||
       oldDelegate.fillColor != fillColor;
 }
+
+class FillClipper extends CustomClipper<Rect> {
+  FillClipper(this.progress);
+
+  final double progress;
+
+  @override
+  Rect getClip(Size size) =>
+      Rect.fromLTWH(0, 0, size.width * progress, size.height);
+
+  @override
+  bool shouldReclip(FillClipper oldClipper) =>
+      oldClipper.progress != progress;
+}
