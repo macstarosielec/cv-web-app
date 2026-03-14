@@ -9,6 +9,7 @@ import 'package:cv_content/presentation/models/detail_panel_type.dart';
 import 'package:cv_content/presentation/projects/cubit/projects_cubit.dart';
 import 'package:cv_content/presentation/projects/cubit/projects_state.dart';
 import 'package:cv_content/presentation/projects/view/widgets/projects_list.dart';
+import 'package:shared/widgets/dot_loader.dart';
 import 'package:shared/widgets/gradient_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -132,7 +133,7 @@ class _DetailPanelState extends State<DetailPanel>
           builder: (context, state) => state.when(
             initial: () => const SizedBox.shrink(),
             loading: () => const Center(
-              child: CircularProgressIndicator(),
+              child: DotLoader(),
             ),
             loaded: (projects) => ProjectsList(
               key: const ValueKey('projects'),
@@ -151,7 +152,7 @@ class _DetailPanelState extends State<DetailPanel>
           builder: (context, state) => state.when(
             initial: () => const SizedBox.shrink(),
             loading: () => const Center(
-              child: CircularProgressIndicator(),
+              child: DotLoader(),
             ),
             loaded: (experiences) => ExperienceList(
               key: const ValueKey('experience'),

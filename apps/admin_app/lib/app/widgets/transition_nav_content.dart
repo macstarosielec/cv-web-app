@@ -68,10 +68,10 @@ class _TransitionNavContentState extends State<TransitionNavContent>
   }
 
   @override
-  Widget build(BuildContext context) => SingleChildScrollView(
+  Widget build(BuildContext context) => Padding(
         padding: const EdgeInsets.all(40),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             StaggerItem(
               animation: _animations[0],
@@ -99,7 +99,7 @@ class _TransitionNavContentState extends State<TransitionNavContent>
                     ),
                   ),
                 ),
-            const SizedBox(height: 24),
+            const Spacer(),
             StaggerItem(
               animation: _animations[4],
               child: shared.ActionChip(

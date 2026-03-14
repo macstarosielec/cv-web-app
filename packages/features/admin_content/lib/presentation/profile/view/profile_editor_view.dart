@@ -2,6 +2,7 @@ import 'package:admin_content/presentation/profile/cubit/admin_profile_cubit.dar
 import 'package:admin_content/presentation/profile/cubit/admin_profile_state.dart';
 import 'package:admin_content/presentation/profile/view/widgets/profile_form.dart';
 import 'package:flutter/material.dart';
+import 'package:shared/widgets/dot_loader.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/gen/colors.gen.dart';
 
@@ -14,14 +15,14 @@ class ProfileEditorView extends StatelessWidget {
         builder: (context, state) => state.when(
           initial: () => const SizedBox.shrink(),
           loading: () =>
-              const Center(child: CircularProgressIndicator()),
+              const Center(child: DotLoader()),
           loaded: (profile) => ProfileForm(profile: profile),
           saving: (profile) => Stack(
             children: [
               ProfileForm(profile: profile),
               const ColoredBox(
                 color: Color(0x66000000),
-                child: Center(child: CircularProgressIndicator()),
+                child: Center(child: DotLoader()),
               ),
             ],
           ),

@@ -6,6 +6,7 @@ import 'package:admin_content/presentation/work_experience/view/widgets/admin_ex
 import 'package:admin_content/presentation/work_experience/view/widgets/experience_editor_dialog.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
+import 'package:shared/widgets/dot_loader.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/gen/colors.gen.dart';
 
@@ -20,7 +21,7 @@ class WorkExperienceListView extends StatelessWidget {
           body: state.when(
             initial: () => const SizedBox.shrink(),
             loading: () =>
-                const Center(child: CircularProgressIndicator()),
+                const Center(child: DotLoader()),
             loaded: _buildList,
             saving: _buildList,
             error: (message) => Center(

@@ -32,11 +32,20 @@ class _ActionChipState extends State<ActionChip>
     _hoverController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 250),
+      value: widget.isLoading ? 1.0 : 0.0,
     );
     _hoverAnimation = CurvedAnimation(
       parent: _hoverController,
       curve: Curves.easeOut,
     );
+  }
+
+  @override
+  void didUpdateWidget(ActionChip oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.isLoading && !oldWidget.isLoading) {
+      unawaited(_hoverController.forward());
+    }
   }
 
   @override
@@ -48,7 +57,9 @@ class _ActionChipState extends State<ActionChip>
   @override
   Widget build(BuildContext context) => MouseRegion(
         onEnter: (_) => unawaited(_hoverController.forward()),
-        onExit: (_) => unawaited(_hoverController.reverse()),
+        onExit: (_) {
+          if (!widget.isLoading) unawaited(_hoverController.reverse());
+        },
         cursor: widget.onTap != null
             ? SystemMouseCursors.click
             : SystemMouseCursors.basic,

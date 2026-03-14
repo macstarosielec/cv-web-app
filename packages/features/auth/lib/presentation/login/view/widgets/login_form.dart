@@ -113,7 +113,7 @@ class _LoginFormState extends State<LoginForm> {
               child: shared.ActionChip(
                 label: 'Sign In',
                 icon: Icons.login,
-                isLoading: widget.isLoading,
+                isLoading: widget.isLoading && _submitted,
                 onTap: widget.isLoading ? null : _submit,
               ),
             ),

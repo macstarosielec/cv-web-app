@@ -17,6 +17,7 @@ export 'utils/visit_tracker.dart';
 
 // Widgets
 export 'widgets/action_chip.dart';
+export 'widgets/dot_loader.dart';
 export 'widgets/gradient_card.dart';
 export 'widgets/matrix_rain.dart';
 export 'widgets/navigation_chip.dart';

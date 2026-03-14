@@ -8,6 +8,7 @@ import 'package:auth/presentation/login/view/widgets/login_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/gen/colors.gen.dart';
+import 'package:shared/widgets/dot_loader.dart';
 import 'package:shared/widgets/gradient_card.dart';
 
 enum _Phase {
@@ -196,10 +197,8 @@ class _AdminAuthShellState extends State<AdminAuthShell>
   Widget _buildPhase(BuildContext context) => switch (_phase) {
         _Phase.initializing => Scaffold(
             backgroundColor: Colors.transparent,
-            body: Center(
-              child: CircularProgressIndicator(
-                color: Theme.of(context).colorScheme.primary,
-              ),
+            body: const Center(
+              child: DotLoader(),
             ),
           ),
         _Phase.login => const LoginView(),

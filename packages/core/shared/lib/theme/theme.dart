@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:shared/gen/colors.gen.dart';
+import 'package:shared/gen/fonts.gen.dart';
 
 class AppTheme {
-  static final TextTheme _baseTextTheme = GoogleFonts.tekoTextTheme();
+  static const _tekoFamily = 'packages/shared/${FontFamily.teko}';
+  static const _robotoFamily = 'packages/shared/${FontFamily.roboto}';
 
-  static TextStyle accentStyle({double? fontSize}) =>
-      GoogleFonts.roboto(
+  static final TextTheme _baseTextTheme =
+      ThemeData.dark().textTheme.apply(fontFamily: _tekoFamily);
+
+  static TextStyle accentStyle({double? fontSize}) => TextStyle(
+        fontFamily: _robotoFamily,
         fontSize: fontSize,
         fontWeight: FontWeight.w900,
       );
@@ -78,6 +82,7 @@ class AppTheme {
   }) =>
       ThemeData(
         brightness: Brightness.dark,
+        fontFamily: _tekoFamily,
         scaffoldBackgroundColor: Colors.transparent,
         textTheme: _textTheme,
         colorScheme: ColorScheme.dark(

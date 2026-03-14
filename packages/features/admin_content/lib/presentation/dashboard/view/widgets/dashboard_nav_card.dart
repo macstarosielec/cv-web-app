@@ -18,42 +18,39 @@ class DashboardNavCard extends StatelessWidget {
   final VoidCallback onSignOut;
 
   @override
-  Widget build(BuildContext context) => ConstrainedBox(
-        constraints: const BoxConstraints.tightFor(width: 250),
-        child: GradientCard(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(40),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Dashboard',
-                  style:
-                      Theme.of(context).textTheme.headlineMedium?.copyWith(
-                            color: ColorName.textPrimary,
-                            fontWeight: FontWeight.w700,
-                          ),
-                ),
-                const SizedBox(height: 32),
-                ...AdminNavItem.values.map(
-                  (item) => Padding(
-                    padding: const EdgeInsets.only(bottom: 12),
-                    child: NavigationChip(
-                      label: item.label,
-                      icon: item.icon,
-                      isSelected: selectedItem == item,
-                      onTap: () => onItemSelected(item),
-                    ),
+  Widget build(BuildContext context) => GradientCard(
+        child: Padding(
+          padding: const EdgeInsets.all(40),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                'Dashboard',
+                style:
+                    Theme.of(context).textTheme.headlineMedium?.copyWith(
+                          color: ColorName.textPrimary,
+                          fontWeight: FontWeight.w700,
+                        ),
+              ),
+              const SizedBox(height: 32),
+              ...AdminNavItem.values.map(
+                (item) => Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: NavigationChip(
+                    label: item.label,
+                    icon: item.icon,
+                    isSelected: selectedItem == item,
+                    onTap: () => onItemSelected(item),
                   ),
                 ),
-                const SizedBox(height: 24),
-                shared.ActionChip(
-                  label: 'Sign Out',
-                  icon: Icons.logout,
-                  onTap: onSignOut,
-                ),
-              ],
-            ),
+              ),
+              const Spacer(),
+              shared.ActionChip(
+                label: 'Sign Out',
+                icon: Icons.logout,
+                onTap: onSignOut,
+              ),
+            ],
           ),
         ),
       );

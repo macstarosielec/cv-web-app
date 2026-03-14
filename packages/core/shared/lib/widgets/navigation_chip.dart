@@ -36,6 +36,7 @@ class _NavigationChipState extends State<NavigationChip>
     _hoverController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 250),
+      value: widget.isSelected ? 1.0 : 0.0,
     );
     _hoverAnimation = CurvedAnimation(
       parent: _hoverController,
