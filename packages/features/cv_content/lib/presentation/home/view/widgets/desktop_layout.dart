@@ -9,8 +9,10 @@ class DesktopLayout extends StatelessWidget {
   const DesktopLayout({
     required this.profile,
     required this.selectedPanels,
+    required this.closingPanels,
     required this.maxPanels,
     required this.onChipSelected,
+    required this.onPanelClosed,
     required this.animation,
     required this.shouldAnimate,
     super.key,
@@ -18,8 +20,10 @@ class DesktopLayout extends StatelessWidget {
 
   final Profile profile;
   final List<DetailPanelType> selectedPanels;
+  final Set<DetailPanelType> closingPanels;
   final int maxPanels;
   final ValueChanged<DetailPanelType> onChipSelected;
+  final ValueChanged<DetailPanelType> onPanelClosed;
   final Animation<double> animation;
   final bool shouldAnimate;
 
@@ -84,21 +88,24 @@ class DesktopLayout extends StatelessWidget {
           final expandProgress = animation.value;
           final screenWidth = MediaQuery.sizeOf(context).width;
           final available = screenWidth - 64;
-          final panelCount = selectedPanels.length;
 
-          // All items share equal slot width, capped at max.
-          // Projects always gets 2 slots.
-          final projectsIsOpen =
-              selectedPanels.contains(DetailPanelType.projects);
+          // Compute target widths based on ACTIVE panels only
+          // (excluding closing ones) so remaining panels expand
+          // to fill space as closing ones shrink out.
+          final activePanels = selectedPanels
+              .where((t) => !closingPanels.contains(t))
+              .toList();
+          final activeCount = activePanels.length;
+          final activeProjectsOpen =
+              activePanels.contains(DetailPanelType.projects);
           final totalSlots =
-              1 + panelCount + (projectsIsOpen ? 1 : 0);
+              1 + activeCount + (activeProjectsOpen ? 1 : 0);
           final totalGaps =
-              panelCount + (projectsIsOpen ? 1 : 0);
+              activeCount + (activeProjectsOpen ? 1 : 0);
           final expandedSlotWidth =
               ((available - _gap * totalGaps) / totalSlots)
                   .clamp(0.0, _maxSlotWidth);
 
-          // Profile lerps from collapsed (centered) to slot width.
           final collapsedProfileWidth =
               available.clamp(0.0, _maxCollapsedWidth);
           final targetProfileWidth = collapsedProfileWidth -
@@ -106,10 +113,11 @@ class DesktopLayout extends StatelessWidget {
                   expandProgress;
 
           final slotWidth = expandedSlotWidth * expandProgress;
+          final gapWidth = _gap * expandProgress;
 
           double widthForType(DetailPanelType type) =>
-              type == DetailPanelType.projects
-                  ? slotWidth * 2 + _gap * expandProgress
+              type == DetailPanelType.projects && activeProjectsOpen
+                  ? slotWidth * 2 + gapWidth
                   : slotWidth;
 
           return Row(
@@ -129,19 +137,13 @@ class DesktopLayout extends StatelessWidget {
               ),
               if (expandProgress > 0)
                 ...selectedPanels.map(
-                  (type) => Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      SizedBox(width: _gap * expandProgress),
-                      Opacity(
-                        opacity: expandProgress,
-                        child: MultiPanelItem(
-                          key: ValueKey(type),
-                          width: widthForType(type),
-                          type: type,
-                        ),
-                      ),
-                    ],
+                  (type) => MultiPanelItem(
+                    key: ValueKey(type),
+                    targetWidth: widthForType(type),
+                    gap: gapWidth,
+                    type: type,
+                    isClosing: closingPanels.contains(type),
+                    onClosed: () => onPanelClosed(type),
                   ),
                 ),
             ],

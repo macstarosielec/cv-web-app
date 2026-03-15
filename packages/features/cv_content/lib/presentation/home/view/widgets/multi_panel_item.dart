@@ -8,13 +8,19 @@ import 'package:shared/widgets/gradient_card.dart';
 
 class MultiPanelItem extends StatefulWidget {
   const MultiPanelItem({
-    required this.width,
+    required this.targetWidth,
+    required this.gap,
     required this.type,
+    required this.isClosing,
+    required this.onClosed,
     super.key,
   });
 
-  final double width;
+  final double targetWidth;
+  final double gap;
   final DetailPanelType type;
+  final bool isClosing;
+  final VoidCallback onClosed;
 
   @override
   State<MultiPanelItem> createState() => _MultiPanelItemState();
@@ -22,8 +28,8 @@ class MultiPanelItem extends StatefulWidget {
 
 class _MultiPanelItemState extends State<MultiPanelItem>
     with TickerProviderStateMixin {
-  late final AnimationController _fadeController;
-  late final Animation<double> _fadeAnimation;
+  late final AnimationController _sizeController;
+  late final Animation<double> _sizeAnimation;
   late final AnimationController _flipController;
   late final Animation<double> _flipAnimation;
 
@@ -36,15 +42,16 @@ class _MultiPanelItemState extends State<MultiPanelItem>
     super.initState();
     _displayedType = widget.type;
 
-    _fadeController = AnimationController(
+    _sizeController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 300),
     );
-    unawaited(_fadeController.forward());
-    _fadeAnimation = CurvedAnimation(
-      parent: _fadeController,
+    _sizeAnimation = CurvedAnimation(
+      parent: _sizeController,
       curve: Curves.easeOut,
     );
+    unawaited(_sizeController.forward());
+    _sizeController.addStatusListener(_onSizeStatus);
 
     _flipController = AnimationController(
       vsync: this,
@@ -55,6 +62,12 @@ class _MultiPanelItemState extends State<MultiPanelItem>
       curve: Curves.easeInOut,
     );
     _flipController.addStatusListener(_onFlipComplete);
+  }
+
+  void _onSizeStatus(AnimationStatus status) {
+    if (status == AnimationStatus.dismissed && widget.isClosing) {
+      widget.onClosed();
+    }
   }
 
   void _onFlipComplete(AnimationStatus status) {
@@ -70,7 +83,13 @@ class _MultiPanelItemState extends State<MultiPanelItem>
   @override
   void didUpdateWidget(MultiPanelItem oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.type != oldWidget.type) {
+    if (widget.isClosing && !oldWidget.isClosing) {
+      unawaited(_sizeController.reverse());
+    } else if (!widget.isClosing && oldWidget.isClosing) {
+      // Cancel close (rapid toggle)
+      unawaited(_sizeController.forward());
+    }
+    if (widget.type != oldWidget.type && !widget.isClosing) {
       _nextType = widget.type;
       unawaited(_flipController.forward());
     }
@@ -78,7 +97,9 @@ class _MultiPanelItemState extends State<MultiPanelItem>
 
   @override
   void dispose() {
-    _fadeController.dispose();
+    _sizeController
+      ..removeStatusListener(_onSizeStatus)
+      ..dispose();
     _flipController
       ..removeStatusListener(_onFlipComplete)
       ..dispose();
@@ -86,46 +107,61 @@ class _MultiPanelItemState extends State<MultiPanelItem>
   }
 
   @override
-  Widget build(BuildContext context) => FadeTransition(
-        opacity: _fadeAnimation,
-        child: SizedBox(
-          width: widget.width,
-          child: AnimatedBuilder(
-            animation: _flipAnimation,
-            builder: (context, _) {
-              final value = _flipAnimation.value;
-              final isFirstHalf = value <= 0.5;
-              final type =
-                  isFirstHalf ? _displayedType : _nextType;
+  Widget build(BuildContext context) => AnimatedBuilder(
+        animation: _sizeAnimation,
+        builder: (context, _) {
+          final progress = _sizeAnimation.value;
+          final width = widget.targetWidth * progress;
+          final gap = widget.gap * progress;
 
-              if (!isFirstHalf && !_seedFlipped) {
-                _seedFlipped = true;
-              } else if (isFirstHalf && _seedFlipped) {
-                _seedFlipped = false;
-              }
-
-              final seed = _seedFlipped
-                  ? _seedForType(_nextType)
-                  : _seedForType(_displayedType);
-
-              final angle =
-                  isFirstHalf ? value * pi : (value - 1) * pi;
-
-              return Transform(
-                alignment: Alignment.center,
-                transform: Matrix4.identity()
-                  ..setEntry(3, 2, 0.001)
-                  ..rotateY(angle),
-                child: GradientCard(
-                  seed: seed,
-                  child: type != null
-                      ? DetailPanelContent(type: type)
-                      : const SizedBox.shrink(),
+          return Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(width: gap),
+              Opacity(
+                opacity: progress,
+                child: SizedBox(
+                  width: width,
+                  child: _buildFlipContent(),
                 ),
-              );
-            },
-          ),
-        ),
+              ),
+            ],
+          );
+        },
+      );
+
+  Widget _buildFlipContent() => AnimatedBuilder(
+        animation: _flipAnimation,
+        builder: (context, _) {
+          final value = _flipAnimation.value;
+          final isFirstHalf = value <= 0.5;
+          final type = isFirstHalf ? _displayedType : _nextType;
+
+          if (!isFirstHalf && !_seedFlipped) {
+            _seedFlipped = true;
+          } else if (isFirstHalf && _seedFlipped) {
+            _seedFlipped = false;
+          }
+
+          final seed = _seedFlipped
+              ? _seedForType(_nextType)
+              : _seedForType(_displayedType);
+
+          final angle = isFirstHalf ? value * pi : (value - 1) * pi;
+
+          return Transform(
+            alignment: Alignment.center,
+            transform: Matrix4.identity()
+              ..setEntry(3, 2, 0.001)
+              ..rotateY(angle),
+            child: GradientCard(
+              seed: seed,
+              child: type != null
+                  ? DetailPanelContent(type: type)
+                  : const SizedBox.shrink(),
+            ),
+          );
+        },
       );
 
   int _seedForType(DetailPanelType? type) => switch (type) {

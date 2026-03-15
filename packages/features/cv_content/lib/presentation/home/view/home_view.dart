@@ -37,6 +37,7 @@ class HomeView extends HookWidget {
 
     final hasAnimated = useState(false);
     final selectedPanels = useState<List<DetailPanelType>>([]);
+    final closingPanels = useState<Set<DetailPanelType>>({});
     final hasInteracted = useState(false);
     final animationController = useAnimationController(
       duration: const Duration(milliseconds: 500),
@@ -62,15 +63,33 @@ class HomeView extends HookWidget {
 
     final maxPanels = _computeMaxPanels(screenWidth);
 
-    // Auto-populate panels on load or resize wider (if not interacted)
+    // Auto-populate panels on load or resize wider (if not interacted).
+    // Stagger additions so each panel animates in sequentially.
     useEffect(
       () {
         if (!hasInteracted.value && isDesktop && maxPanels > 1) {
           final autoPanels =
               _autoPopulateOrder.take(maxPanels).toList();
-          selectedPanels.value = autoPanels;
+          // Add first panel immediately and drive main animation.
+          selectedPanels.value = [autoPanels.first];
           if (animationController.status == AnimationStatus.dismissed) {
             unawaited(animationController.forward());
+          }
+          // Stagger remaining panels.
+          for (var i = 1; i < autoPanels.length; i++) {
+            unawaited(
+              Future<void>.delayed(
+                Duration(milliseconds: 250 * i),
+                () {
+                  if (!hasInteracted.value) {
+                    selectedPanels.value = [
+                      ...selectedPanels.value,
+                      autoPanels[i],
+                    ];
+                  }
+                },
+              ),
+            );
           }
         }
 
@@ -107,14 +126,22 @@ class HomeView extends HookWidget {
         // Multi-panel mode
         final current = List.of(selectedPanels.value);
         if (current.contains(type)) {
-          current.remove(type);
-          selectedPanels.value = current;
-          if (current.isEmpty) {
-            unawaited(animationController.reverse());
+          if (closingPanels.value.contains(type)) {
+            // Already closing — cancel by removing from closing set
+            closingPanels.value = {...closingPanels.value}
+              ..remove(type);
+          } else {
+            // Mark as closing; panel stays in list until animation
+            // completes via onPanelClosed.
+            closingPanels.value = {...closingPanels.value, type};
           }
         } else {
           unawaited(analyticsService.logPanelOpened(type.name));
-          if (current.length >= maxPanels) {
+          // Count only active (non-closing) panels for capacity
+          final activeCount = current
+              .where((t) => !closingPanels.value.contains(t))
+              .length;
+          if (activeCount >= maxPanels) {
             current.removeLast();
           }
           current.add(type);
@@ -123,6 +150,15 @@ class HomeView extends HookWidget {
             unawaited(animationController.forward());
           }
         }
+      }
+    }
+
+    void onPanelClosed(DetailPanelType type) {
+      final current = List.of(selectedPanels.value)..remove(type);
+      selectedPanels.value = current;
+      closingPanels.value = {...closingPanels.value}..remove(type);
+      if (current.isEmpty) {
+        unawaited(animationController.reverse());
       }
     }
 
@@ -179,8 +215,10 @@ class HomeView extends HookWidget {
                   : DesktopLayout(
                       profile: profile,
                       selectedPanels: selectedPanels.value,
+                      closingPanels: closingPanels.value,
                       maxPanels: maxPanels,
                       onChipSelected: onChipSelected,
+                      onPanelClosed: onPanelClosed,
                       animation: animation,
                       shouldAnimate: animate,
                     ),
