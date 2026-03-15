@@ -115,10 +115,9 @@ class HomeView extends HookWidget {
         } else {
           unawaited(analyticsService.logPanelOpened(type.name));
           if (current.length >= maxPanels) {
-            current[current.length - 1] = type;
-          } else {
-            current.add(type);
+            current.removeLast();
           }
+          current.add(type);
           selectedPanels.value = current;
           if (animationController.status == AnimationStatus.dismissed) {
             unawaited(animationController.forward());

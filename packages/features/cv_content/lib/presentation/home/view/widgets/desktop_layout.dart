@@ -128,17 +128,17 @@ class DesktopLayout extends StatelessWidget {
                 ),
               ),
               if (expandProgress > 0)
-                ...selectedPanels.indexed.map(
-                  (entry) => Row(
+                ...selectedPanels.map(
+                  (type) => Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       SizedBox(width: _gap * expandProgress),
                       Opacity(
                         opacity: expandProgress,
                         child: MultiPanelItem(
-                          key: ValueKey(entry.$1),
-                          width: widthForType(entry.$2),
-                          type: entry.$2,
+                          key: ValueKey(type),
+                          width: widthForType(type),
+                          type: type,
                         ),
                       ),
                     ],

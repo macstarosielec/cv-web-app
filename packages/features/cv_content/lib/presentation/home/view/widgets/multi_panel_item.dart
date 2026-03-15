@@ -88,46 +88,42 @@ class _MultiPanelItemState extends State<MultiPanelItem>
   @override
   Widget build(BuildContext context) => FadeTransition(
         opacity: _fadeAnimation,
-        child: AnimatedSize(
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeOut,
-          child: SizedBox(
-            width: widget.width,
-            child: AnimatedBuilder(
-              animation: _flipAnimation,
-              builder: (context, _) {
-                final value = _flipAnimation.value;
-                final isFirstHalf = value <= 0.5;
-                final type =
-                    isFirstHalf ? _displayedType : _nextType;
+        child: SizedBox(
+          width: widget.width,
+          child: AnimatedBuilder(
+            animation: _flipAnimation,
+            builder: (context, _) {
+              final value = _flipAnimation.value;
+              final isFirstHalf = value <= 0.5;
+              final type =
+                  isFirstHalf ? _displayedType : _nextType;
 
-                if (!isFirstHalf && !_seedFlipped) {
-                  _seedFlipped = true;
-                } else if (isFirstHalf && _seedFlipped) {
-                  _seedFlipped = false;
-                }
+              if (!isFirstHalf && !_seedFlipped) {
+                _seedFlipped = true;
+              } else if (isFirstHalf && _seedFlipped) {
+                _seedFlipped = false;
+              }
 
-                final seed = _seedFlipped
-                    ? _seedForType(_nextType)
-                    : _seedForType(_displayedType);
+              final seed = _seedFlipped
+                  ? _seedForType(_nextType)
+                  : _seedForType(_displayedType);
 
-                final angle =
-                    isFirstHalf ? value * pi : (value - 1) * pi;
+              final angle =
+                  isFirstHalf ? value * pi : (value - 1) * pi;
 
-                return Transform(
-                  alignment: Alignment.center,
-                  transform: Matrix4.identity()
-                    ..setEntry(3, 2, 0.001)
-                    ..rotateY(angle),
-                  child: GradientCard(
-                    seed: seed,
-                    child: type != null
-                        ? DetailPanelContent(type: type)
-                        : const SizedBox.shrink(),
-                  ),
-                );
-              },
-            ),
+              return Transform(
+                alignment: Alignment.center,
+                transform: Matrix4.identity()
+                  ..setEntry(3, 2, 0.001)
+                  ..rotateY(angle),
+                child: GradientCard(
+                  seed: seed,
+                  child: type != null
+                      ? DetailPanelContent(type: type)
+                      : const SizedBox.shrink(),
+                ),
+              );
+            },
           ),
         ),
       );
