@@ -3,19 +3,26 @@ import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/l10n/l10n.dart';
 
-class ProjectsList extends StatelessWidget {
+class ProjectsList extends StatefulWidget {
   const ProjectsList({required this.projects, super.key});
 
   final List<Project> projects;
+
+  @override
+  State<ProjectsList> createState() => _ProjectsListState();
+}
+
+class _ProjectsListState extends State<ProjectsList> {
+  final GlobalKey _commercialKey = GlobalKey();
 
   static const _dualColumnBreakpoint = 600.0;
 
   @override
   Widget build(BuildContext context) {
     final commercial =
-        projects.whereType<CommercialProject>().toList();
+        widget.projects.whereType<CommercialProject>().toList();
     final personal =
-        projects.whereType<PersonalProject>().toList();
+        widget.projects.whereType<PersonalProject>().toList();
     final l10n = AppLocalizations.of(context);
 
     return LayoutBuilder(
@@ -43,7 +50,7 @@ class ProjectsList extends StatelessWidget {
         children: [
           if (commercial.isNotEmpty)
             ProjectsColumn(
-              key: const ValueKey('commercial_single'),
+              key: _commercialKey,
               title: l10n.commercialProjects,
               projects: commercial,
             ),
@@ -73,7 +80,7 @@ class ProjectsList extends StatelessWidget {
               padding: const EdgeInsets.all(32),
               children: [
                 ProjectsColumn(
-                  key: const ValueKey('commercial_dual'),
+                  key: _commercialKey,
                   title: l10n.commercialProjects,
                   projects: commercial,
                 ),
