@@ -1,19 +1,10 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:cv_content/presentation/contact/view/widgets/contact_panel.dart';
-import 'package:cv_content/presentation/experience/cubit/work_experience_cubit.dart';
-import 'package:cv_content/presentation/experience/cubit/work_experience_state.dart';
-import 'package:cv_content/presentation/experience/view/widgets/experience_list.dart';
+import 'package:cv_content/presentation/home/view/widgets/detail_panel_content.dart';
 import 'package:cv_content/presentation/models/detail_panel_type.dart';
-import 'package:cv_content/presentation/projects/cubit/projects_cubit.dart';
-import 'package:cv_content/presentation/projects/cubit/projects_state.dart';
-import 'package:cv_content/presentation/projects/view/widgets/projects_list.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared/widgets/dot_loader.dart';
 import 'package:shared/widgets/gradient_card.dart';
-import 'package:shared/widgets/section_error.dart';
 
 class DetailPanel extends StatefulWidget {
   const DetailPanel({
@@ -122,7 +113,9 @@ class _DetailPanelState extends State<DetailPanel>
             ..rotateY(angle),
           child: GradientCard(
             seed: seed,
-            child: _buildPanelContent(context, type),
+            child: type != null
+                ? DetailPanelContent(type: type)
+                : const SizedBox.shrink(),
           ),
         );
       },
@@ -136,51 +129,4 @@ class _DetailPanelState extends State<DetailPanel>
         null => 42,
       };
 
-  Widget _buildPanelContent(
-    BuildContext context,
-    DetailPanelType? type,
-  ) {
-    return switch (type) {
-      DetailPanelType.projects =>
-        BlocBuilder<ProjectsCubit, ProjectsState>(
-          builder: (context, state) => state.when(
-            initial: () => const SizedBox.shrink(),
-            loading: () => const Center(
-              child: DotLoader(),
-            ),
-            loaded: (projects) => ProjectsList(
-              key: const ValueKey('projects'),
-              projects: projects,
-            ),
-            error: (exception) => SectionError(
-              exception: exception,
-              onRetry: () =>
-                  context.read<ProjectsCubit>().loadProjects(),
-            ),
-          ),
-        ),
-      DetailPanelType.experience =>
-        BlocBuilder<WorkExperienceCubit, WorkExperienceState>(
-          builder: (context, state) => state.when(
-            initial: () => const SizedBox.shrink(),
-            loading: () => const Center(
-              child: DotLoader(),
-            ),
-            loaded: (experiences) => ExperienceList(
-              key: const ValueKey('experience'),
-              experiences: experiences,
-            ),
-            error: (exception) => SectionError(
-              exception: exception,
-              onRetry: () =>
-                  context.read<WorkExperienceCubit>().loadWorkExperiences(),
-            ),
-          ),
-        ),
-      DetailPanelType.contact => const ContactPanel(
-          key: ValueKey('contact'),
-        ),
-      null => const SizedBox.shrink(),
-    };
-  }
 }

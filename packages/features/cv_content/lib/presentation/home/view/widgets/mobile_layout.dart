@@ -10,6 +10,7 @@ class MobileLayout extends StatelessWidget {
   const MobileLayout({
     required this.profile,
     required this.selectedPanel,
+    required this.selectedPanels,
     required this.onChipSelected,
     required this.animation,
     required this.shouldAnimate,
@@ -19,6 +20,7 @@ class MobileLayout extends StatelessWidget {
 
   final Profile profile;
   final DetailPanelType? selectedPanel;
+  final Set<DetailPanelType> selectedPanels;
   final ValueChanged<DetailPanelType> onChipSelected;
   final Animation<double> animation;
   final bool shouldAnimate;
@@ -85,7 +87,7 @@ class MobileLayout extends StatelessWidget {
                                 ),
                               ),
                               NavigationChipsRow(
-                                selectedPanel: selectedPanel,
+                                selectedPanels: selectedPanels,
                                 onChipSelected: onChipSelected,
                                 iconOnly: iconOnlyChips,
                               ),

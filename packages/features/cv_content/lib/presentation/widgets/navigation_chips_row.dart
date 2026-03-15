@@ -5,13 +5,13 @@ import 'package:shared/widgets/action_chip.dart' as shared;
 
 class NavigationChipsRow extends StatelessWidget {
   const NavigationChipsRow({
-    required this.selectedPanel,
+    required this.selectedPanels,
     required this.onChipSelected,
     this.iconOnly = false,
     super.key,
   });
 
-  final DetailPanelType? selectedPanel;
+  final Set<DetailPanelType> selectedPanels;
   final ValueChanged<DetailPanelType> onChipSelected;
   final bool iconOnly;
 
@@ -25,7 +25,7 @@ class NavigationChipsRow extends StatelessWidget {
           child: shared.ActionChip(
             label: l10n.projects,
             icon: Icons.code_rounded,
-            isSelected: selectedPanel == DetailPanelType.projects,
+            isSelected: selectedPanels.contains(DetailPanelType.projects),
             onTap: () => onChipSelected(DetailPanelType.projects),
             iconOnly: iconOnly,
           ),
@@ -35,7 +35,7 @@ class NavigationChipsRow extends StatelessWidget {
           child: shared.ActionChip(
             label: l10n.experience,
             icon: Icons.work_outline_rounded,
-            isSelected: selectedPanel == DetailPanelType.experience,
+            isSelected: selectedPanels.contains(DetailPanelType.experience),
             onTap: () => onChipSelected(DetailPanelType.experience),
             iconOnly: iconOnly,
           ),
@@ -45,7 +45,7 @@ class NavigationChipsRow extends StatelessWidget {
           child: shared.ActionChip(
             label: l10n.contact,
             icon: Icons.mail_outline_rounded,
-            isSelected: selectedPanel == DetailPanelType.contact,
+            isSelected: selectedPanels.contains(DetailPanelType.contact),
             onTap: () => onChipSelected(DetailPanelType.contact),
             iconOnly: iconOnly,
           ),
