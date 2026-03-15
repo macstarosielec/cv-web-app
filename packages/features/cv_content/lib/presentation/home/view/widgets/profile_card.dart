@@ -11,14 +11,14 @@ import 'package:shared/widgets/stagger_item.dart';
 class ProfileCard extends StatefulWidget {
   const ProfileCard({
     required this.profile,
-    required this.selectedPanel,
+    required this.selectedPanels,
     required this.onChipSelected,
     this.animate = false,
     super.key,
   });
 
   final Profile profile;
-  final DetailPanelType? selectedPanel;
+  final Set<DetailPanelType> selectedPanels;
   final ValueChanged<DetailPanelType> onChipSelected;
   final bool animate;
 
@@ -78,7 +78,7 @@ class _ProfileCardState extends State<ProfileCard>
               StaggerItem(
                 animation: _chipsAnimation,
                 child: NavigationChipsRow(
-                  selectedPanel: widget.selectedPanel,
+                  selectedPanels: widget.selectedPanels,
                   onChipSelected: widget.onChipSelected,
                 ),
               ),
