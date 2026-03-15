@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:get_it/get_it.dart';
+import 'package:shared/analytics/analytics_service.dart';
 import 'package:shared/config/app_config.dart';
 import 'package:shared/utils/breakpoints.dart';
 import 'package:shared/utils/visit_tracker.dart';
@@ -41,12 +42,17 @@ class HomeView extends HookWidget {
       [animationController],
     );
 
+    final analyticsService = useMemoized(
+      () => GetIt.instance<AnalyticsService>(),
+    );
+
     void onChipSelected(DetailPanelType type) {
       if (selectedPanel.value == type) {
         selectedPanel.value = null;
         unawaited(animationController.reverse());
       } else {
         selectedPanel.value = type;
+        unawaited(analyticsService.logPanelOpened(type.name));
         if (animationController.status == AnimationStatus.dismissed) {
           unawaited(animationController.forward());
         }

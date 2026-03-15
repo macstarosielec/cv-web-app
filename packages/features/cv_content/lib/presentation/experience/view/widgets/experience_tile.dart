@@ -1,5 +1,9 @@
+import 'dart:async';
+
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:shared/analytics/analytics_service.dart';
 import 'package:shared/gen/colors.gen.dart';
 import 'package:shared/l10n/l10n.dart';
 
@@ -38,7 +42,15 @@ class _ExperienceTileState extends State<ExperienceTile> {
     final l10n = AppLocalizations.of(context);
 
     return MouseRegion(
-      onEnter: (_) => setState(() => _isHovered = true),
+      onEnter: (_) {
+        setState(() => _isHovered = true);
+        unawaited(
+          GetIt.instance<AnalyticsService>().logExperienceHovered(
+            title: widget.experience.title,
+            company: widget.experience.company,
+          ),
+        );
+      },
       onExit: (_) => setState(() => _isHovered = false),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),

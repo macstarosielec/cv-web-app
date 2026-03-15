@@ -1,3 +1,5 @@
+// Analytics
+export 'analytics/analytics_service.dart';
 // Config
 export 'config/app_config.dart';
 export 'config/firebase_config.dart';
