@@ -37,6 +37,10 @@ class _MultiPanelItemState extends State<MultiPanelItem>
   DetailPanelType? _nextType;
   bool _seedFlipped = false;
 
+  // Cached values at close start so the animation doesn't jump.
+  double? _closingWidth;
+  double? _closingGap;
+
   @override
   void initState() {
     super.initState();
@@ -84,9 +88,13 @@ class _MultiPanelItemState extends State<MultiPanelItem>
   void didUpdateWidget(MultiPanelItem oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.isClosing && !oldWidget.isClosing) {
+      _closingWidth = oldWidget.targetWidth;
+      _closingGap = oldWidget.gap;
       unawaited(_sizeController.reverse());
     } else if (!widget.isClosing && oldWidget.isClosing) {
       // Cancel close (rapid toggle)
+      _closingWidth = null;
+      _closingGap = null;
       unawaited(_sizeController.forward());
     }
     if (widget.type != oldWidget.type && !widget.isClosing) {
@@ -111,8 +119,10 @@ class _MultiPanelItemState extends State<MultiPanelItem>
         animation: _sizeAnimation,
         builder: (context, _) {
           final progress = _sizeAnimation.value;
-          final width = widget.targetWidth * progress;
-          final gap = widget.gap * progress;
+          final effectiveWidth = _closingWidth ?? widget.targetWidth;
+          final effectiveGap = _closingGap ?? widget.gap;
+          final width = effectiveWidth * progress;
+          final gap = effectiveGap * progress;
 
           return Row(
             mainAxisSize: MainAxisSize.min,

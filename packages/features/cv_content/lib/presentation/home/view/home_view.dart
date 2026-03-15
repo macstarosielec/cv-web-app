@@ -64,22 +64,19 @@ class HomeView extends HookWidget {
     final maxPanels = _computeMaxPanels(screenWidth);
 
     // Auto-populate panels on load or resize wider (if not interacted).
-    // Stagger additions so each panel animates in sequentially.
+    // Stagger additions so each panel animates in via its own
+    // _sizeController inside MultiPanelItem.
     useEffect(
       () {
         if (!hasInteracted.value && isDesktop && maxPanels > 1) {
           final autoPanels =
               _autoPopulateOrder.take(maxPanels).toList();
-          // Add first panel immediately and drive main animation.
-          selectedPanels.value = [autoPanels.first];
-          if (animationController.status == AnimationStatus.dismissed) {
-            unawaited(animationController.forward());
-          }
-          // Stagger remaining panels.
-          for (var i = 1; i < autoPanels.length; i++) {
+          // Add panels one by one. Each entry animation is 300ms,
+          // so wait 400ms between additions for a clear cascade.
+          for (var i = 0; i < autoPanels.length; i++) {
             unawaited(
               Future<void>.delayed(
-                Duration(milliseconds: 250 * i),
+                Duration(milliseconds: 400 * i),
                 () {
                   if (!hasInteracted.value) {
                     selectedPanels.value = [
@@ -97,9 +94,6 @@ class HomeView extends HookWidget {
         if (selectedPanels.value.length > maxPanels) {
           selectedPanels.value =
               selectedPanels.value.take(maxPanels).toList();
-          if (selectedPanels.value.isEmpty) {
-            unawaited(animationController.reverse());
-          }
         }
 
         return null;
@@ -146,9 +140,6 @@ class HomeView extends HookWidget {
           }
           current.add(type);
           selectedPanels.value = current;
-          if (animationController.status == AnimationStatus.dismissed) {
-            unawaited(animationController.forward());
-          }
         }
       }
     }
@@ -157,9 +148,6 @@ class HomeView extends HookWidget {
       final current = List.of(selectedPanels.value)..remove(type);
       selectedPanels.value = current;
       closingPanels.value = {...closingPanels.value}..remove(type);
-      if (current.isEmpty) {
-        unawaited(animationController.reverse());
-      }
     }
 
     final animate = shouldAnimate && !hasAnimated.value;

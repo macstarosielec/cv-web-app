@@ -81,75 +81,68 @@ class DesktopLayout extends StatelessWidget {
   static const _maxSlotWidth = 500.0;
   static const _animDuration = Duration(milliseconds: 300);
 
-  Widget _buildMultiPanelLayout(BuildContext context) =>
-      AnimatedBuilder(
-        animation: animation,
-        builder: (context, _) {
-          final expandProgress = animation.value;
-          final screenWidth = MediaQuery.sizeOf(context).width;
-          final available = screenWidth - 64;
+  Widget _buildMultiPanelLayout(BuildContext context) {
+    final screenWidth = MediaQuery.sizeOf(context).width;
+    final available = screenWidth - 64;
 
-          // Compute target widths based on ACTIVE panels only
-          // (excluding closing ones) so remaining panels expand
-          // to fill space as closing ones shrink out.
-          final activePanels = selectedPanels
-              .where((t) => !closingPanels.contains(t))
-              .toList();
-          final activeCount = activePanels.length;
-          final activeProjectsOpen =
-              activePanels.contains(DetailPanelType.projects);
-          final totalSlots =
-              1 + activeCount + (activeProjectsOpen ? 1 : 0);
-          final totalGaps =
-              activeCount + (activeProjectsOpen ? 1 : 0);
-          final expandedSlotWidth =
-              ((available - _gap * totalGaps) / totalSlots)
-                  .clamp(0.0, _maxSlotWidth);
+    // Compute target widths based on ACTIVE panels only
+    // (excluding closing ones) so remaining panels expand
+    // to fill space as closing ones shrink out.
+    final activePanels = selectedPanels
+        .where((t) => !closingPanels.contains(t))
+        .toList();
+    final activeCount = activePanels.length;
+    final activeProjectsOpen =
+        activePanels.contains(DetailPanelType.projects);
+    final totalSlots =
+        1 + activeCount + (activeProjectsOpen ? 1 : 0);
+    final totalGaps =
+        activeCount + (activeProjectsOpen ? 1 : 0);
+    final expandedSlotWidth =
+        ((available - _gap * totalGaps) / totalSlots)
+            .clamp(0.0, _maxSlotWidth);
 
-          final collapsedProfileWidth =
-              available.clamp(0.0, _maxCollapsedWidth);
-          final targetProfileWidth = collapsedProfileWidth -
-              (collapsedProfileWidth - expandedSlotWidth) *
-                  expandProgress;
+    // Profile: AnimatedContainer smoothly transitions between
+    // collapsed (no panels) and slot width (panels open).
+    final collapsedProfileWidth =
+        available.clamp(0.0, _maxCollapsedWidth);
+    final targetProfileWidth = activeCount > 0
+        ? expandedSlotWidth
+        : collapsedProfileWidth;
 
-          final slotWidth = expandedSlotWidth * expandProgress;
-          final gapWidth = _gap * expandProgress;
+    double widthForType(DetailPanelType type) =>
+        type == DetailPanelType.projects && activeProjectsOpen
+            ? expandedSlotWidth * 2 + _gap
+            : expandedSlotWidth;
 
-          double widthForType(DetailPanelType type) =>
-              type == DetailPanelType.projects && activeProjectsOpen
-                  ? slotWidth * 2 + gapWidth
-                  : slotWidth;
-
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              AnimatedContainer(
-                duration: _animDuration,
-                curve: Curves.easeOut,
-                width: targetProfileWidth,
-                child: ProfileCard(
-                  profile: profile,
-                  selectedPanels: selectedPanels.toSet(),
-                  onChipSelected: onChipSelected,
-                  animate: shouldAnimate,
-                ),
-              ),
-              if (expandProgress > 0)
-                ...selectedPanels.map(
-                  (type) => MultiPanelItem(
-                    key: ValueKey(type),
-                    targetWidth: widthForType(type),
-                    gap: gapWidth,
-                    type: type,
-                    isClosing: closingPanels.contains(type),
-                    onClosed: () => onPanelClosed(type),
-                  ),
-                ),
-            ],
-          );
-        },
-      );
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        AnimatedContainer(
+          duration: _animDuration,
+          curve: Curves.easeOut,
+          width: targetProfileWidth,
+          child: ProfileCard(
+            profile: profile,
+            selectedPanels: selectedPanels.toSet(),
+            onChipSelected: onChipSelected,
+            animate: shouldAnimate,
+          ),
+        ),
+        ...selectedPanels.map(
+          (type) => MultiPanelItem(
+            key: ValueKey(type),
+            targetWidth: widthForType(type),
+            gap: _gap,
+            type: type,
+            isClosing: closingPanels.contains(type),
+            onClosed: () => onPanelClosed(type),
+          ),
+        ),
+      ],
+    );
+  }
 
   double _profileCardWidth(
     BuildContext context,
