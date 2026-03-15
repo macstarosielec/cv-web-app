@@ -121,24 +121,21 @@ class _MultiPanelItemState extends State<MultiPanelItem>
           final progress = _sizeAnimation.value;
           final effectiveWidth = _closingWidth ?? widget.targetWidth;
           final effectiveGap = _closingGap ?? widget.gap;
-          final width = effectiveWidth * progress;
-          final gap = effectiveGap * progress;
 
           return Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.easeOut,
-                width: gap,
-              ),
-              Opacity(
-                opacity: progress,
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeOut,
-                  width: width,
-                  child: _buildFlipContent(),
+              SizedBox(width: effectiveGap * progress),
+              ClipRect(
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  widthFactor: progress,
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeOut,
+                    width: effectiveWidth,
+                    child: _buildFlipContent(),
+                  ),
                 ),
               ),
             ],
