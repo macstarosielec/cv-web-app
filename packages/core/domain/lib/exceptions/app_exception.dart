@@ -17,6 +17,10 @@ class PermissionException extends AppException {
   const PermissionException({required super.originalError, super.stackTrace});
 }
 
+class AuthException extends AppException {
+  const AuthException({required super.originalError, super.stackTrace});
+}
+
 class UnknownException extends AppException {
   const UnknownException({required super.originalError, super.stackTrace});
 }

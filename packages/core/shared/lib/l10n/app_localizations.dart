@@ -220,6 +220,12 @@ abstract class AppLocalizations {
   /// **'You don\'t have permission to access this data.'**
   String get errorPermission;
 
+  /// No description provided for @errorAuth.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid email or password. Please try again.'**
+  String get errorAuth;
+
   /// No description provided for @errorUnknown.
   ///
   /// In en, this message translates to:
@@ -585,6 +591,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Role'**
   String get role;
+
+  /// No description provided for @location.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get location;
+
+  /// No description provided for @timezone.
+  ///
+  /// In en, this message translates to:
+  /// **'Timezone'**
+  String get timezone;
+
+  /// No description provided for @downloadCv.
+  ///
+  /// In en, this message translates to:
+  /// **'Download CV'**
+  String get downloadCv;
+
+  /// No description provided for @cvPdf.
+  ///
+  /// In en, this message translates to:
+  /// **'CV (PDF)'**
+  String get cvPdf;
+
+  /// No description provided for @uploadCv.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload PDF'**
+  String get uploadCv;
+
+  /// No description provided for @removeCv.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get removeCv;
+
+  /// No description provided for @uploading.
+  ///
+  /// In en, this message translates to:
+  /// **'Uploading...'**
+  String get uploading;
 }
 
 class _AppLocalizationsDelegate

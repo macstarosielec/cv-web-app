@@ -28,6 +28,7 @@
   "errorNetwork": "Could not connect. Check your connection and try again.",
   "errorNotFound": "The requested data could not be found.",
   "errorPermission": "You don't have permission to access this data.",
+  "errorAuth": "Invalid email or password. Please try again.",
   "errorUnknown": "Something went wrong. Please try again.",
   "retry": "Retry",
   "reloadPage": "Reload Page",
@@ -95,5 +96,12 @@
   "projectName": "Project name",
   "descriptionOptional": "Description (optional)",
   "company": "Company",
-  "role": "Role"
+  "role": "Role",
+  "location": "Location",
+  "timezone": "Timezone",
+  "downloadCv": "Download CV",
+  "cvPdf": "CV (PDF)",
+  "uploadCv": "Upload PDF",
+  "removeCv": "Remove",
+  "uploading": "Uploading..."
 }

@@ -95,31 +95,39 @@ class _ActionChipState extends State<ActionChip>
           onTap: widget.onTap,
           child: AnimatedBuilder(
             animation: Listenable.merge([_hoverAnimation, _labelAnimation]),
-            builder: (context, _) => CustomPaint(
-              painter: FillPainter(
-                progress: _hoverAnimation.value,
-                backgroundColor: ColorName.surface,
-                fillColor: Theme.of(context).colorScheme.primary,
-              ),
-              child: AnimatedSize(
-                duration: const Duration(milliseconds: 250),
-                curve: Curves.easeOut,
-                child: Stack(
-                  children: [
-                    _content(ColorName.textSecondary),
-                    ClipRect(
-                      clipper: FillClipper(_hoverAnimation.value),
-                      child: _content(ColorName.background),
-                    ),
-                  ],
+            builder: (context, _) {
+              final fontWeight = FontWeight.lerp(
+                FontWeight.w500,
+                FontWeight.w700,
+                _hoverAnimation.value,
+              )!;
+
+              return CustomPaint(
+                painter: FillPainter(
+                  progress: _hoverAnimation.value,
+                  backgroundColor: ColorName.surface,
+                  fillColor: Theme.of(context).colorScheme.primary,
                 ),
-              ),
-            ),
+                child: AnimatedSize(
+                  duration: const Duration(milliseconds: 250),
+                  curve: Curves.easeOut,
+                  child: Stack(
+                    children: [
+                      _content(ColorName.textSecondary, fontWeight),
+                      ClipRect(
+                        clipper: FillClipper(_hoverAnimation.value),
+                        child: _content(ColorName.background, fontWeight),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
           ),
         ),
       );
 
-  Widget _content(Color color) => Padding(
+  Widget _content(Color color, FontWeight fontWeight) => Padding(
         padding: EdgeInsets.symmetric(
           horizontal: widget.iconOnly
               ? (_labelAnimation.value > 0 ? 10 : 8)
@@ -153,7 +161,7 @@ class _ActionChipState extends State<ActionChip>
                       fontSize: 18,
                       height: 1,
                       color: color,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: fontWeight,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.clip,

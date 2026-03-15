@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:cv_content/presentation/models/detail_panel_type.dart';
+import 'package:cv_content/presentation/widgets/navigation_chips_row.dart';
 import 'package:cv_content/presentation/widgets/section_title.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
@@ -7,16 +9,23 @@ import 'package:shared/gen/colors.gen.dart';
 import 'package:shared/l10n/l10n.dart';
 import 'package:shared/theme/theme.dart';
 import 'package:shared/widgets/stagger_item.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfileCardContent extends StatefulWidget {
   const ProfileCardContent({
     required this.profile,
+    required this.selectedPanels,
+    required this.onChipSelected,
     this.animate = false,
+    this.showNavigationChips = true,
     super.key,
   });
 
   final Profile profile;
+  final Set<DetailPanelType> selectedPanels;
+  final ValueChanged<DetailPanelType> onChipSelected;
   final bool animate;
+  final bool showNavigationChips;
 
   @override
   State<ProfileCardContent> createState() => _ProfileCardContentState();
@@ -24,7 +33,7 @@ class ProfileCardContent extends StatefulWidget {
 
 class _ProfileCardContentState extends State<ProfileCardContent>
     with TickerProviderStateMixin {
-  static const _itemCount = 5;
+  static const _itemCount = 7;
   late final List<AnimationController> _controllers;
   late final List<Animation<double>> _animations;
 
@@ -88,12 +97,12 @@ class _ProfileCardContentState extends State<ProfileCardContent>
             ),
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 4),
         StaggerItem(
           animation: _animations[1],
           child: Text(
             profile.title,
-            style: AppTheme.accentStyle(fontSize: 24).copyWith(
+            style: AppTheme.accentStyle(fontSize: 18).copyWith(
               color: Theme.of(context).colorScheme.primary,
               letterSpacing: 2,
             ),
@@ -110,10 +119,20 @@ class _ProfileCardContentState extends State<ProfileCardContent>
             ),
           ),
         ),
-        if (profile.skills.isNotEmpty) ...[
+        if (widget.showNavigationChips) ...[
           const SizedBox(height: 32),
           StaggerItem(
             animation: _animations[3],
+            child: NavigationChipsRow(
+              selectedPanels: widget.selectedPanels,
+              onChipSelected: widget.onChipSelected,
+            ),
+          ),
+        ],
+        if (profile.skills.isNotEmpty) ...[
+          const SizedBox(height: 32),
+          StaggerItem(
+            animation: _animations[4],
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -146,38 +165,164 @@ class _ProfileCardContentState extends State<ProfileCardContent>
             ),
           ),
         ],
-        if (profile.languages.isNotEmpty) ...[
+        if (profile.languages.isNotEmpty ||
+            profile.interests.isNotEmpty) ...[
           const SizedBox(height: 24),
           StaggerItem(
-            animation: _animations[4],
-            child: Column(
+            animation: _animations[5],
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SectionTitle(l10n.languages),
-                const SizedBox(height: 12),
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: profile.languages
-                      .map(
-                        (lang) => Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 6,
-                          ),
-                          decoration: const BoxDecoration(
-                            color: ColorName.surfaceLight,
-                          ),
-                          child: Text(
-                            '${lang.name} (${lang.proficiency.label})',
-                            style: textTheme.bodySmall?.copyWith(
-                              color: ColorName.textSecondary,
-                            ),
+                if (profile.languages.isNotEmpty)
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SectionTitle(l10n.languages),
+                        const SizedBox(height: 12),
+                        Wrap(
+                          spacing: 8,
+                          runSpacing: 8,
+                          children: profile.languages
+                              .map(
+                                (lang) => Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 6,
+                                  ),
+                                  decoration: const BoxDecoration(
+                                    color: ColorName.surfaceLight,
+                                  ),
+                                  child: Text(
+                                    '${lang.name} (${lang.proficiency.label})',
+                                    style: textTheme.bodySmall?.copyWith(
+                                      color: ColorName.textSecondary,
+                                    ),
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                        ),
+                      ],
+                    ),
+                  ),
+                if (profile.languages.isNotEmpty &&
+                    profile.interests.isNotEmpty)
+                  const SizedBox(width: 24),
+                if (profile.interests.isNotEmpty)
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SectionTitle(l10n.interests),
+                        const SizedBox(height: 12),
+                        Wrap(
+                          spacing: 8,
+                          runSpacing: 8,
+                          children: profile.interests
+                              .map(
+                                (interest) => Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 6,
+                                  ),
+                                  decoration: const BoxDecoration(
+                                    color: ColorName.surfaceLight,
+                                  ),
+                                  child: Text(
+                                    interest,
+                                    style: textTheme.bodySmall?.copyWith(
+                                      color: ColorName.textSecondary,
+                                    ),
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                        ),
+                      ],
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ],
+        if (profile.location != null ||
+            profile.timezone != null ||
+            profile.cvUrl != null) ...[
+          const SizedBox(height: 32),
+          StaggerItem(
+            animation: _animations[6],
+            child: Row(
+              children: [
+                if (profile.location != null) ...[
+                  const Icon(
+                    Icons.location_on_outlined,
+                    size: 16,
+                    color: ColorName.textMuted,
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    profile.location!,
+                    style: textTheme.bodySmall?.copyWith(
+                      color: ColorName.textSecondary,
+                    ),
+                  ),
+                ],
+                if (profile.location != null && profile.timezone != null)
+                  const SizedBox(width: 16),
+                if (profile.timezone != null) ...[
+                  const Icon(
+                    Icons.schedule,
+                    size: 16,
+                    color: ColorName.textMuted,
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    profile.timezone!,
+                    style: textTheme.bodySmall?.copyWith(
+                      color: ColorName.textSecondary,
+                    ),
+                  ),
+                ],
+                const Spacer(),
+                if (profile.cvUrl != null)
+                  MouseRegion(
+                    cursor: SystemMouseCursors.click,
+                    child: GestureDetector(
+                      onTap: () => unawaited(
+                        launchUrl(Uri.parse(profile.cvUrl!)),
+                      ),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Theme.of(context).colorScheme.primary,
                           ),
                         ),
-                      )
-                      .toList(),
-                ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.download,
+                              size: 16,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              l10n.downloadCv,
+                              style: textTheme.bodySmall?.copyWith(
+                                color: Theme.of(context).colorScheme.primary,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
               ],
             ),
           ),

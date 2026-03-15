@@ -76,6 +76,9 @@ class AppLocalizationsEn extends AppLocalizations {
       'You don\'t have permission to access this data.';
 
   @override
+  String get errorAuth => 'Invalid email or password. Please try again.';
+
+  @override
   String get errorUnknown => 'Something went wrong. Please try again.';
 
   @override
@@ -259,4 +262,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get role => 'Role';
+
+  @override
+  String get location => 'Location';
+
+  @override
+  String get timezone => 'Timezone';
+
+  @override
+  String get downloadCv => 'Download CV';
+
+  @override
+  String get cvPdf => 'CV (PDF)';
+
+  @override
+  String get uploadCv => 'Upload PDF';
+
+  @override
+  String get removeCv => 'Remove';
+
+  @override
+  String get uploading => 'Uploading...';
 }

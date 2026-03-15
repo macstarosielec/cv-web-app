@@ -134,7 +134,7 @@ class _ProjectTileState extends State<ProjectTile>
                     Text(
                       '$company \u2022 $role',
                       style: textTheme.bodySmall?.copyWith(
-                        color: ColorName.textMuted,
+                        color: ColorName.textSecondary,
                         shadows: textShadows,
                       ),
                     ),
@@ -170,7 +170,7 @@ class _ProjectTileState extends State<ProjectTile>
                               child: Text(
                                 tech,
                                 style: textTheme.labelSmall?.copyWith(
-                                  color: ColorName.textMuted,
+                                  color: ColorName.textSecondary,
                                 ),
                               ),
                             ),

@@ -27,7 +27,7 @@ class MobileLayout extends StatelessWidget {
   final bool iconOnlyChips;
 
   static const _gap = 16.0;
-  static const _chipRowHeight = 36.0;
+  static const _chipRowHeight = 40.0;
 
   double _cardPadding(double screenWidth) {
     const minPadding = 16.0;
@@ -81,7 +81,10 @@ class MobileLayout extends StatelessWidget {
                                     ),
                                     child: ProfileCardContent(
                                       profile: profile,
+                                      selectedPanels: selectedPanels,
+                                      onChipSelected: onChipSelected,
                                       animate: shouldAnimate,
+                                      showNavigationChips: false,
                                     ),
                                   ),
                                 ),

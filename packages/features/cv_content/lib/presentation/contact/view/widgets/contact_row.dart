@@ -25,7 +25,6 @@ class ContactRow extends StatelessWidget {
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
               color: ColorName.surfaceLight,
-              borderRadius: BorderRadius.circular(10),
               border: Border.all(color: ColorName.surfaceBorder),
             ),
             child: Icon(

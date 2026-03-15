@@ -30,6 +30,9 @@ class _ProfileFormState extends State<ProfileForm> {
   late final TextEditingController _phoneNumber;
   late final TextEditingController _linkedInUrl;
   late final TextEditingController _githubUrl;
+  late final TextEditingController _location;
+  late String? _timezone;
+  late final TextEditingController _cvUrl;
   late List<Skill> _skills;
   late List<Language> _languages;
   late List<String> _interests;
@@ -45,6 +48,9 @@ class _ProfileFormState extends State<ProfileForm> {
     _phoneNumber = TextEditingController(text: p.phoneNumber ?? '');
     _linkedInUrl = TextEditingController(text: p.linkedInUrl ?? '');
     _githubUrl = TextEditingController(text: p.githubUrl ?? '');
+    _location = TextEditingController(text: p.location ?? '');
+    _timezone = p.timezone;
+    _cvUrl = TextEditingController(text: p.cvUrl ?? '');
     _skills = List.from(p.skills);
     _languages = List.from(p.languages);
     _interests = List.from(p.interests);
@@ -59,6 +65,8 @@ class _ProfileFormState extends State<ProfileForm> {
     _phoneNumber.dispose();
     _linkedInUrl.dispose();
     _githubUrl.dispose();
+    _location.dispose();
+    _cvUrl.dispose();
     super.dispose();
   }
 
@@ -74,6 +82,10 @@ class _ProfileFormState extends State<ProfileForm> {
           _linkedInUrl.text.trim().isEmpty ? null : _linkedInUrl.text.trim(),
       githubUrl:
           _githubUrl.text.trim().isEmpty ? null : _githubUrl.text.trim(),
+      location:
+          _location.text.trim().isEmpty ? null : _location.text.trim(),
+      timezone: _timezone,
+      cvUrl: _cvUrl.text.trim().isEmpty ? null : _cvUrl.text.trim(),
       skills: _skills,
       languages: _languages,
       interests: _interests,
@@ -175,6 +187,28 @@ class _ProfileFormState extends State<ProfileForm> {
                 ),
               ],
             ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: FormSection(
+                    title: l10n.location,
+                    child: _field(_location, l10n.location),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: FormSection(
+                    title: l10n.timezone,
+                    child: _timezoneDropdown(context),
+                  ),
+                ),
+              ],
+            ),
+            FormSection(
+              title: l10n.cvPdf,
+              child: _field(_cvUrl, l10n.cvPdf),
+            ),
             Align(
               alignment: Alignment.centerRight,
               child: shared.ActionChip(
@@ -187,6 +221,62 @@ class _ProfileFormState extends State<ProfileForm> {
         ),
       );
   }
+
+  static const _timezones = [
+    'UTC-12:00 (Baker Island)',
+    'UTC-11:00 (Pago Pago)',
+    'UTC-10:00 (Honolulu)',
+    'UTC-09:00 (Anchorage)',
+    'UTC-08:00 (Los Angeles)',
+    'UTC-07:00 (Denver)',
+    'UTC-06:00 (Chicago)',
+    'UTC-05:00 (New York)',
+    'UTC-04:00 (Santiago)',
+    'UTC-03:00 (São Paulo)',
+    'UTC-02:00 (South Georgia)',
+    'UTC-01:00 (Azores)',
+    'UTC+00:00 (London)',
+    'UTC+01:00 (Berlin, Paris, Warsaw)',
+    'UTC+02:00 (Cairo, Helsinki)',
+    'UTC+03:00 (Moscow, Istanbul)',
+    'UTC+04:00 (Dubai)',
+    'UTC+05:00 (Karachi)',
+    'UTC+05:30 (Mumbai)',
+    'UTC+06:00 (Dhaka)',
+    'UTC+07:00 (Bangkok)',
+    'UTC+08:00 (Singapore)',
+    'UTC+09:00 (Tokyo)',
+    'UTC+09:30 (Adelaide)',
+    'UTC+10:00 (Sydney)',
+    'UTC+11:00 (Solomon Islands)',
+    'UTC+12:00 (Auckland)',
+  ];
+
+  Widget _timezoneDropdown(BuildContext context) =>
+      DropdownButtonFormField<String>(
+        initialValue: _timezone,
+        decoration: adminInputDecoration(
+          context: context,
+          label: AppLocalizations.of(context).timezone,
+        ),
+        dropdownColor: ColorName.surface,
+        style: const TextStyle(color: ColorName.textPrimary),
+        items: [
+          const DropdownMenuItem<String>(
+            child: Text(
+              '—',
+              style: TextStyle(color: ColorName.textMuted),
+            ),
+          ),
+          ..._timezones.map(
+            (tz) => DropdownMenuItem(
+              value: tz,
+              child: Text(tz),
+            ),
+          ),
+        ],
+        onChanged: (value) => setState(() => _timezone = value),
+      );
 
   Widget _field(
     TextEditingController controller,

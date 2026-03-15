@@ -131,14 +131,14 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function()?  authenticated,TResult Function()?  unauthenticated,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function()?  authenticated,TResult Function()?  unauthenticated,TResult Function( AppException exception)?  error,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _InitialState() when initial != null:
 return initial();case _LoadingState() when loading != null:
 return loading();case _AuthenticatedState() when authenticated != null:
 return authenticated();case _UnauthenticatedState() when unauthenticated != null:
 return unauthenticated();case _ErrorState() when error != null:
-return error(_that.message);case _:
+return error(_that.exception);case _:
   return orElse();
 
 }
@@ -156,14 +156,14 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function()  authenticated,required TResult Function()  unauthenticated,required TResult Function( String message)  error,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function()  authenticated,required TResult Function()  unauthenticated,required TResult Function( AppException exception)  error,}) {final _that = this;
 switch (_that) {
 case _InitialState():
 return initial();case _LoadingState():
 return loading();case _AuthenticatedState():
 return authenticated();case _UnauthenticatedState():
 return unauthenticated();case _ErrorState():
-return error(_that.message);case _:
+return error(_that.exception);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -180,14 +180,14 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function()?  authenticated,TResult? Function()?  unauthenticated,TResult? Function( String message)?  error,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function()?  authenticated,TResult? Function()?  unauthenticated,TResult? Function( AppException exception)?  error,}) {final _that = this;
 switch (_that) {
 case _InitialState() when initial != null:
 return initial();case _LoadingState() when loading != null:
 return loading();case _AuthenticatedState() when authenticated != null:
 return authenticated();case _UnauthenticatedState() when unauthenticated != null:
 return unauthenticated();case _ErrorState() when error != null:
-return error(_that.message);case _:
+return error(_that.exception);case _:
   return null;
 
 }
@@ -327,10 +327,10 @@ String toString() {
 
 
 class _ErrorState implements AuthState {
-  const _ErrorState({required this.message});
+  const _ErrorState({required this.exception});
   
 
- final  String message;
+ final  AppException exception;
 
 /// Create a copy of AuthState
 /// with the given fields replaced by the non-null parameter values.
@@ -342,16 +342,16 @@ _$ErrorStateCopyWith<_ErrorState> get copyWith => __$ErrorStateCopyWithImpl<_Err
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ErrorState&&(identical(other.message, message) || other.message == message));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ErrorState&&(identical(other.exception, exception) || other.exception == exception));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,message);
+int get hashCode => Object.hash(runtimeType,exception);
 
 @override
 String toString() {
-  return 'AuthState.error(message: $message)';
+  return 'AuthState.error(exception: $exception)';
 }
 
 
@@ -362,7 +362,7 @@ abstract mixin class _$ErrorStateCopyWith<$Res> implements $AuthStateCopyWith<$R
   factory _$ErrorStateCopyWith(_ErrorState value, $Res Function(_ErrorState) _then) = __$ErrorStateCopyWithImpl;
 @useResult
 $Res call({
- String message
+ AppException exception
 });
 
 
@@ -379,10 +379,10 @@ class __$ErrorStateCopyWithImpl<$Res>
 
 /// Create a copy of AuthState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? message = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? exception = null,}) {
   return _then(_ErrorState(
-message: null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
-as String,
+exception: null == exception ? _self.exception : exception // ignore: cast_nullable_to_non_nullable
+as AppException,
   ));
 }
 

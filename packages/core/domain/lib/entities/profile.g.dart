@@ -15,6 +15,9 @@ _Profile _$ProfileFromJson(Map<String, dynamic> json) => _Profile(
   linkedInUrl: json['linkedInUrl'] as String?,
   githubUrl: json['githubUrl'] as String?,
   avatarUrl: json['avatarUrl'] as String?,
+  location: json['location'] as String?,
+  timezone: json['timezone'] as String?,
+  cvUrl: json['cvUrl'] as String?,
   skills:
       (json['skills'] as List<dynamic>?)
           ?.map((e) => Skill.fromJson(e as Map<String, dynamic>))
@@ -39,6 +42,9 @@ Map<String, dynamic> _$ProfileToJson(_Profile instance) => <String, dynamic>{
   'linkedInUrl': instance.linkedInUrl,
   'githubUrl': instance.githubUrl,
   'avatarUrl': instance.avatarUrl,
+  'location': instance.location,
+  'timezone': instance.timezone,
+  'cvUrl': instance.cvUrl,
   'skills': instance.skills,
   'languages': instance.languages,
   'interests': instance.interests,
