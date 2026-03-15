@@ -50,8 +50,7 @@ class DesktopLayout extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              AnimatedContainer(
-                duration: Duration.zero,
+              SizedBox(
                 width: _profileCardWidth(context, expandProgress),
                 child: ProfileCard(
                   profile: profile,
