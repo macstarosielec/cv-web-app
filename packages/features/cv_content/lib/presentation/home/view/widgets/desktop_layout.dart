@@ -93,10 +93,14 @@ class DesktopLayout extends StatelessWidget {
     final activeCount = activePanels.length;
     final activeProjectsOpen =
         activePanels.contains(DetailPanelType.projects);
+    final otherActiveCount =
+        activeCount - (activeProjectsOpen ? 1 : 0);
+    final projectsCanDouble =
+        activeProjectsOpen && otherActiveCount + 2 <= maxPanels;
     final totalSlots =
-        1 + activeCount + (activeProjectsOpen ? 1 : 0);
+        1 + activeCount + (projectsCanDouble ? 1 : 0);
     final totalGaps =
-        activeCount + (activeProjectsOpen ? 1 : 0);
+        activeCount + (projectsCanDouble ? 1 : 0);
     final expandedSlotWidth =
         ((available - _gap * totalGaps) / totalSlots)
             .clamp(0.0, _maxSlotWidth);
@@ -110,7 +114,7 @@ class DesktopLayout extends StatelessWidget {
         : collapsedProfileWidth;
 
     double widthForType(DetailPanelType type) =>
-        type == DetailPanelType.projects && activeProjectsOpen
+        type == DetailPanelType.projects && projectsCanDouble
             ? expandedSlotWidth * 2 + _gap
             : expandedSlotWidth;
 

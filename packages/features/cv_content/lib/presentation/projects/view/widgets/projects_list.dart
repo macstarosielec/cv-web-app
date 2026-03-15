@@ -68,6 +68,8 @@ class _ProjectsListState extends State<ProjectsList>
     super.dispose();
   }
 
+  static const _dualColumnBreakpoint = 600.0;
+
   @override
   Widget build(BuildContext context) {
     final commercial =
@@ -75,6 +77,25 @@ class _ProjectsListState extends State<ProjectsList>
     final personal =
         widget.projects.whereType<PersonalProject>().toList();
 
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final useDualColumn = constraints.maxWidth >= _dualColumnBreakpoint &&
+            commercial.isNotEmpty &&
+            personal.isNotEmpty;
+
+        if (useDualColumn) {
+          return _buildDualColumn(context, commercial, personal);
+        }
+        return _buildSingleColumn(context, commercial, personal);
+      },
+    );
+  }
+
+  Widget _buildSingleColumn(
+    BuildContext context,
+    List<CommercialProject> commercial,
+    List<PersonalProject> personal,
+  ) {
     final items = <Widget>[];
     var animIndex = 0;
 
@@ -114,6 +135,54 @@ class _ProjectsListState extends State<ProjectsList>
     return ListView(
       padding: const EdgeInsets.all(32),
       children: items,
+    );
+  }
+
+  Widget _buildDualColumn(
+    BuildContext context,
+    List<CommercialProject> commercial,
+    List<PersonalProject> personal,
+  ) {
+    var animIndex = 0;
+
+    final leftItems = <Widget>[
+      _animatedItem(
+        animIndex++,
+        SectionTitle(AppLocalizations.of(context).commercialProjects),
+      ),
+      ...commercial.map(
+        (project) =>
+            _animatedItem(animIndex++, ProjectTile(project: project)),
+      ),
+    ];
+
+    final rightItems = <Widget>[
+      _animatedItem(
+        animIndex++,
+        SectionTitle(AppLocalizations.of(context).personalProjects),
+      ),
+      ...personal.map(
+        (project) =>
+            _animatedItem(animIndex++, ProjectTile(project: project)),
+      ),
+    ];
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          child: ListView(
+            padding: const EdgeInsets.all(32),
+            children: leftItems,
+          ),
+        ),
+        Expanded(
+          child: ListView(
+            padding: const EdgeInsets.all(32),
+            children: rightItems,
+          ),
+        ),
+      ],
     );
   }
 
