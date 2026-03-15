@@ -127,10 +127,16 @@ class _MultiPanelItemState extends State<MultiPanelItem>
           return Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              SizedBox(width: gap),
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeOut,
+                width: gap,
+              ),
               Opacity(
                 opacity: progress,
-                child: SizedBox(
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeOut,
                   width: width,
                   child: _buildFlipContent(),
                 ),
