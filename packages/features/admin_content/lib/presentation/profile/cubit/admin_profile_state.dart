@@ -22,6 +22,6 @@ class AdminProfileState with _$AdminProfileState {
   }) = _SavedState;
 
   const factory AdminProfileState.error({
-    required String message,
+    required AppException exception,
   }) = _ErrorState;
 }

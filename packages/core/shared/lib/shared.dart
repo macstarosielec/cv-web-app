@@ -1,3 +1,5 @@
+// Analytics
+export 'analytics/analytics_service.dart';
 // Config
 export 'config/app_config.dart';
 export 'config/firebase_config.dart';
@@ -19,9 +21,8 @@ export 'utils/visit_tracker.dart';
 export 'widgets/action_chip.dart';
 export 'widgets/dot_loader.dart';
 export 'widgets/fill_painter.dart';
+export 'widgets/full_page_error.dart';
 export 'widgets/gradient_card.dart';
 export 'widgets/matrix_rain.dart';
+export 'widgets/section_error.dart';
 export 'widgets/stagger_item.dart';
-
-// Exceptions
-// export 'src/exceptions/app_exceptions.dart';

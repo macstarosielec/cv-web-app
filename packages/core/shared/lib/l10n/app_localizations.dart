@@ -202,6 +202,42 @@ abstract class AppLocalizations {
   /// **'Error: {message}'**
   String errorMessage(String message);
 
+  /// No description provided for @errorNetwork.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not connect. Check your connection and try again.'**
+  String get errorNetwork;
+
+  /// No description provided for @errorNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'The requested data could not be found.'**
+  String get errorNotFound;
+
+  /// No description provided for @errorPermission.
+  ///
+  /// In en, this message translates to:
+  /// **'You don\'t have permission to access this data.'**
+  String get errorPermission;
+
+  /// No description provided for @errorUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again.'**
+  String get errorUnknown;
+
+  /// No description provided for @retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
+
+  /// No description provided for @reloadPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Reload Page'**
+  String get reloadPage;
+
   /// No description provided for @monthJan.
   ///
   /// In en, this message translates to:

@@ -14,6 +14,6 @@ class ProfileState with _$ProfileState {
   }) = _LoadedState;
 
   const factory ProfileState.error({
-    required String message,
+    required AppException exception,
   }) = _ErrorState;
 }

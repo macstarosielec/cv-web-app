@@ -65,6 +65,26 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get errorNetwork =>
+      'Could not connect. Check your connection and try again.';
+
+  @override
+  String get errorNotFound => 'The requested data could not be found.';
+
+  @override
+  String get errorPermission =>
+      'You don\'t have permission to access this data.';
+
+  @override
+  String get errorUnknown => 'Something went wrong. Please try again.';
+
+  @override
+  String get retry => 'Retry';
+
+  @override
+  String get reloadPage => 'Reload Page';
+
+  @override
   String get monthJan => 'Jan';
 
   @override

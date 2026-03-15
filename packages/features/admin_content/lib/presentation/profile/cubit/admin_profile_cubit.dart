@@ -15,8 +15,8 @@ class AdminProfileCubit extends Cubit<AdminProfileState> {
     try {
       final profile = await _profileRepository.getProfile();
       emit(AdminProfileState.loaded(profile: profile));
-    } on Exception catch (e) {
-      emit(AdminProfileState.error(message: e.toString()));
+    } on AppException catch (e) {
+      emit(AdminProfileState.error(exception: e));
     }
   }
 
@@ -25,8 +25,8 @@ class AdminProfileCubit extends Cubit<AdminProfileState> {
     try {
       await _profileRepository.saveProfile(profile);
       emit(AdminProfileState.saved(profile: profile));
-    } on Exception catch (e) {
-      emit(AdminProfileState.error(message: e.toString()));
+    } on AppException catch (e) {
+      emit(AdminProfileState.error(exception: e));
     }
   }
 }

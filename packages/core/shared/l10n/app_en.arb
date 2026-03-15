@@ -25,6 +25,12 @@
       }
     }
   },
+  "errorNetwork": "Could not connect. Check your connection and try again.",
+  "errorNotFound": "The requested data could not be found.",
+  "errorPermission": "You don't have permission to access this data.",
+  "errorUnknown": "Something went wrong. Please try again.",
+  "retry": "Retry",
+  "reloadPage": "Reload Page",
   "monthJan": "Jan",
   "monthFeb": "Feb",
   "monthMar": "Mar",

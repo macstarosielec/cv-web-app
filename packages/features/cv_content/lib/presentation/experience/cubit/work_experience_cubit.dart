@@ -16,8 +16,8 @@ class WorkExperienceCubit extends Cubit<WorkExperienceState> {
       final experiences =
           await _workExperienceRepository.getWorkExperiences();
       emit(WorkExperienceState.loaded(experiences: experiences));
-    } on Exception catch (e) {
-      emit(WorkExperienceState.error(message: e.toString()));
+    } on AppException catch (e) {
+      emit(WorkExperienceState.error(exception: e));
     }
   }
 }

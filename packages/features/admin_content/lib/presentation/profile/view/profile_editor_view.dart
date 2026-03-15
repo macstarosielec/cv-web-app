@@ -4,6 +4,7 @@ import 'package:admin_content/presentation/profile/view/widgets/profile_form.dar
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/widgets/dot_loader.dart';
+import 'package:shared/widgets/section_error.dart';
 
 class ProfileEditorView extends StatelessWidget {
   const ProfileEditorView({super.key});
@@ -26,11 +27,10 @@ class ProfileEditorView extends StatelessWidget {
             ],
           ),
           saved: (profile) => ProfileForm(profile: profile),
-          error: (message) => Center(
-            child: Text(
-              message,
-              style: TextStyle(color: Theme.of(context).colorScheme.secondary),
-            ),
+          error: (exception) => SectionError(
+            exception: exception,
+            onRetry: () =>
+                context.read<AdminProfileCubit>().loadProfile(),
           ),
         ),
       );

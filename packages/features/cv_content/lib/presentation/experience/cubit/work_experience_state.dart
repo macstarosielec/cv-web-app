@@ -14,6 +14,6 @@ class WorkExperienceState with _$WorkExperienceState {
   }) = _LoadedState;
 
   const factory WorkExperienceState.error({
-    required String message,
+    required AppException exception,
   }) = _ErrorState;
 }

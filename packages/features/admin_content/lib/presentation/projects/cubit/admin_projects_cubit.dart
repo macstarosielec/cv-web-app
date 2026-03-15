@@ -15,8 +15,8 @@ class AdminProjectsCubit extends Cubit<AdminProjectsState> {
     try {
       final projects = await _projectRepository.getProjects();
       emit(AdminProjectsState.loaded(projects: projects));
-    } on Exception catch (e) {
-      emit(AdminProjectsState.error(message: e.toString()));
+    } on AppException catch (e) {
+      emit(AdminProjectsState.error(exception: e));
     }
   }
 
@@ -27,8 +27,8 @@ class AdminProjectsCubit extends Cubit<AdminProjectsState> {
       await _projectRepository.addProject(project);
       final updated = await _projectRepository.getProjects();
       emit(AdminProjectsState.loaded(projects: updated));
-    } on Exception catch (e) {
-      emit(AdminProjectsState.error(message: e.toString()));
+    } on AppException catch (e) {
+      emit(AdminProjectsState.error(exception: e));
     }
   }
 
@@ -39,8 +39,8 @@ class AdminProjectsCubit extends Cubit<AdminProjectsState> {
       await _projectRepository.updateProject(project);
       final updated = await _projectRepository.getProjects();
       emit(AdminProjectsState.loaded(projects: updated));
-    } on Exception catch (e) {
-      emit(AdminProjectsState.error(message: e.toString()));
+    } on AppException catch (e) {
+      emit(AdminProjectsState.error(exception: e));
     }
   }
 
@@ -51,8 +51,8 @@ class AdminProjectsCubit extends Cubit<AdminProjectsState> {
       await _projectRepository.deleteProject(id);
       final updated = await _projectRepository.getProjects();
       emit(AdminProjectsState.loaded(projects: updated));
-    } on Exception catch (e) {
-      emit(AdminProjectsState.error(message: e.toString()));
+    } on AppException catch (e) {
+      emit(AdminProjectsState.error(exception: e));
     }
   }
 

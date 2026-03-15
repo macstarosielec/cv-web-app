@@ -8,6 +8,7 @@ import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/widgets/dot_loader.dart';
+import 'package:shared/widgets/section_error.dart';
 
 class WorkExperienceListView extends StatefulWidget {
   const WorkExperienceListView({super.key});
@@ -73,13 +74,10 @@ class _WorkExperienceListViewState extends State<WorkExperienceListView>
           loading: () => const Center(child: DotLoader()),
           loaded: _buildContent,
           saving: _buildContent,
-          error: (message) => Center(
-            child: Text(
-              message,
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.secondary,
-              ),
-            ),
+          error: (exception) => SectionError(
+            exception: exception,
+            onRetry: () =>
+                context.read<AdminWorkExperienceCubit>().loadWorkExperiences(),
           ),
         ),
       );

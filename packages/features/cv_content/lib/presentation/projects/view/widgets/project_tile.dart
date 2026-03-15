@@ -1,5 +1,9 @@
+import 'dart:async';
+
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:shared/analytics/analytics_service.dart';
 import 'package:shared/gen/colors.gen.dart';
 import 'package:shared/l10n/l10n.dart';
 
@@ -68,8 +72,15 @@ class _ProjectTileState extends State<ProjectTile>
 
     return RepaintBoundary(
       child: MouseRegion(
-      onEnter: (_) => _hoverController.forward(),
-      onExit: (_) => _hoverController.reverse(),
+      onEnter: (_) {
+        unawaited(_hoverController.forward());
+        unawaited(
+          GetIt.instance<AnalyticsService>().logProjectHovered(
+            widget.project.name,
+          ),
+        );
+      },
+      onExit: (_) => unawaited(_hoverController.reverse()),
       child: AnimatedBuilder(
         animation: _hoverAnimation,
         builder: (context, _) {

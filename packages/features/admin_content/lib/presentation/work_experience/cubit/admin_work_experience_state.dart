@@ -18,6 +18,6 @@ class AdminWorkExperienceState with _$AdminWorkExperienceState {
   }) = _SavingState;
 
   const factory AdminWorkExperienceState.error({
-    required String message,
+    required AppException exception,
   }) = _ErrorState;
 }

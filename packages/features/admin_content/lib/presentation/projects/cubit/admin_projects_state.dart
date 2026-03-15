@@ -18,6 +18,6 @@ class AdminProjectsState with _$AdminProjectsState {
   }) = _SavingState;
 
   const factory AdminProjectsState.error({
-    required String message,
+    required AppException exception,
   }) = _ErrorState;
 }

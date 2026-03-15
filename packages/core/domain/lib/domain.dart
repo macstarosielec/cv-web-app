@@ -6,6 +6,9 @@ export 'entities/project.dart';
 export 'entities/skill.dart';
 export 'entities/work_experience.dart';
 
+// Exceptions
+export 'exceptions/app_exception.dart';
+
 // Repositories
 export 'repositories/auth_repository.dart';
 export 'repositories/profile_repository.dart';

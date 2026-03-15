@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/l10n/l10n.dart';
 import 'package:shared/widgets/dot_loader.dart';
+import 'package:shared/widgets/section_error.dart';
 
 class ContactPanel extends StatelessWidget {
   const ContactPanel({super.key});
@@ -54,8 +55,10 @@ class ContactPanel extends StatelessWidget {
             ),
           );
         },
-        error: (message) => Center(
-          child: Text(AppLocalizations.of(context).errorMessage(message)),
+        error: (exception) => SectionError(
+          exception: exception,
+          onRetry: () =>
+              context.read<ProfileCubit>().loadProfile(),
         ),
       ),
     );
