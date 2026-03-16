@@ -124,7 +124,7 @@ class _ExperienceListState extends State<ExperienceList>
           ),
           const SizedBox(height: 32),
         ],
-        SectionTitle(l10n.experience),
+        SectionTitle(l10n.workExperience),
         const SizedBox(height: 24),
         ...List.generate(widget.experiences.length, (index) {
           return _animatedItem(

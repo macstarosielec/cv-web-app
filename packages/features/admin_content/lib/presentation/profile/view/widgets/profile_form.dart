@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:admin_content/presentation/profile/cubit/admin_profile_cubit.dart';
 import 'package:admin_content/presentation/profile/view/widgets/interests_editor.dart';
 import 'package:admin_content/presentation/profile/view/widgets/languages_editor.dart';
-import 'package:admin_content/presentation/profile/view/widgets/skills_editor.dart';
 import 'package:admin_content/presentation/profile/view/widgets/social_links_editor.dart';
 import 'package:admin_content/presentation/widgets/admin_input_decoration.dart';
 import 'package:admin_content/presentation/widgets/form_section.dart';
@@ -32,7 +31,6 @@ class _ProfileFormState extends State<ProfileForm> {
   late final TextEditingController _location;
   late String? _timezone;
   late final TextEditingController _cvUrl;
-  late List<Skill> _skills;
   late List<Language> _languages;
   late List<String> _interests;
   late List<SocialLink> _socialLinks;
@@ -49,7 +47,6 @@ class _ProfileFormState extends State<ProfileForm> {
     _location = TextEditingController(text: p.location ?? '');
     _timezone = p.timezone;
     _cvUrl = TextEditingController(text: p.cvUrl ?? '');
-    _skills = List.from(p.skills);
     _languages = List.from(p.languages);
     _interests = List.from(p.interests);
     _socialLinks = List.from(p.socialLinks);
@@ -79,7 +76,6 @@ class _ProfileFormState extends State<ProfileForm> {
           _location.text.trim().isEmpty ? null : _location.text.trim(),
       timezone: _timezone,
       cvUrl: _cvUrl.text.trim().isEmpty ? null : _cvUrl.text.trim(),
-      skills: _skills,
       languages: _languages,
       interests: _interests,
       socialLinks: _socialLinks,
@@ -132,13 +128,6 @@ class _ProfileFormState extends State<ProfileForm> {
                 socialLinks: _socialLinks,
                 onChanged: (links) =>
                     setState(() => _socialLinks = links),
-              ),
-            ),
-            FormSection(
-              title: l10n.skills,
-              child: SkillsEditor(
-                skills: _skills,
-                onChanged: (skills) => setState(() => _skills = skills),
               ),
             ),
             Row(

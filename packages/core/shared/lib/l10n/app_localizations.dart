@@ -145,8 +145,14 @@ abstract class AppLocalizations {
   /// No description provided for @experience.
   ///
   /// In en, this message translates to:
-  /// **'Work Experience'**
+  /// **'Experience'**
   String get experience;
+
+  /// No description provided for @workExperience.
+  ///
+  /// In en, this message translates to:
+  /// **'Work Experience'**
+  String get workExperience;
 
   /// No description provided for @contact.
   ///

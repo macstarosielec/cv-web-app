@@ -33,7 +33,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get personalProjects => 'Personal Projects';
 
   @override
-  String get experience => 'Work Experience';
+  String get experience => 'Experience';
+
+  @override
+  String get workExperience => 'Work Experience';
 
   @override
   String get contact => 'Contact';

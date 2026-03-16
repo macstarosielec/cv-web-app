@@ -151,20 +151,23 @@ class _ActionChipState extends State<ActionChip>
               Icon(widget.icon, size: 16, color: color),
             if (_labelAnimation.value > 0) ...[
               const SizedBox(width: 8),
-              Opacity(
-                opacity: widget.iconOnly ? _labelAnimation.value : 1,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 2),
-                  child: Text(
-                    widget.label,
-                    style: TextStyle(
-                      fontSize: 18,
-                      height: 1,
-                      color: color,
-                      fontWeight: fontWeight,
+              Flexible(
+                child: Opacity(
+                  opacity: widget.iconOnly ? _labelAnimation.value : 1,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 2),
+                    child: Text(
+                      widget.label,
+                      style: TextStyle(
+                        fontSize: 18,
+                        height: 1,
+                        color: color,
+                        fontWeight: fontWeight,
+                      ),
+                      maxLines: 1,
+                      softWrap: false,
+                      overflow: TextOverflow.fade,
                     ),
-                    maxLines: 1,
-                    overflow: TextOverflow.clip,
                   ),
                 ),
               ),

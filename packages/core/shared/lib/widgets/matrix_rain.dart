@@ -1,7 +1,7 @@
-import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 class MatrixRain extends StatefulWidget {
   const MatrixRain({super.key});
@@ -12,31 +12,34 @@ class MatrixRain extends StatefulWidget {
 
 class _MatrixRainState extends State<MatrixRain>
     with SingleTickerProviderStateMixin {
-  late final AnimationController _controller;
+  late final Ticker _ticker;
   final _paintData = _MatrixPaintData();
+
+  // Offset so every instance starts at a different visual position.
+  late final double _timeOffset =
+      DateTime.now().millisecondsSinceEpoch / 1000.0 % 10000;
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 1),
-    );
-    unawaited(_controller.repeat());
+    _ticker = createTicker(_onTick)..start();
+  }
+
+  void _onTick(Duration elapsed) {
+    _paintData.time = _timeOffset + elapsed.inMilliseconds / 1000.0;
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _ticker.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final accent = Theme.of(context).colorScheme.primary;
-    return AnimatedBuilder(
-      animation: _controller,
-      builder: (context, _) => CustomPaint(
+    return RepaintBoundary(
+      child: CustomPaint(
         painter: _MatrixPainter(data: _paintData, accentColor: accent),
         size: Size.infinite,
       ),
@@ -44,14 +47,21 @@ class _MatrixRainState extends State<MatrixRain>
   }
 }
 
-class _MatrixPaintData {
+class _MatrixPaintData extends ChangeNotifier {
   final Random random = Random(42);
   List<_Column>? columns;
-  double lastWidth = 0;
+  double _time = 0;
+
+  double get time => _time;
+  set time(double value) {
+    _time = value;
+    notifyListeners();
+  }
 }
 
 class _MatrixPainter extends CustomPainter {
-  _MatrixPainter({required this.data, required this.accentColor});
+  _MatrixPainter({required this.data, required this.accentColor})
+      : super(repaint: data);
 
   final _MatrixPaintData data;
   final Color accentColor;
@@ -68,14 +78,25 @@ class _MatrixPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     if (size.isEmpty) return;
 
-    if (data.columns == null || data.lastWidth != size.width) {
-      data.lastWidth = size.width;
-      final columnCount = (size.width / _columnSpacing).floor();
-      data.columns =
-          List.generate(columnCount, (i) => _Column(data.random));
+    final columnCount = (size.width / _columnSpacing).floor();
+    if (columnCount <= 0) return;
+
+    final existing = data.columns;
+    if (existing == null) {
+      data.columns = List.generate(columnCount, (_) => _Column(data.random));
+    } else if (columnCount > existing.length) {
+      // Width grew — keep existing columns, append new ones.
+      data.columns = [
+        ...existing,
+        for (var i = existing.length; i < columnCount; i++)
+          _Column(data.random),
+      ];
+    } else if (columnCount < existing.length) {
+      // Width shrank — trim from the right, keep the rest intact.
+      data.columns = existing.sublist(0, columnCount);
     }
 
-    final time = DateTime.now().millisecondsSinceEpoch / 1000.0;
+    final time = data.time;
 
     for (var i = 0; i < data.columns!.length; i++) {
       final col = data.columns![i];
@@ -113,7 +134,7 @@ class _MatrixPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(_MatrixPainter oldDelegate) => true;
+  bool shouldRepaint(_MatrixPainter oldDelegate) => false;
 }
 
 class _Column {

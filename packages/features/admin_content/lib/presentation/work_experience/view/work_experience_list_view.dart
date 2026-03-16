@@ -1,5 +1,9 @@
 import 'dart:async';
 
+import 'package:admin_content/presentation/profile/cubit/admin_profile_cubit.dart';
+import 'package:admin_content/presentation/profile/cubit/admin_profile_state.dart';
+import 'package:admin_content/presentation/profile/view/widgets/skills_editor.dart';
+import 'package:admin_content/presentation/widgets/form_section.dart';
 import 'package:admin_content/presentation/work_experience/cubit/admin_work_experience_cubit.dart';
 import 'package:admin_content/presentation/work_experience/cubit/admin_work_experience_state.dart';
 import 'package:admin_content/presentation/work_experience/view/widgets/admin_experience_card.dart';
@@ -7,6 +11,7 @@ import 'package:admin_content/presentation/work_experience/view/widgets/experien
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared/l10n/l10n.dart';
 import 'package:shared/widgets/dot_loader.dart';
 import 'package:shared/widgets/section_error.dart';
 
@@ -82,45 +87,81 @@ class _WorkExperienceListViewState extends State<WorkExperienceListView>
         ),
       );
 
+  void _onSkillsChanged(List<Skill> skills) {
+    final cubit = context.read<AdminProfileCubit>();
+    final profile = cubit.state.whenOrNull(
+      loaded: (p) => p,
+      saved: (p) => p,
+    );
+    if (profile == null) return;
+    unawaited(cubit.saveProfile(profile.copyWith(skills: skills)));
+  }
+
   Widget _buildContent(List<WorkExperience> experiences) {
     if (!_listStagger.isCompleted && !_listStagger.isAnimating) {
       unawaited(_listStagger.forward());
     }
 
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
       children: [
-        Expanded(
-          child: ExperienceForm(
-            workExperience: _editingExperience,
-            onSave: _onSave,
-            onDiscard: _onDiscard,
-          ),
-        ),
-        const SizedBox(width: 16),
-        Expanded(
-          child: ListView.builder(
-            padding: const EdgeInsets.all(24),
-            itemCount: experiences.length,
-            itemBuilder: (context, index) {
-              final animation =
-                  _listItemAnimation(index, experiences.length);
-              return FadeTransition(
-                opacity: animation,
-                child: SlideTransition(
-                  position: animation.drive(
-                    Tween(
-                      begin: const Offset(0, 0.1),
-                      end: Offset.zero,
-                    ),
-                  ),
-                  child: AdminExperienceCard(
-                    workExperience: experiences[index],
-                    onEdit: _onEdit,
-                  ),
+        BlocBuilder<AdminProfileCubit, AdminProfileState>(
+          builder: (context, state) {
+            final skills = state.whenOrNull(
+              loaded: (p) => p.skills,
+              saving: (p) => p.skills,
+              saved: (p) => p.skills,
+            );
+            if (skills == null) return const SizedBox.shrink();
+            return Padding(
+              padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
+              child: FormSection(
+                title: AppLocalizations.of(context).skills,
+                child: SkillsEditor(
+                  skills: skills,
+                  onChanged: _onSkillsChanged,
                 ),
-              );
-            },
+              ),
+            );
+          },
+        ),
+        Expanded(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: ExperienceForm(
+                  workExperience: _editingExperience,
+                  onSave: _onSave,
+                  onDiscard: _onDiscard,
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: ListView.builder(
+                  padding: const EdgeInsets.all(24),
+                  itemCount: experiences.length,
+                  itemBuilder: (context, index) {
+                    final animation =
+                        _listItemAnimation(index, experiences.length);
+                    return FadeTransition(
+                      opacity: animation,
+                      child: SlideTransition(
+                        position: animation.drive(
+                          Tween(
+                            begin: const Offset(0, 0.1),
+                            end: Offset.zero,
+                          ),
+                        ),
+                        child: AdminExperienceCard(
+                          workExperience: experiences[index],
+                          onEdit: _onEdit,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
           ),
         ),
       ],
