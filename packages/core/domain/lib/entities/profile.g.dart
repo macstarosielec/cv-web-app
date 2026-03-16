@@ -12,8 +12,6 @@ _Profile _$ProfileFromJson(Map<String, dynamic> json) => _Profile(
   about: json['about'] as String,
   email: json['email'] as String,
   phoneNumber: json['phoneNumber'] as String?,
-  linkedInUrl: json['linkedInUrl'] as String?,
-  githubUrl: json['githubUrl'] as String?,
   avatarUrl: json['avatarUrl'] as String?,
   location: json['location'] as String?,
   timezone: json['timezone'] as String?,
@@ -31,6 +29,11 @@ _Profile _$ProfileFromJson(Map<String, dynamic> json) => _Profile(
   interests:
       (json['interests'] as List<dynamic>?)?.map((e) => e as String).toList() ??
       const [],
+  socialLinks:
+      (json['socialLinks'] as List<dynamic>?)
+          ?.map((e) => SocialLink.fromJson(e as Map<String, dynamic>))
+          .toList() ??
+      const [],
 );
 
 Map<String, dynamic> _$ProfileToJson(_Profile instance) => <String, dynamic>{
@@ -39,8 +42,6 @@ Map<String, dynamic> _$ProfileToJson(_Profile instance) => <String, dynamic>{
   'about': instance.about,
   'email': instance.email,
   'phoneNumber': instance.phoneNumber,
-  'linkedInUrl': instance.linkedInUrl,
-  'githubUrl': instance.githubUrl,
   'avatarUrl': instance.avatarUrl,
   'location': instance.location,
   'timezone': instance.timezone,
@@ -48,4 +49,5 @@ Map<String, dynamic> _$ProfileToJson(_Profile instance) => <String, dynamic>{
   'skills': instance.skills,
   'languages': instance.languages,
   'interests': instance.interests,
+  'socialLinks': instance.socialLinks,
 };

@@ -30,6 +30,8 @@ class FirestoreProfileDatasource {
         profile.skills.map((s) => s.toJson()).toList();
     json['languages'] =
         profile.languages.map((l) => l.toJson()).toList();
+    json['socialLinks'] =
+        profile.socialLinks.map((s) => s.toJson()).toList();
     return _doc.set(json);
   }
 }

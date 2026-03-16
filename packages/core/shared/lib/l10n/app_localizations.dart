@@ -145,7 +145,7 @@ abstract class AppLocalizations {
   /// No description provided for @experience.
   ///
   /// In en, this message translates to:
-  /// **'Experience'**
+  /// **'Work Experience'**
   String get experience;
 
   /// No description provided for @contact.
@@ -172,17 +172,17 @@ abstract class AppLocalizations {
   /// **'Phone'**
   String get phone;
 
-  /// No description provided for @linkedIn.
-  ///
-  /// In en, this message translates to:
-  /// **'LinkedIn'**
-  String get linkedIn;
-
   /// No description provided for @gitHub.
   ///
   /// In en, this message translates to:
   /// **'GitHub'**
   String get gitHub;
+
+  /// No description provided for @githubUrl.
+  ///
+  /// In en, this message translates to:
+  /// **'GitHub URL (optional)'**
+  String get githubUrl;
 
   /// No description provided for @present.
   ///
@@ -370,17 +370,29 @@ abstract class AppLocalizations {
   /// **'Phone Number (optional)'**
   String get phoneNumber;
 
-  /// No description provided for @linkedInUrl.
+  /// No description provided for @socialLinks.
   ///
   /// In en, this message translates to:
-  /// **'LinkedIn URL (optional)'**
-  String get linkedInUrl;
+  /// **'Social Links'**
+  String get socialLinks;
 
-  /// No description provided for @githubUrl.
+  /// No description provided for @platformName.
   ///
   /// In en, this message translates to:
-  /// **'GitHub URL (optional)'**
-  String get githubUrl;
+  /// **'Platform name'**
+  String get platformName;
+
+  /// No description provided for @platformUrl.
+  ///
+  /// In en, this message translates to:
+  /// **'URL'**
+  String get platformUrl;
+
+  /// No description provided for @addSocialLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Add social link'**
+  String get addSocialLink;
 
   /// No description provided for @saveProfile.
   ///
@@ -607,7 +619,7 @@ abstract class AppLocalizations {
   /// No description provided for @downloadCv.
   ///
   /// In en, this message translates to:
-  /// **'Download CV'**
+  /// **'View CV'**
   String get downloadCv;
 
   /// No description provided for @cvPdf.
@@ -615,24 +627,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'CV (PDF)'**
   String get cvPdf;
-
-  /// No description provided for @uploadCv.
-  ///
-  /// In en, this message translates to:
-  /// **'Upload PDF'**
-  String get uploadCv;
-
-  /// No description provided for @removeCv.
-  ///
-  /// In en, this message translates to:
-  /// **'Remove'**
-  String get removeCv;
-
-  /// No description provided for @uploading.
-  ///
-  /// In en, this message translates to:
-  /// **'Uploading...'**
-  String get uploading;
 }
 
 class _AppLocalizationsDelegate

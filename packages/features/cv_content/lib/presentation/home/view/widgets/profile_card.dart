@@ -20,7 +20,7 @@ class ProfileCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => GradientCard(
-        child: SingleChildScrollView(
+        child: Padding(
           padding: const EdgeInsets.all(40),
           child: ProfileCardContent(
             profile: profile,

@@ -33,7 +33,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get personalProjects => 'Personal Projects';
 
   @override
-  String get experience => 'Experience';
+  String get experience => 'Work Experience';
 
   @override
   String get contact => 'Contact';
@@ -48,10 +48,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get phone => 'Phone';
 
   @override
-  String get linkedIn => 'LinkedIn';
+  String get gitHub => 'GitHub';
 
   @override
-  String get gitHub => 'GitHub';
+  String get githubUrl => 'GitHub URL (optional)';
 
   @override
   String get present => 'Present';
@@ -151,10 +151,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get phoneNumber => 'Phone Number (optional)';
 
   @override
-  String get linkedInUrl => 'LinkedIn URL (optional)';
+  String get socialLinks => 'Social Links';
 
   @override
-  String get githubUrl => 'GitHub URL (optional)';
+  String get platformName => 'Platform name';
+
+  @override
+  String get platformUrl => 'URL';
+
+  @override
+  String get addSocialLink => 'Add social link';
 
   @override
   String get saveProfile => 'Save Profile';
@@ -270,17 +276,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get timezone => 'Timezone';
 
   @override
-  String get downloadCv => 'Download CV';
+  String get downloadCv => 'View CV';
 
   @override
   String get cvPdf => 'CV (PDF)';
-
-  @override
-  String get uploadCv => 'Upload PDF';
-
-  @override
-  String get removeCv => 'Remove';
-
-  @override
-  String get uploading => 'Uploading...';
 }

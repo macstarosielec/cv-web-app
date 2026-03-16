@@ -4,6 +4,7 @@ import 'package:admin_content/presentation/profile/cubit/admin_profile_cubit.dar
 import 'package:admin_content/presentation/profile/view/widgets/interests_editor.dart';
 import 'package:admin_content/presentation/profile/view/widgets/languages_editor.dart';
 import 'package:admin_content/presentation/profile/view/widgets/skills_editor.dart';
+import 'package:admin_content/presentation/profile/view/widgets/social_links_editor.dart';
 import 'package:admin_content/presentation/widgets/admin_input_decoration.dart';
 import 'package:admin_content/presentation/widgets/form_section.dart';
 import 'package:domain/domain.dart';
@@ -28,14 +29,13 @@ class _ProfileFormState extends State<ProfileForm> {
   late final TextEditingController _about;
   late final TextEditingController _email;
   late final TextEditingController _phoneNumber;
-  late final TextEditingController _linkedInUrl;
-  late final TextEditingController _githubUrl;
   late final TextEditingController _location;
   late String? _timezone;
   late final TextEditingController _cvUrl;
   late List<Skill> _skills;
   late List<Language> _languages;
   late List<String> _interests;
+  late List<SocialLink> _socialLinks;
 
   @override
   void initState() {
@@ -46,14 +46,13 @@ class _ProfileFormState extends State<ProfileForm> {
     _about = TextEditingController(text: p.about);
     _email = TextEditingController(text: p.email);
     _phoneNumber = TextEditingController(text: p.phoneNumber ?? '');
-    _linkedInUrl = TextEditingController(text: p.linkedInUrl ?? '');
-    _githubUrl = TextEditingController(text: p.githubUrl ?? '');
     _location = TextEditingController(text: p.location ?? '');
     _timezone = p.timezone;
     _cvUrl = TextEditingController(text: p.cvUrl ?? '');
     _skills = List.from(p.skills);
     _languages = List.from(p.languages);
     _interests = List.from(p.interests);
+    _socialLinks = List.from(p.socialLinks);
   }
 
   @override
@@ -63,8 +62,6 @@ class _ProfileFormState extends State<ProfileForm> {
     _about.dispose();
     _email.dispose();
     _phoneNumber.dispose();
-    _linkedInUrl.dispose();
-    _githubUrl.dispose();
     _location.dispose();
     _cvUrl.dispose();
     super.dispose();
@@ -78,10 +75,6 @@ class _ProfileFormState extends State<ProfileForm> {
       email: _email.text.trim(),
       phoneNumber:
           _phoneNumber.text.trim().isEmpty ? null : _phoneNumber.text.trim(),
-      linkedInUrl:
-          _linkedInUrl.text.trim().isEmpty ? null : _linkedInUrl.text.trim(),
-      githubUrl:
-          _githubUrl.text.trim().isEmpty ? null : _githubUrl.text.trim(),
       location:
           _location.text.trim().isEmpty ? null : _location.text.trim(),
       timezone: _timezone,
@@ -89,6 +82,7 @@ class _ProfileFormState extends State<ProfileForm> {
       skills: _skills,
       languages: _languages,
       interests: _interests,
+      socialLinks: _socialLinks,
     );
     unawaited(context.read<AdminProfileCubit>().saveProfile(profile));
   }
@@ -119,39 +113,25 @@ class _ProfileFormState extends State<ProfileForm> {
             ),
             FormSection(
               title: l10n.contact,
-              child: Column(
+              child: Row(
                 children: [
-                  Row(
-                    children: [
-                      Expanded(child: _field(_email, l10n.email)),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: _field(
-                          _phoneNumber,
-                          l10n.phoneNumber,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _field(
-                          _linkedInUrl,
-                          l10n.linkedInUrl,
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: _field(
-                          _githubUrl,
-                          l10n.githubUrl,
-                        ),
-                      ),
-                    ],
+                  Expanded(child: _field(_email, l10n.email)),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: _field(
+                      _phoneNumber,
+                      l10n.phoneNumber,
+                    ),
                   ),
                 ],
+              ),
+            ),
+            FormSection(
+              title: l10n.socialLinks,
+              child: SocialLinksEditor(
+                socialLinks: _socialLinks,
+                onChanged: (links) =>
+                    setState(() => _socialLinks = links),
               ),
             ),
             FormSection(

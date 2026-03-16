@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Profile {
 
- String get fullName; String get title; String get about; String get email; String? get phoneNumber; String? get linkedInUrl; String? get githubUrl; String? get avatarUrl; String? get location; String? get timezone; String? get cvUrl; List<Skill> get skills; List<Language> get languages; List<String> get interests;
+ String get fullName; String get title; String get about; String get email; String? get phoneNumber; String? get avatarUrl; String? get location; String? get timezone; String? get cvUrl; List<Skill> get skills; List<Language> get languages; List<String> get interests; List<SocialLink> get socialLinks;
 /// Create a copy of Profile
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $ProfileCopyWith<Profile> get copyWith => _$ProfileCopyWithImpl<Profile>(this as
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Profile&&(identical(other.fullName, fullName) || other.fullName == fullName)&&(identical(other.title, title) || other.title == title)&&(identical(other.about, about) || other.about == about)&&(identical(other.email, email) || other.email == email)&&(identical(other.phoneNumber, phoneNumber) || other.phoneNumber == phoneNumber)&&(identical(other.linkedInUrl, linkedInUrl) || other.linkedInUrl == linkedInUrl)&&(identical(other.githubUrl, githubUrl) || other.githubUrl == githubUrl)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.location, location) || other.location == location)&&(identical(other.timezone, timezone) || other.timezone == timezone)&&(identical(other.cvUrl, cvUrl) || other.cvUrl == cvUrl)&&const DeepCollectionEquality().equals(other.skills, skills)&&const DeepCollectionEquality().equals(other.languages, languages)&&const DeepCollectionEquality().equals(other.interests, interests));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Profile&&(identical(other.fullName, fullName) || other.fullName == fullName)&&(identical(other.title, title) || other.title == title)&&(identical(other.about, about) || other.about == about)&&(identical(other.email, email) || other.email == email)&&(identical(other.phoneNumber, phoneNumber) || other.phoneNumber == phoneNumber)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.location, location) || other.location == location)&&(identical(other.timezone, timezone) || other.timezone == timezone)&&(identical(other.cvUrl, cvUrl) || other.cvUrl == cvUrl)&&const DeepCollectionEquality().equals(other.skills, skills)&&const DeepCollectionEquality().equals(other.languages, languages)&&const DeepCollectionEquality().equals(other.interests, interests)&&const DeepCollectionEquality().equals(other.socialLinks, socialLinks));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,fullName,title,about,email,phoneNumber,linkedInUrl,githubUrl,avatarUrl,location,timezone,cvUrl,const DeepCollectionEquality().hash(skills),const DeepCollectionEquality().hash(languages),const DeepCollectionEquality().hash(interests));
+int get hashCode => Object.hash(runtimeType,fullName,title,about,email,phoneNumber,avatarUrl,location,timezone,cvUrl,const DeepCollectionEquality().hash(skills),const DeepCollectionEquality().hash(languages),const DeepCollectionEquality().hash(interests),const DeepCollectionEquality().hash(socialLinks));
 
 @override
 String toString() {
-  return 'Profile(fullName: $fullName, title: $title, about: $about, email: $email, phoneNumber: $phoneNumber, linkedInUrl: $linkedInUrl, githubUrl: $githubUrl, avatarUrl: $avatarUrl, location: $location, timezone: $timezone, cvUrl: $cvUrl, skills: $skills, languages: $languages, interests: $interests)';
+  return 'Profile(fullName: $fullName, title: $title, about: $about, email: $email, phoneNumber: $phoneNumber, avatarUrl: $avatarUrl, location: $location, timezone: $timezone, cvUrl: $cvUrl, skills: $skills, languages: $languages, interests: $interests, socialLinks: $socialLinks)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $ProfileCopyWith<$Res>  {
   factory $ProfileCopyWith(Profile value, $Res Function(Profile) _then) = _$ProfileCopyWithImpl;
 @useResult
 $Res call({
- String fullName, String title, String about, String email, String? phoneNumber, String? linkedInUrl, String? githubUrl, String? avatarUrl, String? location, String? timezone, String? cvUrl, List<Skill> skills, List<Language> languages, List<String> interests
+ String fullName, String title, String about, String email, String? phoneNumber, String? avatarUrl, String? location, String? timezone, String? cvUrl, List<Skill> skills, List<Language> languages, List<String> interests, List<SocialLink> socialLinks
 });
 
 
@@ -65,15 +65,13 @@ class _$ProfileCopyWithImpl<$Res>
 
 /// Create a copy of Profile
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? fullName = null,Object? title = null,Object? about = null,Object? email = null,Object? phoneNumber = freezed,Object? linkedInUrl = freezed,Object? githubUrl = freezed,Object? avatarUrl = freezed,Object? location = freezed,Object? timezone = freezed,Object? cvUrl = freezed,Object? skills = null,Object? languages = null,Object? interests = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? fullName = null,Object? title = null,Object? about = null,Object? email = null,Object? phoneNumber = freezed,Object? avatarUrl = freezed,Object? location = freezed,Object? timezone = freezed,Object? cvUrl = freezed,Object? skills = null,Object? languages = null,Object? interests = null,Object? socialLinks = null,}) {
   return _then(_self.copyWith(
 fullName: null == fullName ? _self.fullName : fullName // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,about: null == about ? _self.about : about // ignore: cast_nullable_to_non_nullable
 as String,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String,phoneNumber: freezed == phoneNumber ? _self.phoneNumber : phoneNumber // ignore: cast_nullable_to_non_nullable
-as String?,linkedInUrl: freezed == linkedInUrl ? _self.linkedInUrl : linkedInUrl // ignore: cast_nullable_to_non_nullable
-as String?,githubUrl: freezed == githubUrl ? _self.githubUrl : githubUrl // ignore: cast_nullable_to_non_nullable
 as String?,avatarUrl: freezed == avatarUrl ? _self.avatarUrl : avatarUrl // ignore: cast_nullable_to_non_nullable
 as String?,location: freezed == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
 as String?,timezone: freezed == timezone ? _self.timezone : timezone // ignore: cast_nullable_to_non_nullable
@@ -81,7 +79,8 @@ as String?,cvUrl: freezed == cvUrl ? _self.cvUrl : cvUrl // ignore: cast_nullabl
 as String?,skills: null == skills ? _self.skills : skills // ignore: cast_nullable_to_non_nullable
 as List<Skill>,languages: null == languages ? _self.languages : languages // ignore: cast_nullable_to_non_nullable
 as List<Language>,interests: null == interests ? _self.interests : interests // ignore: cast_nullable_to_non_nullable
-as List<String>,
+as List<String>,socialLinks: null == socialLinks ? _self.socialLinks : socialLinks // ignore: cast_nullable_to_non_nullable
+as List<SocialLink>,
   ));
 }
 
@@ -166,10 +165,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String fullName,  String title,  String about,  String email,  String? phoneNumber,  String? linkedInUrl,  String? githubUrl,  String? avatarUrl,  String? location,  String? timezone,  String? cvUrl,  List<Skill> skills,  List<Language> languages,  List<String> interests)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String fullName,  String title,  String about,  String email,  String? phoneNumber,  String? avatarUrl,  String? location,  String? timezone,  String? cvUrl,  List<Skill> skills,  List<Language> languages,  List<String> interests,  List<SocialLink> socialLinks)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Profile() when $default != null:
-return $default(_that.fullName,_that.title,_that.about,_that.email,_that.phoneNumber,_that.linkedInUrl,_that.githubUrl,_that.avatarUrl,_that.location,_that.timezone,_that.cvUrl,_that.skills,_that.languages,_that.interests);case _:
+return $default(_that.fullName,_that.title,_that.about,_that.email,_that.phoneNumber,_that.avatarUrl,_that.location,_that.timezone,_that.cvUrl,_that.skills,_that.languages,_that.interests,_that.socialLinks);case _:
   return orElse();
 
 }
@@ -187,10 +186,10 @@ return $default(_that.fullName,_that.title,_that.about,_that.email,_that.phoneNu
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String fullName,  String title,  String about,  String email,  String? phoneNumber,  String? linkedInUrl,  String? githubUrl,  String? avatarUrl,  String? location,  String? timezone,  String? cvUrl,  List<Skill> skills,  List<Language> languages,  List<String> interests)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String fullName,  String title,  String about,  String email,  String? phoneNumber,  String? avatarUrl,  String? location,  String? timezone,  String? cvUrl,  List<Skill> skills,  List<Language> languages,  List<String> interests,  List<SocialLink> socialLinks)  $default,) {final _that = this;
 switch (_that) {
 case _Profile():
-return $default(_that.fullName,_that.title,_that.about,_that.email,_that.phoneNumber,_that.linkedInUrl,_that.githubUrl,_that.avatarUrl,_that.location,_that.timezone,_that.cvUrl,_that.skills,_that.languages,_that.interests);case _:
+return $default(_that.fullName,_that.title,_that.about,_that.email,_that.phoneNumber,_that.avatarUrl,_that.location,_that.timezone,_that.cvUrl,_that.skills,_that.languages,_that.interests,_that.socialLinks);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -207,10 +206,10 @@ return $default(_that.fullName,_that.title,_that.about,_that.email,_that.phoneNu
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String fullName,  String title,  String about,  String email,  String? phoneNumber,  String? linkedInUrl,  String? githubUrl,  String? avatarUrl,  String? location,  String? timezone,  String? cvUrl,  List<Skill> skills,  List<Language> languages,  List<String> interests)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String fullName,  String title,  String about,  String email,  String? phoneNumber,  String? avatarUrl,  String? location,  String? timezone,  String? cvUrl,  List<Skill> skills,  List<Language> languages,  List<String> interests,  List<SocialLink> socialLinks)?  $default,) {final _that = this;
 switch (_that) {
 case _Profile() when $default != null:
-return $default(_that.fullName,_that.title,_that.about,_that.email,_that.phoneNumber,_that.linkedInUrl,_that.githubUrl,_that.avatarUrl,_that.location,_that.timezone,_that.cvUrl,_that.skills,_that.languages,_that.interests);case _:
+return $default(_that.fullName,_that.title,_that.about,_that.email,_that.phoneNumber,_that.avatarUrl,_that.location,_that.timezone,_that.cvUrl,_that.skills,_that.languages,_that.interests,_that.socialLinks);case _:
   return null;
 
 }
@@ -222,7 +221,7 @@ return $default(_that.fullName,_that.title,_that.about,_that.email,_that.phoneNu
 @JsonSerializable()
 
 class _Profile implements Profile {
-  const _Profile({required this.fullName, required this.title, required this.about, required this.email, this.phoneNumber, this.linkedInUrl, this.githubUrl, this.avatarUrl, this.location, this.timezone, this.cvUrl, final  List<Skill> skills = const [], final  List<Language> languages = const [], final  List<String> interests = const []}): _skills = skills,_languages = languages,_interests = interests;
+  const _Profile({required this.fullName, required this.title, required this.about, required this.email, this.phoneNumber, this.avatarUrl, this.location, this.timezone, this.cvUrl, final  List<Skill> skills = const [], final  List<Language> languages = const [], final  List<String> interests = const [], final  List<SocialLink> socialLinks = const []}): _skills = skills,_languages = languages,_interests = interests,_socialLinks = socialLinks;
   factory _Profile.fromJson(Map<String, dynamic> json) => _$ProfileFromJson(json);
 
 @override final  String fullName;
@@ -230,8 +229,6 @@ class _Profile implements Profile {
 @override final  String about;
 @override final  String email;
 @override final  String? phoneNumber;
-@override final  String? linkedInUrl;
-@override final  String? githubUrl;
 @override final  String? avatarUrl;
 @override final  String? location;
 @override final  String? timezone;
@@ -257,6 +254,13 @@ class _Profile implements Profile {
   return EqualUnmodifiableListView(_interests);
 }
 
+ final  List<SocialLink> _socialLinks;
+@override@JsonKey() List<SocialLink> get socialLinks {
+  if (_socialLinks is EqualUnmodifiableListView) return _socialLinks;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_socialLinks);
+}
+
 
 /// Create a copy of Profile
 /// with the given fields replaced by the non-null parameter values.
@@ -271,16 +275,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Profile&&(identical(other.fullName, fullName) || other.fullName == fullName)&&(identical(other.title, title) || other.title == title)&&(identical(other.about, about) || other.about == about)&&(identical(other.email, email) || other.email == email)&&(identical(other.phoneNumber, phoneNumber) || other.phoneNumber == phoneNumber)&&(identical(other.linkedInUrl, linkedInUrl) || other.linkedInUrl == linkedInUrl)&&(identical(other.githubUrl, githubUrl) || other.githubUrl == githubUrl)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.location, location) || other.location == location)&&(identical(other.timezone, timezone) || other.timezone == timezone)&&(identical(other.cvUrl, cvUrl) || other.cvUrl == cvUrl)&&const DeepCollectionEquality().equals(other._skills, _skills)&&const DeepCollectionEquality().equals(other._languages, _languages)&&const DeepCollectionEquality().equals(other._interests, _interests));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Profile&&(identical(other.fullName, fullName) || other.fullName == fullName)&&(identical(other.title, title) || other.title == title)&&(identical(other.about, about) || other.about == about)&&(identical(other.email, email) || other.email == email)&&(identical(other.phoneNumber, phoneNumber) || other.phoneNumber == phoneNumber)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.location, location) || other.location == location)&&(identical(other.timezone, timezone) || other.timezone == timezone)&&(identical(other.cvUrl, cvUrl) || other.cvUrl == cvUrl)&&const DeepCollectionEquality().equals(other._skills, _skills)&&const DeepCollectionEquality().equals(other._languages, _languages)&&const DeepCollectionEquality().equals(other._interests, _interests)&&const DeepCollectionEquality().equals(other._socialLinks, _socialLinks));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,fullName,title,about,email,phoneNumber,linkedInUrl,githubUrl,avatarUrl,location,timezone,cvUrl,const DeepCollectionEquality().hash(_skills),const DeepCollectionEquality().hash(_languages),const DeepCollectionEquality().hash(_interests));
+int get hashCode => Object.hash(runtimeType,fullName,title,about,email,phoneNumber,avatarUrl,location,timezone,cvUrl,const DeepCollectionEquality().hash(_skills),const DeepCollectionEquality().hash(_languages),const DeepCollectionEquality().hash(_interests),const DeepCollectionEquality().hash(_socialLinks));
 
 @override
 String toString() {
-  return 'Profile(fullName: $fullName, title: $title, about: $about, email: $email, phoneNumber: $phoneNumber, linkedInUrl: $linkedInUrl, githubUrl: $githubUrl, avatarUrl: $avatarUrl, location: $location, timezone: $timezone, cvUrl: $cvUrl, skills: $skills, languages: $languages, interests: $interests)';
+  return 'Profile(fullName: $fullName, title: $title, about: $about, email: $email, phoneNumber: $phoneNumber, avatarUrl: $avatarUrl, location: $location, timezone: $timezone, cvUrl: $cvUrl, skills: $skills, languages: $languages, interests: $interests, socialLinks: $socialLinks)';
 }
 
 
@@ -291,7 +295,7 @@ abstract mixin class _$ProfileCopyWith<$Res> implements $ProfileCopyWith<$Res> {
   factory _$ProfileCopyWith(_Profile value, $Res Function(_Profile) _then) = __$ProfileCopyWithImpl;
 @override @useResult
 $Res call({
- String fullName, String title, String about, String email, String? phoneNumber, String? linkedInUrl, String? githubUrl, String? avatarUrl, String? location, String? timezone, String? cvUrl, List<Skill> skills, List<Language> languages, List<String> interests
+ String fullName, String title, String about, String email, String? phoneNumber, String? avatarUrl, String? location, String? timezone, String? cvUrl, List<Skill> skills, List<Language> languages, List<String> interests, List<SocialLink> socialLinks
 });
 
 
@@ -308,15 +312,13 @@ class __$ProfileCopyWithImpl<$Res>
 
 /// Create a copy of Profile
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? fullName = null,Object? title = null,Object? about = null,Object? email = null,Object? phoneNumber = freezed,Object? linkedInUrl = freezed,Object? githubUrl = freezed,Object? avatarUrl = freezed,Object? location = freezed,Object? timezone = freezed,Object? cvUrl = freezed,Object? skills = null,Object? languages = null,Object? interests = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? fullName = null,Object? title = null,Object? about = null,Object? email = null,Object? phoneNumber = freezed,Object? avatarUrl = freezed,Object? location = freezed,Object? timezone = freezed,Object? cvUrl = freezed,Object? skills = null,Object? languages = null,Object? interests = null,Object? socialLinks = null,}) {
   return _then(_Profile(
 fullName: null == fullName ? _self.fullName : fullName // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,about: null == about ? _self.about : about // ignore: cast_nullable_to_non_nullable
 as String,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String,phoneNumber: freezed == phoneNumber ? _self.phoneNumber : phoneNumber // ignore: cast_nullable_to_non_nullable
-as String?,linkedInUrl: freezed == linkedInUrl ? _self.linkedInUrl : linkedInUrl // ignore: cast_nullable_to_non_nullable
-as String?,githubUrl: freezed == githubUrl ? _self.githubUrl : githubUrl // ignore: cast_nullable_to_non_nullable
 as String?,avatarUrl: freezed == avatarUrl ? _self.avatarUrl : avatarUrl // ignore: cast_nullable_to_non_nullable
 as String?,location: freezed == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
 as String?,timezone: freezed == timezone ? _self.timezone : timezone // ignore: cast_nullable_to_non_nullable
@@ -324,7 +326,8 @@ as String?,cvUrl: freezed == cvUrl ? _self.cvUrl : cvUrl // ignore: cast_nullabl
 as String?,skills: null == skills ? _self._skills : skills // ignore: cast_nullable_to_non_nullable
 as List<Skill>,languages: null == languages ? _self._languages : languages // ignore: cast_nullable_to_non_nullable
 as List<Language>,interests: null == interests ? _self._interests : interests // ignore: cast_nullable_to_non_nullable
-as List<String>,
+as List<String>,socialLinks: null == socialLinks ? _self._socialLinks : socialLinks // ignore: cast_nullable_to_non_nullable
+as List<SocialLink>,
   ));
 }
 
