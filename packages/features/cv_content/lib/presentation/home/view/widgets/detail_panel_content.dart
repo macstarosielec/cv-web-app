@@ -2,10 +2,13 @@ import 'package:cv_content/presentation/contact/view/widgets/contact_panel.dart'
 import 'package:cv_content/presentation/experience/cubit/work_experience_cubit.dart';
 import 'package:cv_content/presentation/experience/cubit/work_experience_state.dart';
 import 'package:cv_content/presentation/experience/view/widgets/experience_list.dart';
+import 'package:cv_content/presentation/home/cubit/profile_cubit.dart';
+import 'package:cv_content/presentation/home/cubit/profile_state.dart';
 import 'package:cv_content/presentation/models/detail_panel_type.dart';
 import 'package:cv_content/presentation/projects/cubit/projects_cubit.dart';
 import 'package:cv_content/presentation/projects/cubit/projects_state.dart';
 import 'package:cv_content/presentation/projects/view/widgets/projects_list.dart';
+import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/widgets/dot_loader.dart';
@@ -46,10 +49,19 @@ class DetailPanelContent extends StatelessWidget {
               loading: () => const Center(
                 child: DotLoader(),
               ),
-              loaded: (experiences) => ExperienceList(
-                key: const ValueKey('experience'),
-                experiences: experiences,
-              ),
+              loaded: (experiences) {
+                final profileState =
+                    context.watch<ProfileCubit>().state;
+                final skills = profileState.maybeWhen(
+                  loaded: (profile) => profile.skills,
+                  orElse: () => const <Skill>[],
+                );
+                return ExperienceList(
+                  key: const ValueKey('experience'),
+                  experiences: experiences,
+                  skills: skills,
+                );
+              },
               error: (exception) => SectionError(
                 exception: exception,
                 onRetry: () => context

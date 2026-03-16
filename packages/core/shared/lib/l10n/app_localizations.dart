@@ -145,7 +145,7 @@ abstract class AppLocalizations {
   /// No description provided for @experience.
   ///
   /// In en, this message translates to:
-  /// **'Experience'**
+  /// **'Work Experience'**
   String get experience;
 
   /// No description provided for @contact.
@@ -172,17 +172,17 @@ abstract class AppLocalizations {
   /// **'Phone'**
   String get phone;
 
-  /// No description provided for @linkedIn.
-  ///
-  /// In en, this message translates to:
-  /// **'LinkedIn'**
-  String get linkedIn;
-
   /// No description provided for @gitHub.
   ///
   /// In en, this message translates to:
   /// **'GitHub'**
   String get gitHub;
+
+  /// No description provided for @githubUrl.
+  ///
+  /// In en, this message translates to:
+  /// **'GitHub URL (optional)'**
+  String get githubUrl;
 
   /// No description provided for @present.
   ///
@@ -219,6 +219,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You don\'t have permission to access this data.'**
   String get errorPermission;
+
+  /// No description provided for @errorAuth.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid email or password. Please try again.'**
+  String get errorAuth;
 
   /// No description provided for @errorUnknown.
   ///
@@ -364,17 +370,29 @@ abstract class AppLocalizations {
   /// **'Phone Number (optional)'**
   String get phoneNumber;
 
-  /// No description provided for @linkedInUrl.
+  /// No description provided for @socialLinks.
   ///
   /// In en, this message translates to:
-  /// **'LinkedIn URL (optional)'**
-  String get linkedInUrl;
+  /// **'Social Links'**
+  String get socialLinks;
 
-  /// No description provided for @githubUrl.
+  /// No description provided for @platformName.
   ///
   /// In en, this message translates to:
-  /// **'GitHub URL (optional)'**
-  String get githubUrl;
+  /// **'Platform name'**
+  String get platformName;
+
+  /// No description provided for @platformUrl.
+  ///
+  /// In en, this message translates to:
+  /// **'URL'**
+  String get platformUrl;
+
+  /// No description provided for @addSocialLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Add social link'**
+  String get addSocialLink;
 
   /// No description provided for @saveProfile.
   ///
@@ -585,6 +603,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Role'**
   String get role;
+
+  /// No description provided for @location.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get location;
+
+  /// No description provided for @timezone.
+  ///
+  /// In en, this message translates to:
+  /// **'Timezone'**
+  String get timezone;
+
+  /// No description provided for @downloadCv.
+  ///
+  /// In en, this message translates to:
+  /// **'View CV'**
+  String get downloadCv;
+
+  /// No description provided for @cvPdf.
+  ///
+  /// In en, this message translates to:
+  /// **'CV (PDF)'**
+  String get cvPdf;
 }
 
 class _AppLocalizationsDelegate

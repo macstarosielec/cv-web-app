@@ -18,9 +18,9 @@ class App extends StatelessWidget {
 class AppView extends StatelessWidget {
   const AppView({super.key});
 
-  static const _accent = Color(0xFF2563EB);
-  static const _accentLight = Color(0xFF3B82F6);
-  static const _accentDark = Color(0xFF1D4ED8);
+  static const _accent = Color(0xFFDC2626);
+  static const _accentLight = Color(0xFFEF4444);
+  static const _accentDark = Color(0xFF991B1B);
 
   @override
   Widget build(BuildContext context) => MaterialApp(

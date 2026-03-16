@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared/analytics/analytics_service.dart';
 import 'package:shared/gen/colors.gen.dart';
 import 'package:shared/l10n/l10n.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProjectTile extends StatefulWidget {
   const ProjectTile({required this.project, super.key});
@@ -42,28 +44,6 @@ class _ProjectTileState extends State<ProjectTile>
     super.dispose();
   }
 
-  List<Shadow> _textGlow(Color accent, double progress) => [
-        Shadow(
-          color: accent.withValues(alpha: 0.9 * progress),
-          blurRadius: 20 * progress,
-        ),
-        Shadow(
-          color: accent.withValues(alpha: 0.6 * progress),
-          blurRadius: 40 * progress,
-        ),
-      ];
-
-  List<BoxShadow> _chipGlow(Color accent, double progress) => [
-        BoxShadow(
-          color: accent.withValues(alpha: 0.35 * progress),
-          blurRadius: 10 * progress,
-        ),
-        BoxShadow(
-          color: accent.withValues(alpha: 0.2 * progress),
-          blurRadius: 20 * progress,
-        ),
-      ];
-
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
@@ -86,12 +66,13 @@ class _ProjectTileState extends State<ProjectTile>
         builder: (context, _) {
           final progress = _hoverAnimation.value;
           final scale = 1.0 + (_scale - 1.0) * progress;
-          final textShadows = _textGlow(accent, progress);
-          final chipShadows = _chipGlow(accent, progress);
 
           return Container(
             margin: const EdgeInsets.only(bottom: 4),
             padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: accent.withValues(alpha: 0.06 * progress),
+            ),
             child: Transform.scale(
               scale: scale,
               alignment: Alignment.centerLeft,
@@ -106,7 +87,6 @@ class _ProjectTileState extends State<ProjectTile>
                           style: textTheme.titleMedium?.copyWith(
                             color: ColorName.textPrimary,
                             fontWeight: FontWeight.w600,
-                            shadows: textShadows,
                           ),
                         ),
                       ),
@@ -116,10 +96,18 @@ class _ProjectTileState extends State<ProjectTile>
                           padding: const EdgeInsets.only(left: 8),
                           child: Tooltip(
                             message: AppLocalizations.of(context).gitHub,
-                            child: const Icon(
-                              Icons.code,
-                              size: 18,
-                              color: ColorName.textMuted,
+                            child: MouseRegion(
+                              cursor: SystemMouseCursors.click,
+                              child: GestureDetector(
+                                onTap: () => unawaited(
+                                  launchUrl(Uri.parse(githubUrl)),
+                                ),
+                                child: FaIcon(
+                                  FontAwesomeIcons.github,
+                                  size: 18,
+                                  color: accent,
+                                ),
+                              ),
                             ),
                           ),
                         ),
@@ -134,8 +122,7 @@ class _ProjectTileState extends State<ProjectTile>
                     Text(
                       '$company \u2022 $role',
                       style: textTheme.bodySmall?.copyWith(
-                        color: ColorName.textMuted,
-                        shadows: textShadows,
+                        color: ColorName.textSecondary,
                       ),
                     ),
                   ],
@@ -145,7 +132,6 @@ class _ProjectTileState extends State<ProjectTile>
                       project.description!,
                       style: textTheme.bodyMedium?.copyWith(
                         color: ColorName.textSecondary,
-                        shadows: textShadows,
                       ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
@@ -163,14 +149,13 @@ class _ProjectTileState extends State<ProjectTile>
                                 horizontal: 8,
                                 vertical: 4,
                               ),
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 color: ColorName.surfaceLight,
-                                boxShadow: chipShadows,
                               ),
                               child: Text(
                                 tech,
                                 style: textTheme.labelSmall?.copyWith(
-                                  color: ColorName.textMuted,
+                                  color: ColorName.textSecondary,
                                 ),
                               ),
                             ),

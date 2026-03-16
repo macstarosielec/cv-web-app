@@ -18,7 +18,7 @@ class LoginView extends StatelessWidget {
               loading: () => const LoginCard(isLoading: true),
               authenticated: () => const DotLoader(),
               unauthenticated: () => const LoginCard(),
-              error: (message) => LoginCard(errorMessage: message),
+              error: (exception) => LoginCard(exception: exception),
             ),
           ),
         ),

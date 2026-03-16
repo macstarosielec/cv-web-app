@@ -52,6 +52,7 @@ class SectionError extends StatelessWidget {
 }
 
 IconData _iconFor(AppException exception) => switch (exception) {
+      AuthException() => Icons.lock_outline_rounded,
       NetworkException() => Icons.wifi_off_rounded,
       NotFoundException() => Icons.search_off_rounded,
       PermissionException() => Icons.lock_outline_rounded,
@@ -60,6 +61,7 @@ IconData _iconFor(AppException exception) => switch (exception) {
 
 String _messageFor(AppLocalizations l10n, AppException exception) =>
     switch (exception) {
+      AuthException() => l10n.errorAuth,
       NetworkException() => l10n.errorNetwork,
       NotFoundException() => l10n.errorNotFound,
       PermissionException() => l10n.errorPermission,

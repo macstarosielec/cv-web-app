@@ -4,6 +4,7 @@ export 'entities/language_proficiency.dart';
 export 'entities/profile.dart';
 export 'entities/project.dart';
 export 'entities/skill.dart';
+export 'entities/social_link.dart';
 export 'entities/work_experience.dart';
 
 // Exceptions

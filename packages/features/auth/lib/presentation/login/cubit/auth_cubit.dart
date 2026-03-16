@@ -21,8 +21,8 @@ class AuthCubit extends Cubit<AuthState> {
         password: password,
       );
       emit(const AuthState.authenticated());
-    } on Exception catch (e) {
-      emit(AuthState.error(message: e.toString()));
+    } on AppException catch (e) {
+      emit(AuthState.error(exception: e));
     }
   }
 

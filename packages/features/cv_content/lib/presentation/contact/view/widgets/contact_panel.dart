@@ -4,7 +4,9 @@ import 'package:cv_content/presentation/home/cubit/profile_state.dart';
 import 'package:cv_content/presentation/widgets/section_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared/l10n/l10n.dart';
+import 'package:shared/utils/social_link_icons.dart';
 import 'package:shared/widgets/dot_loader.dart';
 import 'package:shared/widgets/section_error.dart';
 
@@ -21,6 +23,7 @@ class ContactPanel extends StatelessWidget {
         ),
         loaded: (profile) {
           final l10n = AppLocalizations.of(context);
+          final accentColor = Theme.of(context).colorScheme.primary;
           return Padding(
             padding: const EdgeInsets.all(32),
             child: Column(
@@ -29,27 +32,33 @@ class ContactPanel extends StatelessWidget {
                 SectionTitle(l10n.contact),
                 const SizedBox(height: 24),
                 ContactRow(
-                  icon: Icons.email_outlined,
+                  icon: Icon(
+                    Icons.email_outlined,
+                    size: 20,
+                    color: accentColor,
+                  ),
                   label: l10n.email,
                   value: profile.email,
                 ),
                 if (profile.phoneNumber != null)
                   ContactRow(
-                    icon: Icons.phone_outlined,
+                    icon: Icon(
+                      Icons.phone_outlined,
+                      size: 20,
+                      color: accentColor,
+                    ),
                     label: l10n.phone,
                     value: profile.phoneNumber!,
                   ),
-                if (profile.linkedInUrl != null)
+                for (final link in profile.socialLinks)
                   ContactRow(
-                    icon: Icons.link,
-                    label: l10n.linkedIn,
-                    value: profile.linkedInUrl!,
-                  ),
-                if (profile.githubUrl != null)
-                  ContactRow(
-                    icon: Icons.code,
-                    label: l10n.gitHub,
-                    value: profile.githubUrl!,
+                    icon: FaIcon(
+                      socialLinkIcon(link.name),
+                      size: 20,
+                      color: accentColor,
+                    ),
+                    label: link.name,
+                    value: link.url,
                   ),
               ],
             ),

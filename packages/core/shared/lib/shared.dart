@@ -15,6 +15,7 @@ export 'theme/theme.dart';
 
 // Utils
 export 'utils/breakpoints.dart';
+export 'utils/social_link_icons.dart';
 export 'utils/visit_tracker.dart';
 
 // Widgets

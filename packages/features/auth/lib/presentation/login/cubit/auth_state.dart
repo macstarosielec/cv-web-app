@@ -1,3 +1,4 @@
+import 'package:domain/domain.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'auth_state.freezed.dart';
@@ -13,6 +14,6 @@ class AuthState with _$AuthState {
   const factory AuthState.unauthenticated() = _UnauthenticatedState;
 
   const factory AuthState.error({
-    required String message,
+    required AppException exception,
   }) = _ErrorState;
 }

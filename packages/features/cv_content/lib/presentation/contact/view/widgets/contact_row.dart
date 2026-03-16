@@ -9,7 +9,7 @@ class ContactRow extends StatelessWidget {
     super.key,
   });
 
-  final IconData icon;
+  final Widget icon;
   final String label;
   final String value;
 
@@ -25,14 +25,9 @@ class ContactRow extends StatelessWidget {
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
               color: ColorName.surfaceLight,
-              borderRadius: BorderRadius.circular(10),
               border: Border.all(color: ColorName.surfaceBorder),
             ),
-            child: Icon(
-              icon,
-              size: 20,
-              color: Theme.of(context).colorScheme.primary,
-            ),
+            child: icon,
           ),
           const SizedBox(width: 16),
           Column(

@@ -14,14 +14,14 @@ import 'package:flutter/material.dart';
 class ColorName {
   ColorName._();
 
-  /// Color: #DC2626
-  static const Color accent = Color(0xFFDC2626);
+  /// Color: #2563EB
+  static const Color accent = Color(0xFF2563EB);
 
-  /// Color: #991B1B
-  static const Color accentDark = Color(0xFF991B1B);
+  /// Color: #1D4ED8
+  static const Color accentDark = Color(0xFF1D4ED8);
 
-  /// Color: #EF4444
-  static const Color accentLight = Color(0xFFEF4444);
+  /// Color: #3B82F6
+  static const Color accentLight = Color(0xFF3B82F6);
 
   /// Color: #0A0A0A
   static const Color background = Color(0xFF0A0A0A);
