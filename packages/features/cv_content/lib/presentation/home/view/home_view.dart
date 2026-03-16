@@ -69,8 +69,10 @@ class HomeView extends HookWidget {
     useEffect(
       () {
         if (!hasInteracted.value && isDesktop && maxPanels > 1) {
+          final targetCount =
+              maxPanels.clamp(0, _autoPopulateOrder.length);
           final autoPanels =
-              _autoPopulateOrder.take(maxPanels).toList();
+              _autoPopulateOrder.take(targetCount).toList();
           // Add panels one by one. Each entry animation is 300ms,
           // so wait 400ms between additions for a clear cascade.
           for (var i = 0; i < autoPanels.length; i++) {
@@ -78,7 +80,8 @@ class HomeView extends HookWidget {
               Future<void>.delayed(
                 Duration(milliseconds: 400 * i),
                 () {
-                  if (!hasInteracted.value) {
+                  if (!hasInteracted.value &&
+                      !selectedPanels.value.contains(autoPanels[i])) {
                     selectedPanels.value = [
                       ...selectedPanels.value,
                       autoPanels[i],
@@ -226,7 +229,8 @@ class HomeView extends HookWidget {
     // Only enable multi-panel on truly wide screens.
     // Single-panel layout already handles up to ~1200px content well.
     // 1600+ can fit 2 panels, 2200+ can fit 3.
-    if (screenWidth >= 2200) return 3;
+    // Never exceed the number of available panel types.
+    if (screenWidth >= 2200) return DetailPanelType.values.length;
     if (screenWidth >= 1600) return 2;
     return 1;
   }
