@@ -14,6 +14,8 @@ dependencies:
   domain:
     path: ../domain
   firebase_auth: ^6.2.0
+  shared:
+    path: ../shared
   flutter:
     sdk: flutter
   get_it: ^9.2.0

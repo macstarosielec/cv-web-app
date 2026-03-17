@@ -7,6 +7,7 @@ import 'package:admin_content/presentation/projects/view/widgets/project_form.da
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared/constants/app_dimensions.dart';
 import 'package:shared/widgets/dot_loader.dart';
 import 'package:shared/widgets/section_error.dart';
 
@@ -99,7 +100,7 @@ class _ProjectsListViewState extends State<ProjectsListView>
         const SizedBox(width: 16),
         Expanded(
           child: ListView.builder(
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.all(AppDimensions.paddingMedium),
             itemCount: projects.length,
             itemBuilder: (context, index) {
               final animation =

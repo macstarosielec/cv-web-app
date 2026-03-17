@@ -1,5 +1,6 @@
 import 'package:cv_content/presentation/models/detail_panel_type.dart';
 import 'package:flutter/material.dart';
+import 'package:shared/constants/app_dimensions.dart';
 import 'package:shared/l10n/l10n.dart';
 import 'package:shared/widgets/action_chip.dart' as shared;
 
@@ -30,7 +31,7 @@ class NavigationChipsRow extends StatelessWidget {
             iconOnly: iconOnly,
           ),
         ),
-        const SizedBox(width: 12),
+        const SizedBox(width: AppDimensions.spacingSmall),
         Expanded(
           child: shared.ActionChip(
             label: l10n.experience,
@@ -40,7 +41,7 @@ class NavigationChipsRow extends StatelessWidget {
             iconOnly: iconOnly,
           ),
         ),
-        const SizedBox(width: 12),
+        const SizedBox(width: AppDimensions.spacingSmall),
         Expanded(
           child: shared.ActionChip(
             label: l10n.contact,

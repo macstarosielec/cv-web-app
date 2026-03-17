@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:shared/constants/app_dimensions.dart';
 import 'package:shared/gen/colors.gen.dart';
 import 'package:shared/widgets/fill_painter.dart';
 
@@ -148,9 +149,9 @@ class _ActionChipState extends State<ActionChip>
                 ),
               )
             else
-              Icon(widget.icon, size: 16, color: color),
+              Icon(widget.icon, size: AppDimensions.iconSizeDefault, color: color),
             if (_labelAnimation.value > 0) ...[
-              const SizedBox(width: 8),
+              const SizedBox(width: AppDimensions.spacingExtraSmall),
               Flexible(
                 child: Opacity(
                   opacity: widget.iconOnly ? _labelAnimation.value : 1,

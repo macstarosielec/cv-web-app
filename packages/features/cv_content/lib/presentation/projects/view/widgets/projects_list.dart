@@ -1,6 +1,7 @@
 import 'package:cv_content/presentation/projects/view/widgets/projects_column.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
+import 'package:shared/constants/app_dimensions.dart';
 import 'package:shared/l10n/l10n.dart';
 
 class ProjectsList extends StatefulWidget {
@@ -46,7 +47,7 @@ class _ProjectsListState extends State<ProjectsList> {
     List<PersonalProject> personal,
   ) =>
       ListView(
-        padding: const EdgeInsets.all(32),
+        padding: const EdgeInsets.all(AppDimensions.paddingLarge),
         children: [
           if (commercial.isNotEmpty)
             ProjectsColumn(
@@ -77,7 +78,7 @@ class _ProjectsListState extends State<ProjectsList> {
         children: [
           Expanded(
             child: ListView(
-              padding: const EdgeInsets.all(32),
+              padding: const EdgeInsets.all(AppDimensions.paddingLarge),
               children: [
                 ProjectsColumn(
                   key: _commercialKey,
@@ -89,7 +90,7 @@ class _ProjectsListState extends State<ProjectsList> {
           ),
           Expanded(
             child: ListView(
-              padding: const EdgeInsets.all(32),
+              padding: const EdgeInsets.all(AppDimensions.paddingLarge),
               children: [
                 ProjectsColumn(
                   key: const ValueKey('personal_dual'),

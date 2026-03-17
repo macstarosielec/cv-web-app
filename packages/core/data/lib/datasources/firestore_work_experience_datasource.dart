@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:domain/domain.dart';
 import 'package:injectable/injectable.dart';
+import 'package:shared/constants/app_constants.dart';
 
 @lazySingleton
 class FirestoreWorkExperienceDatasource {
@@ -9,10 +10,12 @@ class FirestoreWorkExperienceDatasource {
   final FirebaseFirestore _firestore;
 
   CollectionReference<Map<String, dynamic>> get _collection =>
-      _firestore.collection('work_experiences');
+      _firestore
+          .collection(AppConstants.firestoreCollectionWorkExperiences);
 
   Future<List<WorkExperience>> getWorkExperiences() async {
-    final snapshot = await _collection.orderBy('sortOrder').get();
+    final snapshot =
+        await _collection.orderBy(AppConstants.fieldSortOrder).get();
     return snapshot.docs.map((doc) {
       final data = Map<String, dynamic>.from(doc.data());
       data['id'] = doc.id;
@@ -38,7 +41,7 @@ class FirestoreWorkExperienceDatasource {
     for (final workExperience in workExperiences) {
       batch.update(
         _collection.doc(workExperience.id),
-        {'sortOrder': workExperience.sortOrder},
+        {AppConstants.fieldSortOrder: workExperience.sortOrder},
       );
     }
     await batch.commit();
@@ -46,23 +49,27 @@ class FirestoreWorkExperienceDatasource {
 
   Map<String, dynamic> _toFirestoreData(WorkExperience workExperience) {
     final data = Map<String, dynamic>.from(workExperience.toJson());
-    data['startDate'] = Timestamp.fromDate(workExperience.startDate);
+    data[AppConstants.fieldStartDate] =
+        Timestamp.fromDate(workExperience.startDate);
     if (workExperience.endDate != null) {
-      data['endDate'] = Timestamp.fromDate(workExperience.endDate!);
+      data[AppConstants.fieldEndDate] =
+          Timestamp.fromDate(workExperience.endDate!);
     } else {
-      data['endDate'] = null;
+      data[AppConstants.fieldEndDate] = null;
     }
     return data;
   }
 
   void _convertTimestampsToIso(Map<String, dynamic> data) {
-    final startDate = data['startDate'];
+    final startDate = data[AppConstants.fieldStartDate];
     if (startDate is Timestamp) {
-      data['startDate'] = startDate.toDate().toIso8601String();
+      data[AppConstants.fieldStartDate] =
+          startDate.toDate().toIso8601String();
     }
-    final endDate = data['endDate'];
+    final endDate = data[AppConstants.fieldEndDate];
     if (endDate is Timestamp) {
-      data['endDate'] = endDate.toDate().toIso8601String();
+      data[AppConstants.fieldEndDate] =
+          endDate.toDate().toIso8601String();
     }
   }
 }

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared/analytics/analytics_service.dart';
+import 'package:shared/constants/app_dimensions.dart';
 import 'package:shared/gen/colors.gen.dart';
 import 'package:shared/l10n/l10n.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -69,19 +70,19 @@ class _ProjectTileState extends State<ProjectTile>
 
           return Container(
             margin: const EdgeInsets.only(bottom: 4),
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(AppDimensions.paddingSmall),
             decoration: BoxDecoration(
               color: accent.withValues(alpha: 0.06 * progress),
             ),
-            child: Transform.scale(
-              scale: scale,
-              alignment: Alignment.centerLeft,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Transform.scale(
+                        scale: scale,
+                        alignment: Alignment.centerLeft,
                         child: Text(
                           project.name,
                           style: textTheme.titleMedium?.copyWith(
@@ -90,45 +91,53 @@ class _ProjectTileState extends State<ProjectTile>
                           ),
                         ),
                       ),
-                      if (project case PersonalProject(:final githubUrl?)
-                          when githubUrl.isNotEmpty)
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8),
-                          child: Tooltip(
-                            message: AppLocalizations.of(context).gitHub,
-                            child: MouseRegion(
-                              cursor: SystemMouseCursors.click,
-                              child: GestureDetector(
-                                onTap: () => unawaited(
-                                  launchUrl(Uri.parse(githubUrl)),
-                                ),
-                                child: FaIcon(
-                                  FontAwesomeIcons.github,
-                                  size: 18,
-                                  color: accent,
-                                ),
+                    ),
+                    if (project case PersonalProject(:final githubUrl?)
+                        when githubUrl.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8),
+                        child: Tooltip(
+                          message: AppLocalizations.of(context).gitHub,
+                          child: MouseRegion(
+                            cursor: SystemMouseCursors.click,
+                            child: GestureDetector(
+                              onTap: () => unawaited(
+                                launchUrl(Uri.parse(githubUrl)),
+                              ),
+                              child: FaIcon(
+                                FontAwesomeIcons.github,
+                                size: 18,
+                                color: accent,
                               ),
                             ),
                           ),
                         ),
-                    ],
-                  ),
-                  if (project
-                      case CommercialProject(
-                        :final company,
-                        :final role,
-                      )) ...[
-                    const SizedBox(height: 4),
-                    Text(
+                      ),
+                  ],
+                ),
+                if (project
+                    case CommercialProject(
+                      :final company,
+                      :final role,
+                    )) ...[
+                  const SizedBox(height: 4),
+                  Transform.scale(
+                    scale: scale,
+                    alignment: Alignment.centerLeft,
+                    child: Text(
                       '$company \u2022 $role',
                       style: textTheme.bodySmall?.copyWith(
                         color: ColorName.textSecondary,
                       ),
                     ),
-                  ],
-                  if (project.description != null) ...[
-                    const SizedBox(height: 8),
-                    Text(
+                  ),
+                ],
+                if (project.description != null) ...[
+                  const SizedBox(height: 8),
+                  Transform.scale(
+                    scale: scale,
+                    alignment: Alignment.centerLeft,
+                    child: Text(
                       project.description!,
                       style: textTheme.bodyMedium?.copyWith(
                         color: ColorName.textSecondary,
@@ -136,12 +145,16 @@ class _ProjectTileState extends State<ProjectTile>
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
-                  ],
-                  if (project.techStack.isNotEmpty) ...[
-                    const SizedBox(height: 12),
-                    Wrap(
-                      spacing: 6,
-                      runSpacing: 6,
+                  ),
+                ],
+                if (project.techStack.isNotEmpty) ...[
+                  const SizedBox(height: AppDimensions.spacingSmall),
+                  Transform.scale(
+                    scale: scale,
+                    alignment: Alignment.centerLeft,
+                    child: Wrap(
+                      spacing: AppDimensions.tagSpacingCompact,
+                      runSpacing: AppDimensions.tagSpacingCompact,
                       children: project.techStack
                           .map(
                             (tech) => Container(
@@ -162,9 +175,9 @@ class _ProjectTileState extends State<ProjectTile>
                           )
                           .toList(),
                     ),
-                  ],
+                  ),
                 ],
-              ),
+              ],
             ),
           );
         },

@@ -2,6 +2,7 @@ import 'package:admin_content/presentation/widgets/admin_input_decoration.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shared/constants/app_dimensions.dart';
 import 'package:shared/gen/colors.gen.dart';
 import 'package:shared/l10n/l10n.dart';
 import 'package:shared/utils/social_link_icons.dart';
@@ -64,10 +65,10 @@ class _SocialLinksEditorState extends State<SocialLinksEditor> {
               children: [
                 FaIcon(
                   socialLinkIcon(widget.socialLinks[i].name),
-                  size: 16,
+                  size: AppDimensions.iconSizeDefault,
                   color: accentColor,
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppDimensions.spacingSmall),
                 Text(
                   widget.socialLinks[i].name,
                   style: const TextStyle(
@@ -75,7 +76,7 @@ class _SocialLinksEditorState extends State<SocialLinksEditor> {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppDimensions.spacingExtraSmall),
                 Expanded(
                   child: Text(
                     widget.socialLinks[i].url,
@@ -86,19 +87,19 @@ class _SocialLinksEditorState extends State<SocialLinksEditor> {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppDimensions.spacingExtraSmall),
                 GestureDetector(
                   onTap: () => _remove(i),
                   child: const Icon(
                     Icons.close,
-                    size: 14,
+                    size: AppDimensions.iconSizeSmall,
                     color: ColorName.textMuted,
                   ),
                 ),
               ],
             ),
           ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppDimensions.spacingSmall),
         Row(
           children: [
             SizedBox(
@@ -113,7 +114,7 @@ class _SocialLinksEditorState extends State<SocialLinksEditor> {
                 style: const TextStyle(color: ColorName.textPrimary),
               ),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppDimensions.spacingExtraSmall),
             Expanded(
               child: TextField(
                 controller: _urlController,
@@ -126,7 +127,7 @@ class _SocialLinksEditorState extends State<SocialLinksEditor> {
                 onSubmitted: (_) => _add(),
               ),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppDimensions.spacingExtraSmall),
             shared.ActionChip(
               label: l10n.add,
               icon: Icons.add,

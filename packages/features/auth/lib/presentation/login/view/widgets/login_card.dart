@@ -1,6 +1,7 @@
 import 'package:auth/presentation/login/view/widgets/login_form.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
+import 'package:shared/constants/app_dimensions.dart';
 import 'package:shared/gen/colors.gen.dart';
 import 'package:shared/l10n/l10n.dart';
 import 'package:shared/widgets/gradient_card.dart';
@@ -53,16 +54,16 @@ class LoginCard extends StatelessWidget {
                 const SizedBox(height: 32),
                 LoginForm(isLoading: isLoading),
                 if (exception != null) ...[
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppDimensions.spacingMedium),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(
                         _iconFor(exception!),
-                        size: 16,
+                        size: AppDimensions.iconSizeDefault,
                         color: Theme.of(context).colorScheme.secondary,
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppDimensions.spacingExtraSmall),
                       Flexible(
                         child: Text(
                           _messageFor(l10n, exception!),

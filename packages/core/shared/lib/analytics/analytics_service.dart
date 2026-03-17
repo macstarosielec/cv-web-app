@@ -1,4 +1,5 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:shared/constants/app_constants.dart';
 
 class AnalyticsService {
   AnalyticsService() : _analytics = FirebaseAnalytics.instance;
@@ -7,14 +8,14 @@ class AnalyticsService {
 
   Future<void> logPanelOpened(String panelName) =>
       _analytics.logEvent(
-        name: 'panel_opened',
-        parameters: {'panel_name': panelName},
+        name: AppConstants.eventPanelOpened,
+        parameters: {AppConstants.paramPanelName: panelName},
       );
 
   Future<void> logProjectHovered(String projectName) =>
       _analytics.logEvent(
-        name: 'project_hovered',
-        parameters: {'project_name': projectName},
+        name: AppConstants.eventProjectHovered,
+        parameters: {AppConstants.paramProjectName: projectName},
       );
 
   Future<void> logExperienceHovered({
@@ -22,10 +23,10 @@ class AnalyticsService {
     required String company,
   }) =>
       _analytics.logEvent(
-        name: 'experience_hovered',
+        name: AppConstants.eventExperienceHovered,
         parameters: {
-          'title': title,
-          'company': company,
+          AppConstants.paramTitle: title,
+          AppConstants.paramCompany: company,
         },
       );
 
@@ -35,12 +36,12 @@ class AnalyticsService {
     String? message,
   }) =>
       _analytics.logEvent(
-        name: 'app_error',
+        name: AppConstants.eventAppError,
         parameters: {
-          'error_type': errorType,
-          'source': source,
+          AppConstants.paramErrorType: errorType,
+          AppConstants.paramSource: source,
           // ignore: use_null_aware_elements, map value type is Object not Object?
-          if (message != null) 'message': message,
+          if (message != null) AppConstants.paramMessage: message,
         },
       );
 }

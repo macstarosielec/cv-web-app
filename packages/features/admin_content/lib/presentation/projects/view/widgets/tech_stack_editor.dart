@@ -1,5 +1,6 @@
 import 'package:admin_content/presentation/widgets/admin_input_decoration.dart';
 import 'package:flutter/material.dart';
+import 'package:shared/constants/app_dimensions.dart';
 import 'package:shared/gen/colors.gen.dart';
 import 'package:shared/l10n/l10n.dart';
 import 'package:shared/widgets/action_chip.dart' as shared;
@@ -46,8 +47,8 @@ class _TechStackEditorState extends State<TechStackEditor> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Wrap(
-          spacing: 8,
-          runSpacing: 8,
+          spacing: AppDimensions.tagSpacing,
+          runSpacing: AppDimensions.tagSpacing,
           children: [
             for (var i = 0; i < widget.technologies.length; i++)
               Container(
@@ -70,7 +71,7 @@ class _TechStackEditorState extends State<TechStackEditor> {
                       onTap: () => _remove(i),
                       child: const Icon(
                         Icons.close,
-                        size: 14,
+                        size: AppDimensions.iconSizeSmall,
                         color: ColorName.textMuted,
                       ),
                     ),
@@ -79,7 +80,8 @@ class _TechStackEditorState extends State<TechStackEditor> {
               ),
           ],
         ),
-        if (widget.technologies.isNotEmpty) const SizedBox(height: 12),
+        if (widget.technologies.isNotEmpty)
+          const SizedBox(height: AppDimensions.spacingSmall),
         Row(
           children: [
             Expanded(
@@ -94,7 +96,7 @@ class _TechStackEditorState extends State<TechStackEditor> {
                 onSubmitted: (_) => _add(),
               ),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppDimensions.spacingExtraSmall),
             shared.ActionChip(
               label: l10n.add,
               icon: Icons.add,

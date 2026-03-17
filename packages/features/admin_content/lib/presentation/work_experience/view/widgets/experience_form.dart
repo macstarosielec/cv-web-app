@@ -5,6 +5,7 @@ import 'package:admin_content/presentation/widgets/admin_input_decoration.dart';
 import 'package:admin_content/presentation/widgets/form_section.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
+import 'package:shared/constants/app_dimensions.dart';
 import 'package:shared/gen/colors.gen.dart';
 import 'package:shared/l10n/l10n.dart';
 import 'package:shared/widgets/action_chip.dart' as shared;
@@ -167,7 +168,7 @@ class _ExperienceFormState extends State<ExperienceForm>
     var index = 0;
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(AppDimensions.paddingMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -183,19 +184,19 @@ class _ExperienceFormState extends State<ExperienceForm>
               ),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppDimensions.spacingMedium),
           _animated(
             index: index++,
             total: itemCount,
             child: Row(
               children: [
                 Expanded(child: _field(_title, l10n.title)),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppDimensions.spacingSmall),
                 Expanded(child: _field(_company, l10n.company)),
               ],
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppDimensions.spacingMedium),
           _animated(
             index: index++,
             total: itemCount,
@@ -212,7 +213,7 @@ class _ExperienceFormState extends State<ExperienceForm>
                           color: ColorName.textSecondary,
                         ),
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppDimensions.spacingExtraSmall),
                       TextButton(
                         onPressed: _pickStartDate,
                         child: Text(
@@ -232,7 +233,7 @@ class _ExperienceFormState extends State<ExperienceForm>
                           color: ColorName.textSecondary,
                         ),
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppDimensions.spacingExtraSmall),
                       TextButton(
                         onPressed: _pickEndDate,
                         child: Text(
@@ -249,7 +250,7 @@ class _ExperienceFormState extends State<ExperienceForm>
                           onTap: _clearEndDate,
                           child: const Icon(
                             Icons.close,
-                            size: 14,
+                            size: AppDimensions.iconSizeSmall,
                             color: ColorName.textMuted,
                           ),
                         ),
@@ -273,7 +274,7 @@ class _ExperienceFormState extends State<ExperienceForm>
               ),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppDimensions.spacingMedium),
           _animated(
             index: index,
             total: itemCount,
@@ -285,7 +286,7 @@ class _ExperienceFormState extends State<ExperienceForm>
                   onTap: _save,
                 ),
                 if (_isDirty || _isEditing) ...[
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppDimensions.spacingExtraSmall),
                   shared.ActionChip(
                     label: l10n.discard,
                     icon: Icons.close,

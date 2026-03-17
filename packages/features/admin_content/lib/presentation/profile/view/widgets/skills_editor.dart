@@ -1,6 +1,7 @@
 import 'package:admin_content/presentation/widgets/admin_input_decoration.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
+import 'package:shared/constants/app_dimensions.dart';
 import 'package:shared/gen/colors.gen.dart';
 import 'package:shared/l10n/l10n.dart';
 import 'package:shared/widgets/action_chip.dart' as shared;
@@ -56,8 +57,8 @@ class _SkillsEditorState extends State<SkillsEditor> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Wrap(
-            spacing: 8,
-            runSpacing: 8,
+            spacing: AppDimensions.tagSpacing,
+            runSpacing: AppDimensions.tagSpacing,
             children: [
               for (var i = 0; i < widget.skills.length; i++)
                 Container(
@@ -85,7 +86,7 @@ class _SkillsEditorState extends State<SkillsEditor> {
                         onTap: () => _remove(i),
                         child: const Icon(
                           Icons.close,
-                          size: 14,
+                          size: AppDimensions.iconSizeSmall,
                           color: ColorName.textMuted,
                         ),
                       ),
@@ -94,7 +95,7 @@ class _SkillsEditorState extends State<SkillsEditor> {
                 ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppDimensions.spacingSmall),
           Row(
             children: [
               Expanded(
@@ -107,7 +108,7 @@ class _SkillsEditorState extends State<SkillsEditor> {
                   style: const TextStyle(color: ColorName.textPrimary),
                 ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppDimensions.spacingExtraSmall),
               Expanded(
                 child: TextField(
                   controller: _categoryController,
@@ -118,7 +119,7 @@ class _SkillsEditorState extends State<SkillsEditor> {
                   style: const TextStyle(color: ColorName.textPrimary),
                 ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppDimensions.spacingExtraSmall),
               shared.ActionChip(
                 label: l10n.add,
                 icon: Icons.add,

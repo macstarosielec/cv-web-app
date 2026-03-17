@@ -6,6 +6,7 @@ import 'package:cv_content/presentation/widgets/navigation_chips_row.dart';
 import 'package:cv_content/presentation/widgets/section_title.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
+import 'package:shared/constants/app_dimensions.dart';
 import 'package:shared/gen/colors.gen.dart';
 import 'package:shared/l10n/l10n.dart';
 import 'package:shared/theme/theme.dart';
@@ -113,7 +114,7 @@ class _ProfileCardContentState extends State<ProfileCardContent>
             ),
           ),
         ),
-        const SizedBox(height: 24),
+        const SizedBox(height: AppDimensions.spacingLarge),
         StaggerItem(
           animation: _animations[2],
           child: Text(
@@ -136,7 +137,7 @@ class _ProfileCardContentState extends State<ProfileCardContent>
         ],
         if (profile.languages.isNotEmpty ||
             profile.interests.isNotEmpty) ...[
-          const SizedBox(height: 24),
+          const SizedBox(height: AppDimensions.spacingLarge),
           StaggerItem(
             animation: _animations[4],
             child: Row(
@@ -148,10 +149,10 @@ class _ProfileCardContentState extends State<ProfileCardContent>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SectionTitle(l10n.languages),
-                        const SizedBox(height: 12),
+                        const SizedBox(height: AppDimensions.spacingSmall),
                         Wrap(
-                          spacing: 8,
-                          runSpacing: 8,
+                          spacing: AppDimensions.tagSpacing,
+                          runSpacing: AppDimensions.tagSpacing,
                           children: profile.languages
                               .map(
                                 (lang) => Container(
@@ -184,10 +185,10 @@ class _ProfileCardContentState extends State<ProfileCardContent>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SectionTitle(l10n.interests),
-                        const SizedBox(height: 12),
+                        const SizedBox(height: AppDimensions.spacingSmall),
                         Wrap(
-                          spacing: 8,
-                          runSpacing: 8,
+                          spacing: AppDimensions.tagSpacing,
+                          runSpacing: AppDimensions.tagSpacing,
                           children: profile.interests
                               .map(
                                 (interest) => Container(
@@ -228,7 +229,7 @@ class _ProfileCardContentState extends State<ProfileCardContent>
                     if (profile.location != null) ...[
                       const Icon(
                         Icons.location_on_outlined,
-                        size: 16,
+                        size: AppDimensions.iconSizeDefault,
                         color: ColorName.textMuted,
                       ),
                       const SizedBox(width: 4),
@@ -244,7 +245,7 @@ class _ProfileCardContentState extends State<ProfileCardContent>
                     if (profile.timezone != null) ...[
                       const Icon(
                         Icons.schedule,
-                        size: 16,
+                        size: AppDimensions.iconSizeDefault,
                         color: ColorName.textMuted,
                       ),
                       const SizedBox(width: 4),
@@ -278,10 +279,10 @@ class _ProfileCardContentState extends State<ProfileCardContent>
                               children: [
                                 Icon(
                                   Icons.download,
-                                  size: 16,
+                                  size: AppDimensions.iconSizeDefault,
                                   color: Theme.of(context).colorScheme.primary,
                                 ),
-                                const SizedBox(width: 8),
+                                const SizedBox(width: AppDimensions.spacingExtraSmall),
                                 Text(
                                   l10n.downloadCv,
                                   style: textTheme.bodySmall?.copyWith(
@@ -298,7 +299,7 @@ class _ProfileCardContentState extends State<ProfileCardContent>
                   ],
                 ),
                 if (profile.socialLinks.isNotEmpty) ...[
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppDimensions.spacingMedium),
                   SocialLinksRow(socialLinks: profile.socialLinks),
                 ],
               ],
