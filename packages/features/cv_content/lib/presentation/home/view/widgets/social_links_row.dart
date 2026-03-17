@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shared/constants/app_dimensions.dart';
 import 'package:shared/gen/colors.gen.dart';
 import 'package:shared/utils/social_link_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -18,7 +19,7 @@ class SocialLinksRow extends StatelessWidget {
 
     return Wrap(
       spacing: 12,
-      runSpacing: 8,
+      runSpacing: AppDimensions.tagSpacing,
       children: socialLinks
           .map(
             (link) => Tooltip(
@@ -35,7 +36,7 @@ class SocialLinksRow extends StatelessWidget {
                     ),
                     child: FaIcon(
                       socialLinkIcon(link.name),
-                      size: 16,
+                      size: AppDimensions.iconSizeDefault,
                       color: accentColor,
                     ),
                   ),

@@ -6,6 +6,7 @@ import 'package:admin_content/presentation/widgets/admin_input_decoration.dart';
 import 'package:admin_content/presentation/widgets/form_section.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
+import 'package:shared/constants/app_dimensions.dart';
 import 'package:shared/gen/colors.gen.dart';
 import 'package:shared/l10n/l10n.dart';
 import 'package:shared/widgets/action_chip.dart' as shared;
@@ -179,7 +180,7 @@ class _ProjectFormState extends State<ProjectForm>
     var index = 0;
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(AppDimensions.paddingMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -195,7 +196,7 @@ class _ProjectFormState extends State<ProjectForm>
               ),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppDimensions.spacingMedium),
           _animated(
             index: index++,
             total: itemCount,
@@ -205,7 +206,7 @@ class _ProjectFormState extends State<ProjectForm>
                   l10n.projectType,
                   style: const TextStyle(color: ColorName.textSecondary),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppDimensions.spacingSmall),
                 ChoiceChip(
                   label: Text(
                     l10n.commercial,
@@ -220,7 +221,7 @@ class _ProjectFormState extends State<ProjectForm>
                   shape: const RoundedRectangleBorder(),
                   onSelected: (_) => setState(() => _isCommercial = true),
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppDimensions.spacingExtraSmall),
                 ChoiceChip(
                   label: Text(
                     l10n.personal,
@@ -238,13 +239,13 @@ class _ProjectFormState extends State<ProjectForm>
               ],
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppDimensions.spacingMedium),
           _animated(
             index: index++,
             total: itemCount,
             child: _field(_name, l10n.projectName),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppDimensions.spacingSmall),
           _animated(
             index: index++,
             total: itemCount,
@@ -255,27 +256,27 @@ class _ProjectFormState extends State<ProjectForm>
             ),
           ),
           if (_isCommercial) ...[
-            const SizedBox(height: 12),
+            const SizedBox(height: AppDimensions.spacingSmall),
             _animated(
               index: index++,
               total: itemCount,
               child: Row(
                 children: [
                   Expanded(child: _field(_company, l10n.company)),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppDimensions.spacingSmall),
                   Expanded(child: _field(_role, l10n.role)),
                 ],
               ),
             ),
           ] else ...[
-            const SizedBox(height: 12),
+            const SizedBox(height: AppDimensions.spacingSmall),
             _animated(
               index: index++,
               total: itemCount,
               child: _field(_githubUrl, l10n.githubUrl),
             ),
           ],
-          const SizedBox(height: 16),
+          const SizedBox(height: AppDimensions.spacingMedium),
           _animated(
             index: index++,
             total: itemCount,
@@ -305,7 +306,7 @@ class _ProjectFormState extends State<ProjectForm>
                 ),
               ),
             ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppDimensions.spacingMedium),
           _animated(
             index: index,
             total: itemCount,
@@ -317,7 +318,7 @@ class _ProjectFormState extends State<ProjectForm>
                   onTap: _save,
                 ),
                 if (_isDirty || _isEditing) ...[
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppDimensions.spacingExtraSmall),
                   shared.ActionChip(
                     label: l10n.discard,
                     icon: Icons.close,

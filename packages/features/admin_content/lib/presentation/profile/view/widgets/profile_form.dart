@@ -9,6 +9,7 @@ import 'package:admin_content/presentation/widgets/form_section.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared/constants/app_dimensions.dart';
 import 'package:shared/gen/colors.gen.dart';
 import 'package:shared/l10n/l10n.dart';
 import 'package:shared/widgets/action_chip.dart' as shared;
@@ -87,7 +88,7 @@ class _ProfileFormState extends State<ProfileForm> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     return SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AppDimensions.paddingMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -98,11 +99,11 @@ class _ProfileFormState extends State<ProfileForm> {
                   Row(
                     children: [
                       Expanded(child: _field(_fullName, l10n.fullName)),
-                      const SizedBox(width: 12),
+                      const SizedBox(width: AppDimensions.spacingSmall),
                       Expanded(child: _field(_title, l10n.title)),
                     ],
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppDimensions.spacingSmall),
                   _field(_about, l10n.about, maxLines: 5),
                 ],
               ),
@@ -112,7 +113,7 @@ class _ProfileFormState extends State<ProfileForm> {
               child: Row(
                 children: [
                   Expanded(child: _field(_email, l10n.email)),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppDimensions.spacingSmall),
                   Expanded(
                     child: _field(
                       _phoneNumber,
@@ -143,7 +144,7 @@ class _ProfileFormState extends State<ProfileForm> {
                     ),
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppDimensions.spacingSmall),
                 Expanded(
                   child: FormSection(
                     title: l10n.interests,
@@ -165,7 +166,7 @@ class _ProfileFormState extends State<ProfileForm> {
                     child: _field(_location, l10n.location),
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppDimensions.spacingSmall),
                 Expanded(
                   child: FormSection(
                     title: l10n.timezone,

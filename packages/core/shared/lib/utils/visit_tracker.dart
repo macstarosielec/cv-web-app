@@ -1,11 +1,15 @@
+import 'package:shared/constants/app_constants.dart';
 import 'package:web/web.dart' as web;
 
 class VisitTracker {
-  static const _key = 'cv_app_visited';
-
   static bool isFirstVisit() =>
-      web.window.localStorage.getItem(_key) == null;
+      web.window.localStorage.getItem(
+        AppConstants.localStorageKeyVisited,
+      ) ==
+      null;
 
-  static void markVisited() =>
-      web.window.localStorage.setItem(_key, '1');
+  static void markVisited() => web.window.localStorage.setItem(
+        AppConstants.localStorageKeyVisited,
+        '1',
+      );
 }

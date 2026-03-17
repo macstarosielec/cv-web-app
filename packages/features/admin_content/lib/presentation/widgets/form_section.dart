@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared/constants/app_dimensions.dart';
 import 'package:shared/gen/colors.gen.dart';
 
 class FormSection extends StatelessWidget {
@@ -26,7 +27,7 @@ class FormSection extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           child,
-          const SizedBox(height: 24),
+          const SizedBox(height: AppDimensions.spacingLarge),
         ],
       );
 }

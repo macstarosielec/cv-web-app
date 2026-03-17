@@ -1,5 +1,6 @@
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
+import 'package:shared/constants/app_dimensions.dart';
 import 'package:shared/gen/colors.gen.dart';
 import 'package:shared/l10n/l10n.dart';
 import 'package:shared/widgets/action_chip.dart' as shared;
@@ -27,7 +28,7 @@ class FullPageError extends StatelessWidget {
             size: 48,
             color: ColorName.textSecondary,
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppDimensions.spacingLarge),
           Text(
             _messageFor(l10n, exception),
             textAlign: TextAlign.center,

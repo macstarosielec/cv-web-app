@@ -11,6 +11,7 @@ import 'package:admin_content/presentation/work_experience/view/widgets/experien
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared/constants/app_dimensions.dart';
 import 'package:shared/l10n/l10n.dart';
 import 'package:shared/widgets/dot_loader.dart';
 import 'package:shared/widgets/section_error.dart';
@@ -138,7 +139,7 @@ class _WorkExperienceListViewState extends State<WorkExperienceListView>
               const SizedBox(width: 16),
               Expanded(
                 child: ListView.builder(
-                  padding: const EdgeInsets.all(24),
+                  padding: const EdgeInsets.all(AppDimensions.paddingMedium),
                   itemCount: experiences.length,
                   itemBuilder: (context, index) {
                     final animation =

@@ -4,6 +4,7 @@ import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared/analytics/analytics_service.dart';
+import 'package:shared/constants/app_dimensions.dart';
 import 'package:shared/gen/colors.gen.dart';
 import 'package:shared/l10n/l10n.dart';
 
@@ -55,7 +56,7 @@ class _ExperienceTileState extends State<ExperienceTile> {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         margin: const EdgeInsets.only(bottom: 4),
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppDimensions.paddingSmall),
         decoration: BoxDecoration(
           color: _isHovered
               ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.06)
@@ -113,7 +114,7 @@ class _ExperienceTileState extends State<ExperienceTile> {
               ),
             ),
             if (widget.experience.responsibilities.isNotEmpty) ...[
-              const SizedBox(height: 12),
+              const SizedBox(height: AppDimensions.spacingSmall),
               ...widget.experience.responsibilities.map(
                 (r) => Padding(
                   padding: const EdgeInsets.only(bottom: 4),

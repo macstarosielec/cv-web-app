@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:auth/presentation/login/cubit/auth_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared/constants/app_dimensions.dart';
 import 'package:shared/gen/colors.gen.dart';
 import 'package:shared/l10n/l10n.dart';
 import 'package:shared/widgets/action_chip.dart' as shared;
@@ -90,7 +91,7 @@ class _LoginFormState extends State<LoginForm> {
               ),
               onFieldSubmitted: (_) => _submit(),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppDimensions.spacingMedium),
             TextFormField(
               controller: _passwordController,
               obscureText: _obscurePassword,
@@ -107,7 +108,7 @@ class _LoginFormState extends State<LoginForm> {
                         ? Icons.visibility_outlined
                         : Icons.visibility_off_outlined,
                     color: ColorName.textSecondary,
-                    size: 16,
+                    size: AppDimensions.iconSizeDefault,
                   ),
                   onPressed: () =>
                       setState(() => _obscurePassword = !_obscurePassword),
@@ -115,7 +116,7 @@ class _LoginFormState extends State<LoginForm> {
               ),
               onFieldSubmitted: (_) => _submit(),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppDimensions.spacingLarge),
             Center(
               child: shared.ActionChip(
                 label: l10n.signIn,
@@ -140,7 +141,7 @@ class _LoginFormState extends State<LoginForm> {
       labelStyle: const TextStyle(color: ColorName.textSecondary),
       prefixIcon: Padding(
         padding: const EdgeInsets.only(bottom: 2),
-        child: Icon(prefixIcon, color: ColorName.textSecondary, size: 16),
+        child: Icon(prefixIcon, color: ColorName.textSecondary, size: AppDimensions.iconSizeDefault),
       ),
       suffixIcon: suffixIcon,
       filled: true,

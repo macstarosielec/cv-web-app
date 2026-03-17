@@ -1,5 +1,6 @@
 import 'package:admin_content/presentation/widgets/admin_input_decoration.dart';
 import 'package:flutter/material.dart';
+import 'package:shared/constants/app_dimensions.dart';
 import 'package:shared/gen/colors.gen.dart';
 import 'package:shared/l10n/l10n.dart';
 import 'package:shared/widgets/action_chip.dart' as shared;
@@ -61,7 +62,7 @@ class _ResponsibilitiesEditorState extends State<ResponsibilitiesEditor> {
                   onTap: () => _remove(i),
                   child: const Icon(
                     Icons.close,
-                    size: 14,
+                    size: AppDimensions.iconSizeSmall,
                     color: ColorName.textMuted,
                   ),
                 ),
@@ -82,7 +83,7 @@ class _ResponsibilitiesEditorState extends State<ResponsibilitiesEditor> {
                 onSubmitted: (_) => _add(),
               ),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppDimensions.spacingExtraSmall),
             shared.ActionChip(
               label: l10n.add,
               icon: Icons.add,

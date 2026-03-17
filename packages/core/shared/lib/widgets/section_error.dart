@@ -1,5 +1,6 @@
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
+import 'package:shared/constants/app_dimensions.dart';
 import 'package:shared/gen/colors.gen.dart';
 import 'package:shared/l10n/l10n.dart';
 import 'package:shared/widgets/action_chip.dart' as shared;
@@ -20,7 +21,7 @@ class SectionError extends StatelessWidget {
 
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(32),
+        padding: const EdgeInsets.all(AppDimensions.paddingLarge),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -29,7 +30,7 @@ class SectionError extends StatelessWidget {
               size: 32,
               color: ColorName.textSecondary,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppDimensions.spacingMedium),
             Text(
               _messageFor(l10n, exception),
               textAlign: TextAlign.center,

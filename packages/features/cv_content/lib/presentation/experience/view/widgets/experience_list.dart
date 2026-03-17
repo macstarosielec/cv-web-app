@@ -4,6 +4,7 @@ import 'package:cv_content/presentation/experience/view/widgets/experience_tile.
 import 'package:cv_content/presentation/widgets/section_title.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
+import 'package:shared/constants/app_dimensions.dart';
 import 'package:shared/gen/colors.gen.dart';
 import 'package:shared/l10n/l10n.dart';
 
@@ -86,7 +87,7 @@ class _ExperienceListState extends State<ExperienceList>
     var animIndex = 0;
 
     return ListView(
-      padding: const EdgeInsets.all(32),
+      padding: const EdgeInsets.all(AppDimensions.paddingLarge),
       children: [
         if (hasSkills) ...[
           _animatedItem(
@@ -95,10 +96,10 @@ class _ExperienceListState extends State<ExperienceList>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SectionTitle(l10n.skills),
-                const SizedBox(height: 12),
+                const SizedBox(height: AppDimensions.spacingSmall),
                 Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
+                  spacing: AppDimensions.tagSpacing,
+                  runSpacing: AppDimensions.tagSpacing,
                   children: widget.skills
                       .map(
                         (skill) => Container(
@@ -125,7 +126,7 @@ class _ExperienceListState extends State<ExperienceList>
           const SizedBox(height: 32),
         ],
         SectionTitle(l10n.workExperience),
-        const SizedBox(height: 24),
+        const SizedBox(height: AppDimensions.spacingLarge),
         ...List.generate(widget.experiences.length, (index) {
           return _animatedItem(
             animIndex + index,

@@ -1,6 +1,7 @@
 import 'package:admin_content/presentation/widgets/admin_input_decoration.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
+import 'package:shared/constants/app_dimensions.dart';
 import 'package:shared/gen/colors.gen.dart';
 import 'package:shared/l10n/l10n.dart';
 import 'package:shared/widgets/action_chip.dart' as shared;
@@ -69,7 +70,7 @@ class _LanguagesEditorState extends State<LanguagesEditor> {
                     onTap: () => _remove(i),
                     child: const Icon(
                       Icons.close,
-                      size: 14,
+                      size: AppDimensions.iconSizeSmall,
                       color: ColorName.textMuted,
                     ),
                   ),
@@ -89,7 +90,7 @@ class _LanguagesEditorState extends State<LanguagesEditor> {
                   style: const TextStyle(color: ColorName.textPrimary),
                 ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppDimensions.spacingExtraSmall),
               DropdownButton<LanguageProficiency>(
                 value: _proficiency,
                 dropdownColor: ColorName.surface,
@@ -106,7 +107,7 @@ class _LanguagesEditorState extends State<LanguagesEditor> {
                   if (value != null) setState(() => _proficiency = value);
                 },
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppDimensions.spacingExtraSmall),
               shared.ActionChip(
                 label: l10n.add,
                 icon: Icons.add,
