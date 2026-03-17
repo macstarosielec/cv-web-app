@@ -42,12 +42,12 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDDRhxhFOHZ_xxAdfn0GFVdiv_PwN8WusU',
-    appId: '1:464122169532:web:2b4b4afeb2a3076fbfa8b9',
+    apiKey: 'AIzaSyBz1KlUj6MdZkuKrzIbof9yjsh51KXEfSA',
+    appId: '1:464122169532:web:ad9bcd043e73084dbfa8b9',
     messagingSenderId: '464122169532',
     projectId: 'cv-web-app-prod',
     authDomain: 'cv-web-app-prod.firebaseapp.com',
     storageBucket: 'cv-web-app-prod.firebasestorage.app',
-    measurementId: 'G-ZYBNFETQ8D',
+    measurementId: 'G-NP3ZQEDWSG',
   );
 }

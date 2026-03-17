@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "cv-web-app-dev"
+    "default": "cv-web-app-prod",
+    "dev": "cv-web-app-dev",
+    "prod": "cv-web-app-prod"
   }
 }

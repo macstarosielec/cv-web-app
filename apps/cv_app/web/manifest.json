@@ -1,11 +1,11 @@
 {
-    "name": "cv_app",
-    "short_name": "cv_app",
+    "name": "Maciej Starosielec CV",
+    "short_name": "MS CV",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#0A0A0A",
+    "theme_color": "#2563EB",
+    "description": "Portfolio and CV of Maciej Starosielec, Senior Flutter Developer.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
