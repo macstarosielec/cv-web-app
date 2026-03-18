@@ -5,6 +5,7 @@ import 'package:shared/constants/app_dimensions.dart';
 import 'package:shared/gen/colors.gen.dart';
 import 'package:shared/l10n/l10n.dart';
 import 'package:shared/widgets/action_chip.dart' as shared;
+import 'package:shared/widgets/tag_chip.dart';
 
 class SkillsEditor extends StatefulWidget {
   const SkillsEditor({
@@ -61,37 +62,12 @@ class _SkillsEditorState extends State<SkillsEditor> {
             runSpacing: AppDimensions.tagSpacing,
             children: [
               for (var i = 0; i < widget.skills.length; i++)
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 6,
-                  ),
-                  decoration: const BoxDecoration(
-                    color: ColorName.surfaceLight,
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        widget.skills[i].category != null
-                            ? '${widget.skills[i].name} '
-                                '(${widget.skills[i].category})'
-                            : widget.skills[i].name,
-                        style: const TextStyle(
-                          color: ColorName.textPrimary,
-                        ),
-                      ),
-                      const SizedBox(width: 4),
-                      GestureDetector(
-                        onTap: () => _remove(i),
-                        child: const Icon(
-                          Icons.close,
-                          size: AppDimensions.iconSizeSmall,
-                          color: ColorName.textMuted,
-                        ),
-                      ),
-                    ],
-                  ),
+                TagChip(
+                  label: widget.skills[i].category != null
+                      ? '${widget.skills[i].name} '
+                          '(${widget.skills[i].category})'
+                      : widget.skills[i].name,
+                  onRemove: () => _remove(i),
                 ),
             ],
           ),

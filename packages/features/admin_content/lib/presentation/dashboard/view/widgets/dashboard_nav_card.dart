@@ -17,13 +17,6 @@ class DashboardNavCard extends StatelessWidget {
   final ValueChanged<AdminNavItem> onItemSelected;
   final VoidCallback onSignOut;
 
-  String _localizedLabel(AppLocalizations l10n, AdminNavItem item) =>
-      switch (item) {
-        AdminNavItem.profile => l10n.profile,
-        AdminNavItem.projects => l10n.projects,
-        AdminNavItem.workExperience => l10n.experience,
-      };
-
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
@@ -47,7 +40,7 @@ class DashboardNavCard extends StatelessWidget {
                 (item) => Padding(
                   padding: const EdgeInsets.only(bottom: 12),
                   child: shared.ActionChip(
-                    label: _localizedLabel(l10n, item),
+                    label: item.label(l10n),
                     icon: item.icon,
                     isSelected: selectedItem == item,
                     onTap: () => onItemSelected(item),

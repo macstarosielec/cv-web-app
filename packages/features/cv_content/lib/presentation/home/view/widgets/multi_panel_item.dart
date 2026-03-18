@@ -4,7 +4,6 @@ import 'dart:math';
 import 'package:cv_content/presentation/home/view/widgets/detail_panel_content.dart';
 import 'package:cv_content/presentation/models/detail_panel_type.dart';
 import 'package:flutter/material.dart';
-import 'package:shared/constants/app_constants.dart';
 import 'package:shared/widgets/gradient_card.dart';
 
 class MultiPanelItem extends StatefulWidget {
@@ -178,11 +177,6 @@ class _MultiPanelItemState extends State<MultiPanelItem>
         },
       );
 
-  int _seedForType(DetailPanelType? type) => switch (type) {
-        DetailPanelType.projects => AppConstants.gradientSeedProjects,
-        DetailPanelType.experience =>
-          AppConstants.gradientSeedExperience,
-        DetailPanelType.contact => AppConstants.gradientSeedContact,
-        null => AppConstants.gradientSeedProjects,
-      };
+  int _seedForType(DetailPanelType? type) =>
+      type?.gradientSeed ?? DetailPanelType.projects.gradientSeed;
 }

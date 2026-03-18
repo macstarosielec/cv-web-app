@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shared/constants/app_dimensions.dart';
 import 'package:shared/gen/colors.gen.dart';
 import 'package:shared/l10n/l10n.dart';
+import 'package:shared/utils/app_exception_ui.dart';
 import 'package:shared/widgets/gradient_card.dart';
 
 class LoginCard extends StatelessWidget {
@@ -59,14 +60,14 @@ class LoginCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(
-                        _iconFor(exception!),
+                        exception!.icon,
                         size: AppDimensions.iconSizeDefault,
                         color: Theme.of(context).colorScheme.secondary,
                       ),
                       const SizedBox(width: AppDimensions.spacingExtraSmall),
                       Flexible(
                         child: Text(
-                          _messageFor(l10n, exception!),
+                          exception!.message(l10n),
                           style: TextStyle(
                             color: Theme.of(context).colorScheme.secondary,
                             fontSize: 13,
@@ -83,20 +84,3 @@ class LoginCard extends StatelessWidget {
       );
   }
 }
-
-IconData _iconFor(AppException exception) => switch (exception) {
-      AuthException() => Icons.lock_outline_rounded,
-      NetworkException() => Icons.wifi_off_rounded,
-      NotFoundException() => Icons.search_off_rounded,
-      PermissionException() => Icons.lock_outline_rounded,
-      UnknownException() => Icons.error_outline_rounded,
-    };
-
-String _messageFor(AppLocalizations l10n, AppException exception) =>
-    switch (exception) {
-      AuthException() => l10n.errorAuth,
-      NetworkException() => l10n.errorNetwork,
-      NotFoundException() => l10n.errorNotFound,
-      PermissionException() => l10n.errorPermission,
-      UnknownException() => l10n.errorUnknown,
-    };

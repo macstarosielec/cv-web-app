@@ -18,28 +18,9 @@ class AdminProjectCard extends StatelessWidget {
   final Project project;
   final ValueChanged<Project> onEdit;
 
-  String _subtitle(AppLocalizations l10n) => project.when(
-        commercial: (id, name, company, role, description, techStack,
-                responsibilities, sortOrder) =>
-            '$company · $role',
-        personal: (id, name, description, techStack, githubUrl, sortOrder) =>
-            l10n.personalProject,
-      );
-
-  String get _id => project.when(
-        commercial: (id, name, company, role, description, techStack,
-                responsibilities, sortOrder) =>
-            id,
-        personal: (id, name, description, techStack, githubUrl, sortOrder) =>
-            id,
-      );
-
-  String get _name => project.when(
-        commercial: (id, name, company, role, description, techStack,
-                responsibilities, sortOrder) =>
-            name,
-        personal: (id, name, description, techStack, githubUrl, sortOrder) =>
-            name,
+  String _subtitle(AppLocalizations l10n) => project.map(
+        commercial: (p) => '${p.company} · ${p.role}',
+        personal: (_) => l10n.personalProject,
       );
 
   @override
@@ -60,7 +41,7 @@ class AdminProjectCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  _name,
+                  project.name,
                   style: const TextStyle(
                     color: ColorName.textPrimary,
                     fontWeight: FontWeight.w500,
@@ -89,9 +70,9 @@ class AdminProjectCard extends StatelessWidget {
               final confirmed = await ConfirmDeleteDialog.show(
                 context,
                 title: l10n.deleteProject,
-                content: l10n.confirmDeleteItem(_name),
+                content: l10n.confirmDeleteItem(project.name),
               );
-              if (confirmed) unawaited(cubit.deleteProject(_id));
+              if (confirmed) unawaited(cubit.deleteProject(project.id));
             },
           ),
         ],

@@ -4,6 +4,7 @@ import 'package:shared/constants/app_dimensions.dart';
 import 'package:shared/gen/colors.gen.dart';
 import 'package:shared/l10n/l10n.dart';
 import 'package:shared/widgets/action_chip.dart' as shared;
+import 'package:shared/widgets/tag_chip.dart';
 
 class TechStackEditor extends StatefulWidget {
   const TechStackEditor({
@@ -51,32 +52,9 @@ class _TechStackEditorState extends State<TechStackEditor> {
           runSpacing: AppDimensions.tagSpacing,
           children: [
             for (var i = 0; i < widget.technologies.length; i++)
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 6,
-                ),
-                decoration: const BoxDecoration(
-                  color: ColorName.surfaceLight,
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      widget.technologies[i],
-                      style: const TextStyle(color: ColorName.textPrimary),
-                    ),
-                    const SizedBox(width: 4),
-                    GestureDetector(
-                      onTap: () => _remove(i),
-                      child: const Icon(
-                        Icons.close,
-                        size: AppDimensions.iconSizeSmall,
-                        color: ColorName.textMuted,
-                      ),
-                    ),
-                  ],
-                ),
+              TagChip(
+                label: widget.technologies[i],
+                onRemove: () => _remove(i),
               ),
           ],
         ),
