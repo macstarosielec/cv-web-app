@@ -74,4 +74,5 @@ jobs:
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CV_WEB_APP_PROD }}
           channelId: live
           projectId: cv-web-app-prod
+          target: admin
           entryPoint: apps/admin_app

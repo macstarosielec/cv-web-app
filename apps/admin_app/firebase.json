@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "site": "cv-admin-app-prod",
+    "target": "admin",
     "public": "build/web",
     "ignore": [
       "firebase.json",
