@@ -1,16 +1,24 @@
 # admin_app
 
-A new Flutter project.
+Admin dashboard for managing CV content. Desktop-only, dark theme with electric blue accent. Uses Firebase Auth for authentication.
 
-## Getting Started
+## Running
 
-This project is a starting point for a Flutter application.
+```bash
+# From project root
+melos run run:admin:dev
 
-A few resources to get you started if this is your first Flutter project:
+# Or directly
+cd apps/admin_app && flutter run -d chrome -t lib/main_dev.dart
+```
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Firebase Hosting
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Deploys to separate hosting sites per environment using the `admin` deploy target defined in `.firebaserc`:
+
+| Environment | Site |
+|-------------|------|
+| Dev | `cv-admin-app-dev` |
+| Prod | `cv-admin-app-prod` |
+
+See [docs/firebase.md](../../docs/firebase.md) and [docs/admin-app.md](../../docs/admin-app.md) for details.

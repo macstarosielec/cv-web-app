@@ -1,0 +1,19 @@
+{
+  "projects": {
+    "default": "cv-web-app-dev",
+    "dev": "cv-web-app-dev",
+    "prod": "cv-web-app-prod"
+  },
+  "targets": {
+    "cv-web-app-dev": {
+      "hosting": {
+        "admin": ["cv-admin-app-dev"]
+      }
+    },
+    "cv-web-app-prod": {
+      "hosting": {
+        "admin": ["cv-admin-app-prod"]
+      }
+    }
+  }
+}
