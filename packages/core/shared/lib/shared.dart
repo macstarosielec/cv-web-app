@@ -1,5 +1,7 @@
 // Analytics
 export 'analytics/analytics_service.dart';
+// Bootstrap
+export 'bootstrap/shared_bootstrap.dart';
 // Config
 export 'config/app_config.dart';
 export 'config/firebase_config.dart';
@@ -15,12 +17,15 @@ export 'observers/route_observer.dart';
 export 'theme/theme.dart';
 
 // Utils
+export 'utils/app_exception_ui.dart';
 export 'utils/breakpoints.dart';
 export 'utils/social_link_icons.dart';
 export 'utils/visit_tracker.dart';
 
 // Widgets
+export 'widgets/accent_divider.dart';
 export 'widgets/action_chip.dart';
+export 'widgets/app_input_decoration.dart';
 export 'widgets/dot_loader.dart';
 export 'widgets/fill_painter.dart';
 export 'widgets/full_page_error.dart';
@@ -28,3 +33,4 @@ export 'widgets/gradient_card.dart';
 export 'widgets/matrix_rain.dart';
 export 'widgets/section_error.dart';
 export 'widgets/stagger_item.dart';
+export 'widgets/tag_chip.dart';

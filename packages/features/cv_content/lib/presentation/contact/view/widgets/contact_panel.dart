@@ -1,75 +1,187 @@
+import 'dart:async';
+
 import 'package:cv_content/presentation/contact/view/widgets/contact_row.dart';
+import 'package:cv_content/presentation/contact/view/widgets/decode_email_reveal.dart';
+import 'package:cv_content/presentation/contact/view/widgets/spinning_bracket_icon.dart';
 import 'package:cv_content/presentation/home/cubit/profile_cubit.dart';
 import 'package:cv_content/presentation/home/cubit/profile_state.dart';
 import 'package:cv_content/presentation/widgets/section_title.dart';
+import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared/constants/app_dimensions.dart';
 import 'package:shared/l10n/l10n.dart';
 import 'package:shared/utils/social_link_icons.dart';
+import 'package:shared/widgets/accent_divider.dart';
 import 'package:shared/widgets/dot_loader.dart';
 import 'package:shared/widgets/section_error.dart';
+import 'package:shared/widgets/stagger_item.dart';
 
 class ContactPanel extends StatelessWidget {
   const ContactPanel({super.key});
 
   @override
   Widget build(BuildContext context) =>
-    BlocBuilder<ProfileCubit, ProfileState>(
-      builder: (context, state) => state.when(
-        initial: () => const SizedBox.shrink(),
-        loading: () => const Center(
-          child: DotLoader(),
+      BlocBuilder<ProfileCubit, ProfileState>(
+        builder: (context, state) => state.when(
+          initial: () => const SizedBox.shrink(),
+          loading: () => const Center(
+            child: DotLoader(),
+          ),
+          loaded: (profile) => _ContactPanelContent(profile: profile),
+          error: (exception) => SectionError(
+            exception: exception,
+            onRetry: () => context.read<ProfileCubit>().loadProfile(),
+          ),
         ),
-        loaded: (profile) {
-          final l10n = AppLocalizations.of(context);
-          final accentColor = Theme.of(context).colorScheme.primary;
-          return Padding(
-            padding: const EdgeInsets.all(AppDimensions.paddingLarge),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SectionTitle(l10n.contact),
-                const SizedBox(height: AppDimensions.spacingLarge),
-                ContactRow(
-                  icon: Icon(
-                    Icons.email_outlined,
-                    size: AppDimensions.iconSizeMedium,
-                    color: accentColor,
-                  ),
-                  label: l10n.email,
-                  value: profile.email,
-                ),
-                if (profile.phoneNumber != null)
-                  ContactRow(
-                    icon: Icon(
-                      Icons.phone_outlined,
-                      size: AppDimensions.iconSizeMedium,
-                      color: accentColor,
-                    ),
-                    label: l10n.phone,
-                    value: profile.phoneNumber!,
-                  ),
-                for (final link in profile.socialLinks)
-                  ContactRow(
-                    icon: FaIcon(
-                      socialLinkIcon(link.name),
-                      size: AppDimensions.iconSizeMedium,
-                      color: accentColor,
-                    ),
-                    label: link.name,
-                    value: link.url,
-                  ),
-              ],
-            ),
-          );
-        },
-        error: (exception) => SectionError(
-          exception: exception,
-          onRetry: () =>
-              context.read<ProfileCubit>().loadProfile(),
-        ),
+      );
+}
+
+class _ContactPanelContent extends StatefulWidget {
+  const _ContactPanelContent({required this.profile});
+
+  final Profile profile;
+
+  @override
+  State<_ContactPanelContent> createState() => _ContactPanelContentState();
+}
+
+class _ContactPanelContentState extends State<_ContactPanelContent>
+    with TickerProviderStateMixin {
+  late final List<AnimationController> _controllers;
+  late final List<Animation<double>> _animations;
+
+  int get _itemCount =>
+      (widget.profile.phoneNumber != null ? 1 : 0) +
+      widget.profile.socialLinks.length;
+
+  @override
+  void initState() {
+    super.initState();
+    _controllers = List.generate(
+      _itemCount,
+      (index) => AnimationController(
+        vsync: this,
+        duration: const Duration(milliseconds: 400),
       ),
     );
+    _animations = _controllers
+        .map(
+          (c) => CurvedAnimation(
+            parent: c,
+            curve: Curves.easeOutCubic,
+          ),
+        )
+        .toList();
+    unawaited(_staggerAnimations());
+  }
+
+  Future<void> _staggerAnimations() async {
+    for (final controller in _controllers) {
+      await Future<void>.delayed(const Duration(milliseconds: 80));
+      if (mounted) unawaited(controller.forward());
+    }
+  }
+
+  @override
+  void dispose() {
+    for (final controller in _controllers) {
+      controller.dispose();
+    }
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final accentColor = Theme.of(context).colorScheme.primary;
+    final profile = widget.profile;
+
+    final items = <Widget>[];
+    var index = 0;
+
+    // Phone
+    if (profile.phoneNumber != null) {
+      items.add(
+        StaggerItem(
+          animation: _animations[index++],
+          child: ContactRow(
+            icon: Icon(
+              Icons.phone_outlined,
+              size: AppDimensions.iconSizeMedium,
+              color: accentColor,
+            ),
+            label: l10n.phone,
+            value: profile.phoneNumber!,
+            url: 'tel:${profile.phoneNumber}',
+          ),
+        ),
+      );
+    }
+
+    // Social links
+    for (final link in profile.socialLinks) {
+      items.add(
+        StaggerItem(
+          animation: _animations[index++],
+          child: ContactRow(
+            icon: FaIcon(
+              socialLinkIcon(link.name),
+              size: AppDimensions.iconSizeMedium,
+              color: accentColor,
+            ),
+            label: link.name,
+            value: _shortenUrl(link.url),
+            url: link.url,
+          ),
+        ),
+      );
+    }
+
+    // Build two-column grid from items
+    final rows = <Widget>[];
+    for (var i = 0; i < items.length; i += 2) {
+      final hasSecond = i + 1 < items.length;
+      rows.add(
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(child: items[i]),
+            if (hasSecond) ...[
+              const SizedBox(width: AppDimensions.spacingMedium),
+              Expanded(child: items[i + 1]),
+            ] else
+              const Expanded(child: SizedBox.shrink()),
+          ],
+        ),
+      );
+    }
+
+    return Padding(
+      padding: const EdgeInsets.all(AppDimensions.paddingLarge),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Center(child: SpinningBracketIcon(size: 150)),
+          const SizedBox(height: AppDimensions.spacingLarge),
+          SectionTitle(l10n.contact),
+          const SizedBox(height: AppDimensions.spacingLarge),
+          Center(child: DecodeEmailReveal(email: profile.email)),
+          const SizedBox(height: AppDimensions.spacingXLarge),
+          const AccentDivider(),
+          const SizedBox(height: AppDimensions.spacingLarge),
+          ...rows,
+        ],
+      ),
+    );
+  }
+
+  String _shortenUrl(String url) {
+    var short = url
+        .replaceFirst(RegExp('https?://'), '')
+        .replaceFirst('www.', '');
+    if (short.endsWith('/')) short = short.substring(0, short.length - 1);
+    return short;
+  }
 }

@@ -67,13 +67,6 @@ class _TransitionNavContentState extends State<TransitionNavContent>
     super.dispose();
   }
 
-  String _localizedLabel(AppLocalizations l10n, AdminNavItem item) =>
-      switch (item) {
-        AdminNavItem.profile => l10n.profile,
-        AdminNavItem.projects => l10n.projects,
-        AdminNavItem.workExperience => l10n.experience,
-      };
-
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
@@ -101,7 +94,7 @@ class _TransitionNavContentState extends State<TransitionNavContent>
                     child: StaggerItem(
                       animation: _animations[entry.key + 1],
                       child: shared.ActionChip(
-                        label: _localizedLabel(l10n, entry.value),
+                        label: entry.value.label(l10n),
                         icon: entry.value.icon,
                         isSelected: entry.key == 0,
                         onTap: () {},

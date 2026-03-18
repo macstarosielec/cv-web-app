@@ -1,9 +1,9 @@
 abstract final class AppConstants {
   // App Names
-  static const cvAppNameProd = 'CV WEB APP';
-  static const cvAppNameDev = '[DEV] CV WEB APP';
-  static const adminAppNameProd = 'ADMIN WEB APP';
-  static const adminAppNameDev = '[DEV] ADMIN WEB APP';
+  static const cvAppNameProd = 'RESUME';
+  static const cvAppNameDev = '[DEV] RESUME';
+  static const adminAppNameProd = 'RESUME ADMIN PANEL';
+  static const adminAppNameDev = '[DEV] RESUME ADMIN PANEL';
 
   // Firestore Collections
   static const firestoreCollectionProfile = 'profile';

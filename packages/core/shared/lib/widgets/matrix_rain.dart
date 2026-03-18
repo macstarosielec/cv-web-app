@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -22,7 +23,8 @@ class _MatrixRainState extends State<MatrixRain>
   @override
   void initState() {
     super.initState();
-    _ticker = createTicker(_onTick)..start();
+    _ticker = createTicker(_onTick);
+    unawaited(_ticker.start());
   }
 
   void _onTick(Duration elapsed) {

@@ -5,8 +5,9 @@ import 'package:cv_content/presentation/widgets/section_title.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/constants/app_dimensions.dart';
-import 'package:shared/gen/colors.gen.dart';
 import 'package:shared/l10n/l10n.dart';
+import 'package:shared/widgets/accent_divider.dart';
+import 'package:shared/widgets/tag_chip.dart';
 
 class ExperienceList extends StatefulWidget {
   const ExperienceList({
@@ -82,7 +83,6 @@ class _ExperienceListState extends State<ExperienceList>
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final textTheme = Theme.of(context).textTheme;
     final hasSkills = widget.skills.isNotEmpty;
     var animIndex = 0;
 
@@ -101,29 +101,15 @@ class _ExperienceListState extends State<ExperienceList>
                   spacing: AppDimensions.tagSpacing,
                   runSpacing: AppDimensions.tagSpacing,
                   children: widget.skills
-                      .map(
-                        (skill) => Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 6,
-                          ),
-                          decoration: const BoxDecoration(
-                            color: ColorName.surfaceLight,
-                          ),
-                          child: Text(
-                            skill.name,
-                            style: textTheme.bodySmall?.copyWith(
-                              color: ColorName.textSecondary,
-                            ),
-                          ),
-                        ),
-                      )
+                      .map((skill) => TagChip(label: skill.name))
                       .toList(),
                 ),
               ],
             ),
           ),
           const SizedBox(height: 32),
+          const AccentDivider(),
+          const SizedBox(height: AppDimensions.spacingLarge),
         ],
         SectionTitle(l10n.workExperience),
         const SizedBox(height: AppDimensions.spacingLarge),

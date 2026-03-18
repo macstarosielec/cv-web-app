@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:cv_content/presentation/home/view/widgets/social_links_row.dart';
 import 'package:cv_content/presentation/models/detail_panel_type.dart';
 import 'package:cv_content/presentation/widgets/navigation_chips_row.dart';
 import 'package:cv_content/presentation/widgets/section_title.dart';
@@ -11,6 +10,7 @@ import 'package:shared/gen/colors.gen.dart';
 import 'package:shared/l10n/l10n.dart';
 import 'package:shared/theme/theme.dart';
 import 'package:shared/widgets/stagger_item.dart';
+import 'package:shared/widgets/tag_chip.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ProfileCardContent extends StatefulWidget {
@@ -87,8 +87,7 @@ class _ProfileCardContentState extends State<ProfileCardContent>
 
     final hasBottomRow = profile.location != null ||
         profile.timezone != null ||
-        profile.cvUrl != null ||
-        profile.socialLinks.isNotEmpty;
+        profile.cvUrl != null;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -155,20 +154,9 @@ class _ProfileCardContentState extends State<ProfileCardContent>
                           runSpacing: AppDimensions.tagSpacing,
                           children: profile.languages
                               .map(
-                                (lang) => Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 12,
-                                    vertical: 6,
-                                  ),
-                                  decoration: const BoxDecoration(
-                                    color: ColorName.surfaceLight,
-                                  ),
-                                  child: Text(
-                                    '${lang.name} (${lang.proficiency.label})',
-                                    style: textTheme.bodySmall?.copyWith(
-                                      color: ColorName.textSecondary,
-                                    ),
-                                  ),
+                                (lang) => TagChip(
+                                  label:
+                                      '${lang.name} (${lang.proficiency.label})',
                                 ),
                               )
                               .toList(),
@@ -191,21 +179,7 @@ class _ProfileCardContentState extends State<ProfileCardContent>
                           runSpacing: AppDimensions.tagSpacing,
                           children: profile.interests
                               .map(
-                                (interest) => Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 12,
-                                    vertical: 6,
-                                  ),
-                                  decoration: const BoxDecoration(
-                                    color: ColorName.surfaceLight,
-                                  ),
-                                  child: Text(
-                                    interest,
-                                    style: textTheme.bodySmall?.copyWith(
-                                      color: ColorName.textSecondary,
-                                    ),
-                                  ),
-                                ),
+                                (interest) => TagChip(label: interest),
                               )
                               .toList(),
                         ),
@@ -298,10 +272,6 @@ class _ProfileCardContentState extends State<ProfileCardContent>
                       ),
                   ],
                 ),
-                if (profile.socialLinks.isNotEmpty) ...[
-                  const SizedBox(height: AppDimensions.spacingMedium),
-                  SocialLinksRow(socialLinks: profile.socialLinks),
-                ],
               ],
             ),
           ),

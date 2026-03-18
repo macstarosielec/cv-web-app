@@ -1,4 +1,5 @@
 import 'package:cv_content/presentation/home/view/widgets/profile_card_content.dart';
+import 'package:cv_content/presentation/home/view/widgets/social_links_row.dart';
 import 'package:cv_content/presentation/models/detail_panel_type.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
@@ -20,14 +21,24 @@ class ProfileCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => GradientCard(
-        child: Padding(
-          padding: const EdgeInsets.all(40),
-          child: ProfileCardContent(
-            profile: profile,
-            selectedPanels: selectedPanels,
-            onChipSelected: onChipSelected,
-            animate: animate,
-          ),
+        child: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(40),
+              child: ProfileCardContent(
+                profile: profile,
+                selectedPanels: selectedPanels,
+                onChipSelected: onChipSelected,
+                animate: animate,
+              ),
+            ),
+            if (profile.socialLinks.isNotEmpty)
+              Positioned(
+                top: 16,
+                right: 16,
+                child: SocialLinksRow(socialLinks: profile.socialLinks),
+              ),
+          ],
         ),
       );
 }

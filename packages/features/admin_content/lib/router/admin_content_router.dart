@@ -1,6 +1,6 @@
 import 'package:admin_content/presentation/dashboard/view/dashboard_page.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 
 part 'admin_content_router.gr.dart';
 
