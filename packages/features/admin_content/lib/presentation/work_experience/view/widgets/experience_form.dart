@@ -154,6 +154,7 @@ class _ExperienceFormState extends State<ExperienceForm>
       startDate: _startDate,
       endDate: _endDate,
       responsibilities: _responsibilities,
+      sortOrder: widget.workExperience?.sortOrder ?? 0,
     );
     widget.onSave(workExperience);
   }

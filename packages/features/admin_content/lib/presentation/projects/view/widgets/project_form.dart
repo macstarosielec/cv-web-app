@@ -148,6 +148,7 @@ class _ProjectFormState extends State<ProjectForm>
   }
 
   void _save() {
+    final sortOrder = widget.project?.sortOrder ?? 0;
     final project = _isCommercial
         ? Project.commercial(
             id: _projectId,
@@ -159,6 +160,7 @@ class _ProjectFormState extends State<ProjectForm>
                 : _description.text.trim(),
             techStack: _techStack,
             responsibilities: _responsibilities,
+            sortOrder: sortOrder,
           )
         : Project.personal(
             id: _projectId,
@@ -170,6 +172,7 @@ class _ProjectFormState extends State<ProjectForm>
             githubUrl: _githubUrl.text.trim().isEmpty
                 ? null
                 : _githubUrl.text.trim(),
+            sortOrder: sortOrder,
           );
     widget.onSave(project);
   }
