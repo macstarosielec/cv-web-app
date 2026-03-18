@@ -1,11 +1,11 @@
 {
-    "name": "Maciej Starosielec CV",
-    "short_name": "MS CV",
+    "name": "Online Resume",
+    "short_name": "Resume",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0A0A0A",
     "theme_color": "#2563EB",
-    "description": "Portfolio and CV of Maciej Starosielec, Senior Flutter Developer.",
+    "description": "Online Resume",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
