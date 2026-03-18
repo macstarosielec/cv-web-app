@@ -20,6 +20,7 @@ export 'utils/social_link_icons.dart';
 export 'utils/visit_tracker.dart';
 
 // Widgets
+export 'widgets/accent_divider.dart';
 export 'widgets/action_chip.dart';
 export 'widgets/dot_loader.dart';
 export 'widgets/fill_painter.dart';

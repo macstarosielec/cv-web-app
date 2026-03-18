@@ -3,6 +3,7 @@ import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/constants/app_dimensions.dart';
 import 'package:shared/l10n/l10n.dart';
+import 'package:shared/widgets/accent_divider.dart';
 
 class ProjectsList extends StatefulWidget {
   const ProjectsList({required this.projects, super.key});
@@ -55,15 +56,16 @@ class _ProjectsListState extends State<ProjectsList> {
               title: l10n.commercialProjects,
               projects: commercial,
             ),
+          if (commercial.isNotEmpty && personal.isNotEmpty) ...[
+            const SizedBox(height: AppDimensions.spacingMedium),
+            const AccentDivider(),
+            const SizedBox(height: AppDimensions.spacingLarge),
+          ],
           if (personal.isNotEmpty)
-            Padding(
-              padding:
-                  EdgeInsets.only(top: commercial.isNotEmpty ? 32 : 0),
-              child: ProjectsColumn(
-                key: const ValueKey('personal_single'),
-                title: l10n.personalProjects,
-                projects: personal,
-              ),
+            ProjectsColumn(
+              key: const ValueKey('personal_single'),
+              title: l10n.personalProjects,
+              projects: personal,
             ),
         ],
       );
@@ -88,6 +90,7 @@ class _ProjectsListState extends State<ProjectsList> {
               ],
             ),
           ),
+          const AccentDivider(vertical: true),
           Expanded(
             child: ListView(
               padding: const EdgeInsets.all(AppDimensions.paddingLarge),

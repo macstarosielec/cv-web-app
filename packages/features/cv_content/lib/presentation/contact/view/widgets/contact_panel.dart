@@ -13,6 +13,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared/constants/app_dimensions.dart';
 import 'package:shared/l10n/l10n.dart';
 import 'package:shared/utils/social_link_icons.dart';
+import 'package:shared/widgets/accent_divider.dart';
 import 'package:shared/widgets/dot_loader.dart';
 import 'package:shared/widgets/section_error.dart';
 import 'package:shared/widgets/stagger_item.dart';
@@ -168,13 +169,7 @@ class _ContactPanelContentState extends State<_ContactPanelContent>
           const SizedBox(height: AppDimensions.spacingLarge),
           Center(child: DecodeEmailReveal(email: profile.email)),
           const SizedBox(height: AppDimensions.spacingXLarge),
-          Divider(
-            color: Theme.of(context)
-                .colorScheme
-                .primary
-                .withValues(alpha: 0.2),
-            thickness: 1,
-          ),
+          const AccentDivider(),
           const SizedBox(height: AppDimensions.spacingLarge),
           ...rows,
         ],

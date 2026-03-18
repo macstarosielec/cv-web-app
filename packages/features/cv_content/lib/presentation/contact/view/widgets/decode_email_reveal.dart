@@ -23,6 +23,9 @@ class _DecodeEmailRevealState extends State<DecodeEmailReveal> {
   static const _scrambleInterval = Duration(milliseconds: 30);
   static const _revealInterval = Duration(milliseconds: 60);
 
+  /// Tracks revealed emails for the current session.
+  static final _revealedEmails = <String>{};
+
   final _random = Random();
   var _revealed = false;
   var _revealing = false;
@@ -30,6 +33,12 @@ class _DecodeEmailRevealState extends State<DecodeEmailReveal> {
   List<_CharState> _chars = [];
   Timer? _scrambleTimer;
   Timer? _revealTimer;
+
+  @override
+  void initState() {
+    super.initState();
+    _revealed = _revealedEmails.contains(widget.email);
+  }
 
   @override
   void dispose() {
@@ -75,6 +84,7 @@ class _DecodeEmailRevealState extends State<DecodeEmailReveal> {
           _revealTimer?.cancel();
           _revealed = true;
           _revealing = false;
+          _revealedEmails.add(widget.email);
         }
       });
     });
