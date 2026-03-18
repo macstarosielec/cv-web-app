@@ -104,7 +104,7 @@ class _DecodeEmailRevealState extends State<DecodeEmailReveal> {
     );
   }
 
-  static const _charWidth = 12.0;
+  static const _charWidth = 10.0;
   static const _charHeight = 24.0;
 
   Widget _buildContent(
@@ -118,23 +118,15 @@ class _DecodeEmailRevealState extends State<DecodeEmailReveal> {
         child: GestureDetector(
           onTap: () =>
               unawaited(launchUrl(Uri.parse('mailto:${widget.email}'))),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                Icons.email_outlined,
-                size: AppDimensions.iconSizeMedium,
-                color: accentColor,
+          child: _emailRow(
+            accentColor: accentColor,
+            cells: _buildCharCells(
+              widget.email,
+              List.filled(
+                widget.email.length,
+                baseStyle?.copyWith(color: ColorName.textPrimary),
               ),
-              const SizedBox(width: 12),
-              ..._buildCharCells(
-                widget.email,
-                List.filled(
-                  widget.email.length,
-                  baseStyle?.copyWith(color: ColorName.textPrimary),
-                ),
-              ),
-            ],
+            ),
           ),
         ),
       );
@@ -156,17 +148,9 @@ class _DecodeEmailRevealState extends State<DecodeEmailReveal> {
         text.write(i < _revealedCount ? widget.email[i] : _chars[i].char);
       }
 
-      return Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            Icons.email_outlined,
-            size: AppDimensions.iconSizeMedium,
-            color: accentColor,
-          ),
-          const SizedBox(width: 12),
-          ..._buildCharCells(text.toString(), styles),
-        ],
+      return _emailRow(
+        accentColor: accentColor,
+        cells: _buildCharCells(text.toString(), styles),
       );
     }
 
@@ -202,6 +186,26 @@ class _DecodeEmailRevealState extends State<DecodeEmailReveal> {
       ),
     );
   }
+
+  Widget _emailRow({
+    required Color accentColor,
+    required List<Widget> cells,
+  }) =>
+      FittedBox(
+        fit: BoxFit.scaleDown,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.email_outlined,
+              size: AppDimensions.iconSizeMedium,
+              color: accentColor,
+            ),
+            const SizedBox(width: 12),
+            ...cells,
+          ],
+        ),
+      );
 
   List<Widget> _buildCharCells(String text, List<TextStyle?> styles) => [
         for (var i = 0; i < text.length; i++)
