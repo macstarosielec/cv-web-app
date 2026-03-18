@@ -2,7 +2,8 @@ import 'dart:async';
 
 import 'package:admin_content/presentation/projects/view/widgets/responsibilities_editor.dart';
 import 'package:admin_content/presentation/projects/view/widgets/tech_stack_editor.dart';
-import 'package:admin_content/presentation/widgets/admin_input_decoration.dart';
+import 'package:admin_content/presentation/widgets/admin_form_field.dart';
+import 'package:admin_content/presentation/widgets/animated_form_item.dart';
 import 'package:admin_content/presentation/widgets/form_section.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
@@ -147,6 +148,7 @@ class _ProjectFormState extends State<ProjectForm>
   }
 
   void _save() {
+    final sortOrder = widget.project?.sortOrder ?? 0;
     final project = _isCommercial
         ? Project.commercial(
             id: _projectId,
@@ -158,6 +160,7 @@ class _ProjectFormState extends State<ProjectForm>
                 : _description.text.trim(),
             techStack: _techStack,
             responsibilities: _responsibilities,
+            sortOrder: sortOrder,
           )
         : Project.personal(
             id: _projectId,
@@ -169,6 +172,7 @@ class _ProjectFormState extends State<ProjectForm>
             githubUrl: _githubUrl.text.trim().isEmpty
                 ? null
                 : _githubUrl.text.trim(),
+            sortOrder: sortOrder,
           );
     widget.onSave(project);
   }
@@ -184,9 +188,8 @@ class _ProjectFormState extends State<ProjectForm>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _animated(
-            index: index++,
-            total: itemCount,
+          AnimatedFormItem(
+            animation: _itemAnimation(index++, itemCount),
             child: Text(
               _isEditing ? l10n.editProject : l10n.addProject,
               style: const TextStyle(
@@ -197,9 +200,8 @@ class _ProjectFormState extends State<ProjectForm>
             ),
           ),
           const SizedBox(height: AppDimensions.spacingMedium),
-          _animated(
-            index: index++,
-            total: itemCount,
+          AnimatedFormItem(
+            animation: _itemAnimation(index++, itemCount),
             child: Row(
               children: [
                 Text(
@@ -240,46 +242,57 @@ class _ProjectFormState extends State<ProjectForm>
             ),
           ),
           const SizedBox(height: AppDimensions.spacingMedium),
-          _animated(
-            index: index++,
-            total: itemCount,
-            child: _field(_name, l10n.projectName),
+          AnimatedFormItem(
+            animation: _itemAnimation(index++, itemCount),
+            child: AdminFormField(
+              controller: _name,
+              label: l10n.projectName,
+            ),
           ),
           const SizedBox(height: AppDimensions.spacingSmall),
-          _animated(
-            index: index++,
-            total: itemCount,
-            child: _field(
-              _description,
-              l10n.descriptionOptional,
+          AnimatedFormItem(
+            animation: _itemAnimation(index++, itemCount),
+            child: AdminFormField(
+              controller: _description,
+              label: l10n.descriptionOptional,
               maxLines: 3,
             ),
           ),
           if (_isCommercial) ...[
             const SizedBox(height: AppDimensions.spacingSmall),
-            _animated(
-              index: index++,
-              total: itemCount,
+            AnimatedFormItem(
+              animation: _itemAnimation(index++, itemCount),
               child: Row(
                 children: [
-                  Expanded(child: _field(_company, l10n.company)),
+                  Expanded(
+                    child: AdminFormField(
+                      controller: _company,
+                      label: l10n.company,
+                    ),
+                  ),
                   const SizedBox(width: AppDimensions.spacingSmall),
-                  Expanded(child: _field(_role, l10n.role)),
+                  Expanded(
+                    child: AdminFormField(
+                      controller: _role,
+                      label: l10n.role,
+                    ),
+                  ),
                 ],
               ),
             ),
           ] else ...[
             const SizedBox(height: AppDimensions.spacingSmall),
-            _animated(
-              index: index++,
-              total: itemCount,
-              child: _field(_githubUrl, l10n.githubUrl),
+            AnimatedFormItem(
+              animation: _itemAnimation(index++, itemCount),
+              child: AdminFormField(
+                controller: _githubUrl,
+                label: l10n.githubUrl,
+              ),
             ),
           ],
           const SizedBox(height: AppDimensions.spacingMedium),
-          _animated(
-            index: index++,
-            total: itemCount,
+          AnimatedFormItem(
+            animation: _itemAnimation(index++, itemCount),
             child: FormSection(
               title: l10n.techStack,
               child: TechStackEditor(
@@ -292,9 +305,8 @@ class _ProjectFormState extends State<ProjectForm>
             ),
           ),
           if (_isCommercial)
-            _animated(
-              index: index++,
-              total: itemCount,
+            AnimatedFormItem(
+              animation: _itemAnimation(index++, itemCount),
               child: FormSection(
                 title: l10n.responsibilities,
                 child: ResponsibilitiesEditor(
@@ -307,9 +319,8 @@ class _ProjectFormState extends State<ProjectForm>
               ),
             ),
           const SizedBox(height: AppDimensions.spacingMedium),
-          _animated(
-            index: index,
-            total: itemCount,
+          AnimatedFormItem(
+            animation: _itemAnimation(index, itemCount),
             child: Row(
               children: [
                 shared.ActionChip(
@@ -332,37 +343,4 @@ class _ProjectFormState extends State<ProjectForm>
       ),
     );
   }
-
-  Widget _animated({
-    required int index,
-    required int total,
-    required Widget child,
-  }) {
-    final animation = _itemAnimation(index, total);
-    return FadeTransition(
-      opacity: animation,
-      child: SlideTransition(
-        position: animation.drive(
-          Tween(begin: const Offset(0, 0.1), end: Offset.zero),
-        ),
-        child: child,
-      ),
-    );
-  }
-
-  Widget _field(
-    TextEditingController controller,
-    String label, {
-    int maxLines = 1,
-  }) =>
-      TextField(
-        controller: controller,
-        maxLines: maxLines,
-        decoration: adminInputDecoration(
-          context: context,
-          label: label,
-          isDense: true,
-        ),
-        style: const TextStyle(color: ColorName.textPrimary),
-      );
 }

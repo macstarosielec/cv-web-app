@@ -24,6 +24,10 @@ class AppConfigDev implements IAppConfig, IFirebaseConfig {
   bool get alwaysAnimateEntrance => true;
 
   @override
+  String get sentryDsn =>
+      'https://285dcd1344b1900f4a05684cd60a3479@o4511066998112256.ingest.de.sentry.io/4511067038810192';
+
+  @override
   FirebaseOptions getFirebaseOptions() =>
       DefaultFirebaseOptions.currentPlatform;
 }

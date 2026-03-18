@@ -4,4 +4,5 @@ abstract class IAppConfig {
   bool get isLogBlocChanges;
   bool get isLogBlocErrors;
   bool get alwaysAnimateEntrance;
+  String get sentryDsn;
 }

@@ -30,18 +30,4 @@ class AnalyticsService {
         },
       );
 
-  Future<void> logError({
-    required String errorType,
-    required String source,
-    String? message,
-  }) =>
-      _analytics.logEvent(
-        name: AppConstants.eventAppError,
-        parameters: {
-          AppConstants.paramErrorType: errorType,
-          AppConstants.paramSource: source,
-          // ignore: use_null_aware_elements, map value type is Object not Object?
-          if (message != null) AppConstants.paramMessage: message,
-        },
-      );
 }

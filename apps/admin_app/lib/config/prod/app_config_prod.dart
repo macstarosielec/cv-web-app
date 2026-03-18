@@ -24,6 +24,10 @@ class AppConfigProd implements IAppConfig, IFirebaseConfig {
   bool get alwaysAnimateEntrance => false;
 
   @override
+  String get sentryDsn =>
+      'https://e27a0a880e9314a8c37696a14ad1fa6c@o4511066998112256.ingest.de.sentry.io/4511067047329872';
+
+  @override
   FirebaseOptions getFirebaseOptions() =>
       DefaultFirebaseOptions.currentPlatform;
 }
