@@ -1,10 +1,8 @@
 import 'dart:async';
-import 'dart:math';
 
-import 'package:cv_content/presentation/home/view/widgets/detail_panel_content.dart';
+import 'package:cv_content/presentation/home/view/widgets/flip_content.dart';
 import 'package:cv_content/presentation/models/detail_panel_type.dart';
 import 'package:flutter/material.dart';
-import 'package:shared/widgets/gradient_card.dart';
 
 class MultiPanelItem extends StatefulWidget {
   const MultiPanelItem({
@@ -134,7 +132,12 @@ class _MultiPanelItemState extends State<MultiPanelItem>
                     duration: const Duration(milliseconds: 300),
                     curve: Curves.easeOut,
                     width: effectiveWidth,
-                    child: _buildFlipContent(),
+                    child: FlipContent(
+                      flipAnimation: _flipAnimation,
+                      displayedType: _displayedType,
+                      nextType: _nextType,
+                      seedFlipped: _seedFlipped,
+                    ),
                   ),
                 ),
               ),
@@ -142,41 +145,4 @@ class _MultiPanelItemState extends State<MultiPanelItem>
           );
         },
       );
-
-  Widget _buildFlipContent() => AnimatedBuilder(
-        animation: _flipAnimation,
-        builder: (context, _) {
-          final value = _flipAnimation.value;
-          final isFirstHalf = value <= 0.5;
-          final type = isFirstHalf ? _displayedType : _nextType;
-
-          if (!isFirstHalf && !_seedFlipped) {
-            _seedFlipped = true;
-          } else if (isFirstHalf && _seedFlipped) {
-            _seedFlipped = false;
-          }
-
-          final seed = _seedFlipped
-              ? _seedForType(_nextType)
-              : _seedForType(_displayedType);
-
-          final angle = isFirstHalf ? value * pi : (value - 1) * pi;
-
-          return Transform(
-            alignment: Alignment.center,
-            transform: Matrix4.identity()
-              ..setEntry(3, 2, 0.001)
-              ..rotateY(angle),
-            child: GradientCard(
-              seed: seed,
-              child: type != null
-                  ? DetailPanelContent(type: type)
-                  : const SizedBox.shrink(),
-            ),
-          );
-        },
-      );
-
-  int _seedForType(DetailPanelType? type) =>
-      type?.gradientSeed ?? DetailPanelType.projects.gradientSeed;
 }

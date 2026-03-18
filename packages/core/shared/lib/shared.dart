@@ -8,6 +8,8 @@ export 'config/firebase_config.dart';
 // Constants
 export 'constants/app_constants.dart';
 export 'constants/app_dimensions.dart';
+// Error Reporting
+export 'error_reporting/error_reporting.dart';
 // L10n
 export 'l10n/l10n.dart';
 // Observers

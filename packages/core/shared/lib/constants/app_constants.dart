@@ -23,16 +23,12 @@ abstract final class AppConstants {
   static const eventPanelOpened = 'panel_opened';
   static const eventProjectHovered = 'project_hovered';
   static const eventExperienceHovered = 'experience_hovered';
-  static const eventAppError = 'app_error';
 
   // Analytics Parameters
   static const paramPanelName = 'panel_name';
   static const paramProjectName = 'project_name';
   static const paramTitle = 'title';
   static const paramCompany = 'company';
-  static const paramErrorType = 'error_type';
-  static const paramSource = 'source';
-  static const paramMessage = 'message';
 
   // Local Storage
   static const localStorageKeyVisited = 'cv_app_visited';
