@@ -1,21 +1,33 @@
 import 'dart:async';
 
+import 'package:cv_content/presentation/models/detail_panel_type.dart';
+import 'package:cv_content/presentation/widgets/navigation_chips_row.dart';
 import 'package:cv_content/presentation/widgets/section_title.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
+import 'package:shared/constants/app_dimensions.dart';
 import 'package:shared/gen/colors.gen.dart';
 import 'package:shared/l10n/l10n.dart';
 import 'package:shared/theme/theme.dart';
+import 'package:shared/widgets/stagger_item.dart';
+import 'package:shared/widgets/tag_chip.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfileCardContent extends StatefulWidget {
   const ProfileCardContent({
     required this.profile,
+    required this.selectedPanels,
+    required this.onChipSelected,
     this.animate = false,
+    this.showNavigationChips = true,
     super.key,
   });
 
   final Profile profile;
+  final Set<DetailPanelType> selectedPanels;
+  final ValueChanged<DetailPanelType> onChipSelected;
   final bool animate;
+  final bool showNavigationChips;
 
   @override
   State<ProfileCardContent> createState() => _ProfileCardContentState();
@@ -23,7 +35,7 @@ class ProfileCardContent extends StatefulWidget {
 
 class _ProfileCardContentState extends State<ProfileCardContent>
     with TickerProviderStateMixin {
-  static const _itemCount = 5;
+  static const _itemCount = 6;
   late final List<AnimationController> _controllers;
   late final List<Animation<double>> _animations;
 
@@ -73,11 +85,14 @@ class _ProfileCardContentState extends State<ProfileCardContent>
     final l10n = AppLocalizations.of(context);
     final profile = widget.profile;
 
+    final hasBottomRow = profile.location != null ||
+        profile.timezone != null ||
+        profile.cvUrl != null;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
       children: [
-        _StaggerItem(
+        StaggerItem(
           animation: _animations[0],
           child: Text(
             profile.fullName,
@@ -87,19 +102,19 @@ class _ProfileCardContentState extends State<ProfileCardContent>
             ),
           ),
         ),
-        const SizedBox(height: 8),
-        _StaggerItem(
+        const SizedBox(height: 4),
+        StaggerItem(
           animation: _animations[1],
           child: Text(
             profile.title,
-            style: AppTheme.accentStyle(fontSize: 24).copyWith(
-              color: ColorName.accent,
+            style: AppTheme.accentStyle(fontSize: 18).copyWith(
+              color: Theme.of(context).colorScheme.primary,
               letterSpacing: 2,
             ),
           ),
         ),
-        const SizedBox(height: 24),
-        _StaggerItem(
+        const SizedBox(height: AppDimensions.spacingLarge),
+        StaggerItem(
           animation: _animations[2],
           child: Text(
             profile.about,
@@ -109,73 +124,153 @@ class _ProfileCardContentState extends State<ProfileCardContent>
             ),
           ),
         ),
-        if (profile.skills.isNotEmpty) ...[
+        if (widget.showNavigationChips) ...[
           const SizedBox(height: 32),
-          _StaggerItem(
+          StaggerItem(
             animation: _animations[3],
-            child: Column(
+            child: NavigationChipsRow(
+              selectedPanels: widget.selectedPanels,
+              onChipSelected: widget.onChipSelected,
+            ),
+          ),
+        ],
+        if (profile.languages.isNotEmpty ||
+            profile.interests.isNotEmpty) ...[
+          const SizedBox(height: AppDimensions.spacingLarge),
+          StaggerItem(
+            animation: _animations[4],
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SectionTitle(l10n.skills),
-                const SizedBox(height: 12),
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: profile.skills
-                      .map(
-                        (skill) => Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 6,
-                          ),
-                          decoration: const BoxDecoration(
-                            color: ColorName.surfaceLight,
-                          ),
-                          child: Text(
-                            skill.name,
-                            style: textTheme.bodySmall?.copyWith(
-                              color: ColorName.textSecondary,
-                            ),
-                          ),
+                if (profile.languages.isNotEmpty)
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SectionTitle(l10n.languages),
+                        const SizedBox(height: AppDimensions.spacingSmall),
+                        Wrap(
+                          spacing: AppDimensions.tagSpacing,
+                          runSpacing: AppDimensions.tagSpacing,
+                          children: profile.languages
+                              .map(
+                                (lang) => TagChip(
+                                  label:
+                                      '${lang.name} (${lang.proficiency.label})',
+                                ),
+                              )
+                              .toList(),
                         ),
-                      )
-                      .toList(),
-                ),
+                      ],
+                    ),
+                  ),
+                if (profile.languages.isNotEmpty &&
+                    profile.interests.isNotEmpty)
+                  const SizedBox(width: 24),
+                if (profile.interests.isNotEmpty)
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SectionTitle(l10n.interests),
+                        const SizedBox(height: AppDimensions.spacingSmall),
+                        Wrap(
+                          spacing: AppDimensions.tagSpacing,
+                          runSpacing: AppDimensions.tagSpacing,
+                          children: profile.interests
+                              .map(
+                                (interest) => TagChip(label: interest),
+                              )
+                              .toList(),
+                        ),
+                      ],
+                    ),
+                  ),
               ],
             ),
           ),
         ],
-        if (profile.languages.isNotEmpty) ...[
-          const SizedBox(height: 24),
-          _StaggerItem(
-            animation: _animations[4],
+        if (hasBottomRow) ...[
+          const Spacer(),
+          const SizedBox(height: 32),
+          StaggerItem(
+            animation: _animations[5],
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SectionTitle(l10n.languages),
-                const SizedBox(height: 12),
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: profile.languages
-                      .map(
-                        (lang) => Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 6,
+                Row(
+                  children: [
+                    if (profile.location != null) ...[
+                      const Icon(
+                        Icons.location_on_outlined,
+                        size: AppDimensions.iconSizeDefault,
+                        color: ColorName.textMuted,
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        profile.location!,
+                        style: textTheme.bodySmall?.copyWith(
+                          color: ColorName.textSecondary,
+                        ),
+                      ),
+                    ],
+                    if (profile.location != null && profile.timezone != null)
+                      const SizedBox(width: 16),
+                    if (profile.timezone != null) ...[
+                      const Icon(
+                        Icons.schedule,
+                        size: AppDimensions.iconSizeDefault,
+                        color: ColorName.textMuted,
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        profile.timezone!,
+                        style: textTheme.bodySmall?.copyWith(
+                          color: ColorName.textSecondary,
+                        ),
+                      ),
+                    ],
+                    const Spacer(),
+                    if (profile.cvUrl != null)
+                      MouseRegion(
+                        cursor: SystemMouseCursors.click,
+                        child: GestureDetector(
+                          onTap: () => unawaited(
+                            launchUrl(Uri.parse(profile.cvUrl!)),
                           ),
-                          decoration: const BoxDecoration(
-                            color: ColorName.surfaceLight,
-                          ),
-                          child: Text(
-                            '${lang.name} (${lang.proficiency.label})',
-                            style: textTheme.bodySmall?.copyWith(
-                              color: ColorName.textSecondary,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 8,
+                            ),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  Icons.download,
+                                  size: AppDimensions.iconSizeDefault,
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                                const SizedBox(width: AppDimensions.spacingExtraSmall),
+                                Text(
+                                  l10n.downloadCv,
+                                  style: textTheme.bodySmall?.copyWith(
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
-                      )
-                      .toList(),
+                      ),
+                  ],
                 ),
               ],
             ),
@@ -184,27 +279,4 @@ class _ProfileCardContentState extends State<ProfileCardContent>
       ],
     );
   }
-}
-
-class _StaggerItem extends StatelessWidget {
-  const _StaggerItem({
-    required this.animation,
-    required this.child,
-  });
-
-  final Animation<double> animation;
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) => AnimatedBuilder(
-        animation: animation,
-        builder: (context, c) => Transform.translate(
-          offset: Offset(0, 16 * (1 - animation.value)),
-          child: Opacity(
-            opacity: animation.value,
-            child: c,
-          ),
-        ),
-        child: child,
-      );
 }

@@ -1,38 +1,96 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
-
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
-
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
   <base href="$FLUTTER_BASE_HREF">
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
+  <meta name="robots" content="noindex, nofollow">
 
   <!-- iOS meta tags & icons -->
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="admin_app">
+  <meta name="apple-mobile-web-app-title" content="CV Admin">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
 
-  <title>admin_app</title>
+  <title>CV Admin</title>
   <link rel="manifest" href="manifest.json">
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      background-color: #0A0A0A;
+      background-image: url('assets/bg.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+
+    /* Make Flutter's rendering surface transparent */
+    flt-glass-pane, flutter-view {
+      background: transparent !important;
+    }
+
+    /* Dot spinner loader */
+    .loader {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      gap: 8px;
+      z-index: 1000;
+    }
+
+    .loader .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: transparent;
+      animation: dot-spin 1.2s ease-in-out infinite;
+    }
+
+    .loader .dot:nth-child(1) { animation-delay: 0s; }
+    .loader .dot:nth-child(2) { animation-delay: 0.15s; }
+    .loader .dot:nth-child(3) { animation-delay: 0.3s; }
+    .loader .dot:nth-child(4) { animation-delay: 0.45s; }
+    .loader .dot:nth-child(5) { animation-delay: 0.6s; }
+
+    @keyframes dot-spin {
+      0%, 60%, 100% {
+        background: transparent;
+        border-color: rgba(255, 255, 255, 0.15);
+      }
+      30% {
+        background: #DC2626;
+        border-color: #DC2626;
+      }
+    }
+  </style>
 </head>
 <body>
+  <div class="loader" id="loader">
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+  </div>
   <script src="flutter_bootstrap.js" async></script>
+  <script>
+    window.addEventListener('flutter-first-frame', function () {
+      var loader = document.getElementById('loader');
+      if (loader) loader.remove();
+    });
+  </script>
 </body>
 </html>

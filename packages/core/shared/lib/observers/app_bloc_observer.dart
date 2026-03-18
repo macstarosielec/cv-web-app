@@ -1,16 +1,18 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared/analytics/analytics_service.dart';
 import 'package:shared/config/app_config.dart';
 
 class AppBlocObserver extends BlocObserver {
   AppBlocObserver({
-    // required this.crashlyticsRepository,
     required this.appConfig,
+    required this.analyticsService,
   });
 
-  // final CrashlyticsRepository crashlyticsRepository;
   final IAppConfig appConfig;
+  final AnalyticsService analyticsService;
 
   @override
   void onChange(BlocBase<dynamic> bloc, Change<dynamic> change) {
@@ -32,11 +34,14 @@ class AppBlocObserver extends BlocObserver {
   void onError(BlocBase<dynamic> bloc, Object error, StackTrace stackTrace) {
     if (appConfig.isLogBlocErrors) {
       log('onError(${bloc.runtimeType}, $error, $stackTrace)');
+      unawaited(
+        analyticsService.logError(
+          errorType: error.runtimeType.toString(),
+          source: 'bloc:${bloc.runtimeType}',
+          message: error.toString(),
+        ),
+      );
     }
-    // crashlyticsRepository.trackFatal(
-    //   exception: error,
-    //   stackTrace: stackTrace,
-    // );
     super.onError(bloc, error, stackTrace);
   }
 }

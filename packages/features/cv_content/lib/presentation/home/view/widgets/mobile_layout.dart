@@ -1,15 +1,16 @@
 import 'package:cv_content/presentation/home/view/widgets/detail_panel.dart';
 import 'package:cv_content/presentation/home/view/widgets/profile_card_content.dart';
 import 'package:cv_content/presentation/models/detail_panel_type.dart';
-import 'package:cv_content/presentation/widgets/gradient_card.dart';
 import 'package:cv_content/presentation/widgets/navigation_chips_row.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
+import 'package:shared/widgets/gradient_card.dart';
 
 class MobileLayout extends StatelessWidget {
   const MobileLayout({
     required this.profile,
     required this.selectedPanel,
+    required this.selectedPanels,
     required this.onChipSelected,
     required this.animation,
     required this.shouldAnimate,
@@ -19,13 +20,14 @@ class MobileLayout extends StatelessWidget {
 
   final Profile profile;
   final DetailPanelType? selectedPanel;
+  final Set<DetailPanelType> selectedPanels;
   final ValueChanged<DetailPanelType> onChipSelected;
   final Animation<double> animation;
   final bool shouldAnimate;
   final bool iconOnlyChips;
 
   static const _gap = 16.0;
-  static const _chipRowHeight = 36.0;
+  static const _chipRowHeight = 40.0;
 
   double _cardPadding(double screenWidth) {
     const minPadding = 16.0;
@@ -79,13 +81,16 @@ class MobileLayout extends StatelessWidget {
                                     ),
                                     child: ProfileCardContent(
                                       profile: profile,
+                                      selectedPanels: selectedPanels,
+                                      onChipSelected: onChipSelected,
                                       animate: shouldAnimate,
+                                      showNavigationChips: false,
                                     ),
                                   ),
                                 ),
                               ),
                               NavigationChipsRow(
-                                selectedPanel: selectedPanel,
+                                selectedPanels: selectedPanels,
                                 onChipSelected: onChipSelected,
                                 iconOnly: iconOnlyChips,
                               ),

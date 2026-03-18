@@ -9,25 +9,10 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appTitle => 'CV Application';
-
-  @override
-  String get welcome => 'Welcome';
-
-  @override
-  String get login => 'Login';
-
-  @override
-  String get logout => 'Logout';
-
-  @override
   String get email => 'Email';
 
   @override
   String get password => 'Password';
-
-  @override
-  String get save => 'Save';
 
   @override
   String get cancel => 'Cancel';
@@ -37,28 +22,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get edit => 'Edit';
-
-  @override
-  String greeting(String name) {
-    return 'Hello $name';
-  }
-
-  @override
-  String itemCount(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.compact(
-      locale: localeName,
-    );
-    final String countString = countNumberFormat.format(count);
-
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$countString items',
-      one: '1 item',
-      zero: 'No items',
-    );
-    return '$_temp0';
-  }
 
   @override
   String get projects => 'Projects';
@@ -73,6 +36,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get experience => 'Experience';
 
   @override
+  String get workExperience => 'Work Experience';
+
+  @override
   String get contact => 'Contact';
 
   @override
@@ -85,10 +51,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get phone => 'Phone';
 
   @override
-  String get linkedIn => 'LinkedIn';
+  String get gitHub => 'GitHub';
 
   @override
-  String get gitHub => 'GitHub';
+  String get githubUrl => 'GitHub URL (optional)';
 
   @override
   String get present => 'Present';
@@ -100,6 +66,29 @@ class AppLocalizationsEn extends AppLocalizations {
   String errorMessage(String message) {
     return 'Error: $message';
   }
+
+  @override
+  String get errorNetwork =>
+      'Could not connect. Check your connection and try again.';
+
+  @override
+  String get errorNotFound => 'The requested data could not be found.';
+
+  @override
+  String get errorPermission =>
+      'You don\'t have permission to access this data.';
+
+  @override
+  String get errorAuth => 'Invalid email or password. Please try again.';
+
+  @override
+  String get errorUnknown => 'Something went wrong. Please try again.';
+
+  @override
+  String get retry => 'Retry';
+
+  @override
+  String get reloadPage => 'Reload Page';
 
   @override
   String get monthJan => 'Jan';
@@ -136,4 +125,162 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get monthDec => 'Dec';
+
+  @override
+  String get dashboard => 'Dashboard';
+
+  @override
+  String get signOut => 'Sign Out';
+
+  @override
+  String get signIn => 'Sign In';
+
+  @override
+  String get profile => 'Profile';
+
+  @override
+  String get basicInfo => 'BASIC INFO';
+
+  @override
+  String get fullName => 'Full Name';
+
+  @override
+  String get title => 'Title';
+
+  @override
+  String get about => 'About';
+
+  @override
+  String get phoneNumber => 'Phone Number (optional)';
+
+  @override
+  String get socialLinks => 'Social Links';
+
+  @override
+  String get platformName => 'Platform name';
+
+  @override
+  String get platformUrl => 'URL';
+
+  @override
+  String get addSocialLink => 'Add social link';
+
+  @override
+  String get saveProfile => 'Save Profile';
+
+  @override
+  String get skillName => 'Skill name';
+
+  @override
+  String get categoryOptional => 'Category (optional)';
+
+  @override
+  String get add => 'Add';
+
+  @override
+  String get languageName => 'Language name';
+
+  @override
+  String get addInterest => 'Add interest';
+
+  @override
+  String get interests => 'Interests';
+
+  @override
+  String get addProject => 'Add Project';
+
+  @override
+  String get editProject => 'Edit Project';
+
+  @override
+  String get projectType => 'Type:';
+
+  @override
+  String get commercial => 'Commercial';
+
+  @override
+  String get personal => 'Personal';
+
+  @override
+  String get techStack => 'TECH STACK';
+
+  @override
+  String get addTechnology => 'Add technology';
+
+  @override
+  String get responsibilities => 'RESPONSIBILITIES';
+
+  @override
+  String get addResponsibility => 'Add responsibility';
+
+  @override
+  String get addExperience => 'Add Experience';
+
+  @override
+  String get editExperience => 'Edit Experience';
+
+  @override
+  String get dates => 'DATES';
+
+  @override
+  String get startDate => 'Start:';
+
+  @override
+  String get endDate => 'End:';
+
+  @override
+  String get deleteProject => 'Delete Project';
+
+  @override
+  String get deleteExperience => 'Delete Experience';
+
+  @override
+  String confirmDeleteItem(String name) {
+    return 'Are you sure you want to delete \"$name\"?';
+  }
+
+  @override
+  String get emailRequired => 'Email is required';
+
+  @override
+  String get enterValidEmail => 'Enter a valid email';
+
+  @override
+  String get passwordRequired => 'Password is required';
+
+  @override
+  String get adminPanel => 'Admin Panel';
+
+  @override
+  String get signInToContinue => 'Sign in to continue';
+
+  @override
+  String get personalProject => 'Personal project';
+
+  @override
+  String get discard => 'Discard';
+
+  @override
+  String get projectName => 'Project name';
+
+  @override
+  String get descriptionOptional => 'Description (optional)';
+
+  @override
+  String get company => 'Company';
+
+  @override
+  String get role => 'Role';
+
+  @override
+  String get location => 'Location';
+
+  @override
+  String get timezone => 'Timezone';
+
+  @override
+  String get downloadCv => 'View CV';
+
+  @override
+  String get cvPdf => 'CV (PDF)';
 }

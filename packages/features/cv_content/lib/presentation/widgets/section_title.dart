@@ -9,13 +9,11 @@ class SectionTitle extends StatelessWidget {
   final double fontSize;
 
   @override
-  Widget build(BuildContext context) {
-    return Text(
-      text.toUpperCase(),
-      style: AppTheme.accentStyle(fontSize: fontSize).copyWith(
-        color: ColorName.textPrimary,
-        letterSpacing: 2,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Text(
+        text.toUpperCase(),
+        style: AppTheme.accentStyle(fontSize: fontSize).copyWith(
+          color: ColorName.textPrimary,
+          letterSpacing: 2,
+        ),
+      );
 }

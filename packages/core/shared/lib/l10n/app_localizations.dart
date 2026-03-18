@@ -94,30 +94,6 @@ abstract class AppLocalizations {
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[Locale('en')];
 
-  /// The title of the application
-  ///
-  /// In en, this message translates to:
-  /// **'CV Application'**
-  String get appTitle;
-
-  /// Welcome message
-  ///
-  /// In en, this message translates to:
-  /// **'Welcome'**
-  String get welcome;
-
-  /// No description provided for @login.
-  ///
-  /// In en, this message translates to:
-  /// **'Login'**
-  String get login;
-
-  /// No description provided for @logout.
-  ///
-  /// In en, this message translates to:
-  /// **'Logout'**
-  String get logout;
-
   /// No description provided for @email.
   ///
   /// In en, this message translates to:
@@ -129,12 +105,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Password'**
   String get password;
-
-  /// No description provided for @save.
-  ///
-  /// In en, this message translates to:
-  /// **'Save'**
-  String get save;
 
   /// No description provided for @cancel.
   ///
@@ -153,18 +123,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Edit'**
   String get edit;
-
-  /// A greeting message
-  ///
-  /// In en, this message translates to:
-  /// **'Hello {name}'**
-  String greeting(String name);
-
-  /// Number of items
-  ///
-  /// In en, this message translates to:
-  /// **'{count, plural, =0{No items} =1{1 item} other{{count} items}}'**
-  String itemCount(int count);
 
   /// No description provided for @projects.
   ///
@@ -190,6 +148,12 @@ abstract class AppLocalizations {
   /// **'Experience'**
   String get experience;
 
+  /// No description provided for @workExperience.
+  ///
+  /// In en, this message translates to:
+  /// **'Work Experience'**
+  String get workExperience;
+
   /// No description provided for @contact.
   ///
   /// In en, this message translates to:
@@ -214,17 +178,17 @@ abstract class AppLocalizations {
   /// **'Phone'**
   String get phone;
 
-  /// No description provided for @linkedIn.
-  ///
-  /// In en, this message translates to:
-  /// **'LinkedIn'**
-  String get linkedIn;
-
   /// No description provided for @gitHub.
   ///
   /// In en, this message translates to:
   /// **'GitHub'**
   String get gitHub;
+
+  /// No description provided for @githubUrl.
+  ///
+  /// In en, this message translates to:
+  /// **'GitHub URL (optional)'**
+  String get githubUrl;
 
   /// No description provided for @present.
   ///
@@ -243,6 +207,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Error: {message}'**
   String errorMessage(String message);
+
+  /// No description provided for @errorNetwork.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not connect. Check your connection and try again.'**
+  String get errorNetwork;
+
+  /// No description provided for @errorNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'The requested data could not be found.'**
+  String get errorNotFound;
+
+  /// No description provided for @errorPermission.
+  ///
+  /// In en, this message translates to:
+  /// **'You don\'t have permission to access this data.'**
+  String get errorPermission;
+
+  /// No description provided for @errorAuth.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid email or password. Please try again.'**
+  String get errorAuth;
+
+  /// No description provided for @errorUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again.'**
+  String get errorUnknown;
+
+  /// No description provided for @retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
+
+  /// No description provided for @reloadPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Reload Page'**
+  String get reloadPage;
 
   /// No description provided for @monthJan.
   ///
@@ -315,6 +321,318 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Dec'**
   String get monthDec;
+
+  /// No description provided for @dashboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Dashboard'**
+  String get dashboard;
+
+  /// No description provided for @signOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign Out'**
+  String get signOut;
+
+  /// No description provided for @signIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign In'**
+  String get signIn;
+
+  /// No description provided for @profile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profile;
+
+  /// No description provided for @basicInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'BASIC INFO'**
+  String get basicInfo;
+
+  /// No description provided for @fullName.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Name'**
+  String get fullName;
+
+  /// No description provided for @title.
+  ///
+  /// In en, this message translates to:
+  /// **'Title'**
+  String get title;
+
+  /// No description provided for @about.
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get about;
+
+  /// No description provided for @phoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone Number (optional)'**
+  String get phoneNumber;
+
+  /// No description provided for @socialLinks.
+  ///
+  /// In en, this message translates to:
+  /// **'Social Links'**
+  String get socialLinks;
+
+  /// No description provided for @platformName.
+  ///
+  /// In en, this message translates to:
+  /// **'Platform name'**
+  String get platformName;
+
+  /// No description provided for @platformUrl.
+  ///
+  /// In en, this message translates to:
+  /// **'URL'**
+  String get platformUrl;
+
+  /// No description provided for @addSocialLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Add social link'**
+  String get addSocialLink;
+
+  /// No description provided for @saveProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Profile'**
+  String get saveProfile;
+
+  /// No description provided for @skillName.
+  ///
+  /// In en, this message translates to:
+  /// **'Skill name'**
+  String get skillName;
+
+  /// No description provided for @categoryOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Category (optional)'**
+  String get categoryOptional;
+
+  /// No description provided for @add.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get add;
+
+  /// No description provided for @languageName.
+  ///
+  /// In en, this message translates to:
+  /// **'Language name'**
+  String get languageName;
+
+  /// No description provided for @addInterest.
+  ///
+  /// In en, this message translates to:
+  /// **'Add interest'**
+  String get addInterest;
+
+  /// No description provided for @interests.
+  ///
+  /// In en, this message translates to:
+  /// **'Interests'**
+  String get interests;
+
+  /// No description provided for @addProject.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Project'**
+  String get addProject;
+
+  /// No description provided for @editProject.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Project'**
+  String get editProject;
+
+  /// No description provided for @projectType.
+  ///
+  /// In en, this message translates to:
+  /// **'Type:'**
+  String get projectType;
+
+  /// No description provided for @commercial.
+  ///
+  /// In en, this message translates to:
+  /// **'Commercial'**
+  String get commercial;
+
+  /// No description provided for @personal.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal'**
+  String get personal;
+
+  /// No description provided for @techStack.
+  ///
+  /// In en, this message translates to:
+  /// **'TECH STACK'**
+  String get techStack;
+
+  /// No description provided for @addTechnology.
+  ///
+  /// In en, this message translates to:
+  /// **'Add technology'**
+  String get addTechnology;
+
+  /// No description provided for @responsibilities.
+  ///
+  /// In en, this message translates to:
+  /// **'RESPONSIBILITIES'**
+  String get responsibilities;
+
+  /// No description provided for @addResponsibility.
+  ///
+  /// In en, this message translates to:
+  /// **'Add responsibility'**
+  String get addResponsibility;
+
+  /// No description provided for @addExperience.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Experience'**
+  String get addExperience;
+
+  /// No description provided for @editExperience.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Experience'**
+  String get editExperience;
+
+  /// No description provided for @dates.
+  ///
+  /// In en, this message translates to:
+  /// **'DATES'**
+  String get dates;
+
+  /// No description provided for @startDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Start:'**
+  String get startDate;
+
+  /// No description provided for @endDate.
+  ///
+  /// In en, this message translates to:
+  /// **'End:'**
+  String get endDate;
+
+  /// No description provided for @deleteProject.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Project'**
+  String get deleteProject;
+
+  /// No description provided for @deleteExperience.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Experience'**
+  String get deleteExperience;
+
+  /// No description provided for @confirmDeleteItem.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete \"{name}\"?'**
+  String confirmDeleteItem(String name);
+
+  /// No description provided for @emailRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Email is required'**
+  String get emailRequired;
+
+  /// No description provided for @enterValidEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid email'**
+  String get enterValidEmail;
+
+  /// No description provided for @passwordRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Password is required'**
+  String get passwordRequired;
+
+  /// No description provided for @adminPanel.
+  ///
+  /// In en, this message translates to:
+  /// **'Admin Panel'**
+  String get adminPanel;
+
+  /// No description provided for @signInToContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to continue'**
+  String get signInToContinue;
+
+  /// No description provided for @personalProject.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal project'**
+  String get personalProject;
+
+  /// No description provided for @discard.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard'**
+  String get discard;
+
+  /// No description provided for @projectName.
+  ///
+  /// In en, this message translates to:
+  /// **'Project name'**
+  String get projectName;
+
+  /// No description provided for @descriptionOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Description (optional)'**
+  String get descriptionOptional;
+
+  /// No description provided for @company.
+  ///
+  /// In en, this message translates to:
+  /// **'Company'**
+  String get company;
+
+  /// No description provided for @role.
+  ///
+  /// In en, this message translates to:
+  /// **'Role'**
+  String get role;
+
+  /// No description provided for @location.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get location;
+
+  /// No description provided for @timezone.
+  ///
+  /// In en, this message translates to:
+  /// **'Timezone'**
+  String get timezone;
+
+  /// No description provided for @downloadCv.
+  ///
+  /// In en, this message translates to:
+  /// **'View CV'**
+  String get downloadCv;
+
+  /// No description provided for @cvPdf.
+  ///
+  /// In en, this message translates to:
+  /// **'CV (PDF)'**
+  String get cvPdf;
 }
 
 class _AppLocalizationsDelegate

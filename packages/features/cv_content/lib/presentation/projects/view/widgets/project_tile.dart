@@ -1,7 +1,14 @@
+import 'dart:async';
+
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get_it/get_it.dart';
+import 'package:shared/analytics/analytics_service.dart';
+import 'package:shared/constants/app_dimensions.dart';
 import 'package:shared/gen/colors.gen.dart';
 import 'package:shared/l10n/l10n.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProjectTile extends StatefulWidget {
   const ProjectTile({required this.project, super.key});
@@ -38,112 +45,116 @@ class _ProjectTileState extends State<ProjectTile>
     super.dispose();
   }
 
-  List<Shadow> _textGlow(double progress) => [
-        Shadow(
-          color: ColorName.accent.withValues(alpha: 0.9 * progress),
-          blurRadius: 20 * progress,
-        ),
-        Shadow(
-          color: ColorName.accent.withValues(alpha: 0.6 * progress),
-          blurRadius: 40 * progress,
-        ),
-      ];
-
-  List<BoxShadow> _chipGlow(double progress) => [
-        BoxShadow(
-          color: ColorName.accent.withValues(alpha: 0.35 * progress),
-          blurRadius: 10 * progress,
-        ),
-        BoxShadow(
-          color: ColorName.accent.withValues(alpha: 0.2 * progress),
-          blurRadius: 20 * progress,
-        ),
-      ];
-
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final accent = Theme.of(context).colorScheme.primary;
     final project = widget.project;
 
     return RepaintBoundary(
       child: MouseRegion(
-      onEnter: (_) => _hoverController.forward(),
-      onExit: (_) => _hoverController.reverse(),
+      onEnter: (_) {
+        unawaited(_hoverController.forward());
+        unawaited(
+          GetIt.instance<AnalyticsService>().logProjectHovered(
+            widget.project.name,
+          ),
+        );
+      },
+      onExit: (_) => unawaited(_hoverController.reverse()),
       child: AnimatedBuilder(
         animation: _hoverAnimation,
         builder: (context, _) {
           final progress = _hoverAnimation.value;
           final scale = 1.0 + (_scale - 1.0) * progress;
-          final textShadows = _textGlow(progress);
-          final chipShadows = _chipGlow(progress);
 
           return Container(
             margin: const EdgeInsets.only(bottom: 4),
-            padding: const EdgeInsets.all(20),
-            child: Transform.scale(
-              scale: scale,
-              alignment: Alignment.centerLeft,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
+            padding: const EdgeInsets.all(AppDimensions.paddingSmall),
+            decoration: BoxDecoration(
+              color: accent.withValues(alpha: 0.06 * progress),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Transform.scale(
+                        scale: scale,
+                        alignment: Alignment.centerLeft,
                         child: Text(
                           project.name,
                           style: textTheme.titleMedium?.copyWith(
                             color: ColorName.textPrimary,
                             fontWeight: FontWeight.w600,
-                            shadows: textShadows,
                           ),
                         ),
                       ),
-                      if (project case PersonalProject(:final githubUrl?)
-                          when githubUrl.isNotEmpty)
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8),
-                          child: Tooltip(
-                            message: AppLocalizations.of(context).gitHub,
-                            child: const Icon(
-                              Icons.code,
-                              size: 18,
-                              color: ColorName.textMuted,
+                    ),
+                    if (project case PersonalProject(:final githubUrl?)
+                        when githubUrl.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8),
+                        child: Tooltip(
+                          message: AppLocalizations.of(context).gitHub,
+                          child: MouseRegion(
+                            cursor: SystemMouseCursors.click,
+                            child: GestureDetector(
+                              onTap: () => unawaited(
+                                launchUrl(Uri.parse(githubUrl)),
+                              ),
+                              child: FaIcon(
+                                FontAwesomeIcons.github,
+                                size: 18,
+                                color: accent,
+                              ),
                             ),
                           ),
                         ),
-                    ],
-                  ),
-                  if (project
-                      case CommercialProject(
-                        :final company,
-                        :final role,
-                      )) ...[
-                    const SizedBox(height: 4),
-                    Text(
+                      ),
+                  ],
+                ),
+                if (project
+                    case CommercialProject(
+                      :final company,
+                      :final role,
+                    )) ...[
+                  const SizedBox(height: 4),
+                  Transform.scale(
+                    scale: scale,
+                    alignment: Alignment.centerLeft,
+                    child: Text(
                       '$company \u2022 $role',
                       style: textTheme.bodySmall?.copyWith(
-                        color: ColorName.textMuted,
-                        shadows: textShadows,
+                        color: ColorName.textSecondary,
                       ),
                     ),
-                  ],
-                  if (project.description != null) ...[
-                    const SizedBox(height: 8),
-                    Text(
+                  ),
+                ],
+                if (project.description != null) ...[
+                  const SizedBox(height: 8),
+                  Transform.scale(
+                    scale: scale,
+                    alignment: Alignment.centerLeft,
+                    child: Text(
                       project.description!,
                       style: textTheme.bodyMedium?.copyWith(
                         color: ColorName.textSecondary,
-                        shadows: textShadows,
                       ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
-                  ],
-                  if (project.techStack.isNotEmpty) ...[
-                    const SizedBox(height: 12),
-                    Wrap(
-                      spacing: 6,
-                      runSpacing: 6,
+                  ),
+                ],
+                if (project.techStack.isNotEmpty) ...[
+                  const SizedBox(height: AppDimensions.spacingSmall),
+                  Transform.scale(
+                    scale: scale,
+                    alignment: Alignment.centerLeft,
+                    child: Wrap(
+                      spacing: AppDimensions.tagSpacingCompact,
+                      runSpacing: AppDimensions.tagSpacingCompact,
                       children: project.techStack
                           .map(
                             (tech) => Container(
@@ -151,23 +162,22 @@ class _ProjectTileState extends State<ProjectTile>
                                 horizontal: 8,
                                 vertical: 4,
                               ),
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 color: ColorName.surfaceLight,
-                                boxShadow: chipShadows,
                               ),
                               child: Text(
                                 tech,
                                 style: textTheme.labelSmall?.copyWith(
-                                  color: ColorName.textMuted,
+                                  color: ColorName.textSecondary,
                                 ),
                               ),
                             ),
                           )
                           .toList(),
                     ),
-                  ],
+                  ),
                 ],
-              ),
+              ],
             ),
           );
         },

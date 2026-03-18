@@ -9,14 +9,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:get_it/get_it.dart';
+import 'package:shared/analytics/analytics_service.dart';
 import 'package:shared/config/app_config.dart';
-import 'package:shared/gen/colors.gen.dart';
-import 'package:shared/l10n/l10n.dart';
 import 'package:shared/utils/breakpoints.dart';
 import 'package:shared/utils/visit_tracker.dart';
+import 'package:shared/widgets/dot_loader.dart';
+import 'package:shared/widgets/full_page_error.dart';
 
 class HomeView extends HookWidget {
   const HomeView({super.key});
+
+  static const List<DetailPanelType> _autoPopulateOrder = [
+    DetailPanelType.experience,
+    DetailPanelType.projects,
+    DetailPanelType.contact,
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +36,9 @@ class HomeView extends HookWidget {
     });
 
     final hasAnimated = useState(false);
-    final selectedPanel = useState<DetailPanelType?>(null);
+    final selectedPanels = useState<List<DetailPanelType>>([]);
+    final closingPanels = useState<Set<DetailPanelType>>({});
+    final hasInteracted = useState(false);
     final animationController = useAnimationController(
       duration: const Duration(milliseconds: 500),
     );
@@ -41,16 +50,107 @@ class HomeView extends HookWidget {
       [animationController],
     );
 
+    final analyticsService = useMemoized(
+      () => GetIt.instance<AnalyticsService>(),
+    );
+
+    final breakpoint = Breakpoints.of(context);
+    final previousBreakpoint = useRef(breakpoint);
+    final isDesktop = breakpoint == ScreenBreakpoint.desktop;
+    final isMobile = breakpoint == ScreenBreakpoint.mobile;
+    final screenWidth = MediaQuery.sizeOf(context).width;
+    final padding = _lerpPadding(screenWidth);
+
+    final maxPanels = _computeMaxPanels(screenWidth);
+
+    // Auto-populate panels on load or resize wider (if not interacted).
+    // Stagger additions so each panel animates in via its own
+    // _sizeController inside MultiPanelItem.
+    useEffect(
+      () {
+        if (!hasInteracted.value && isDesktop && maxPanels > 1) {
+          final targetCount =
+              maxPanels.clamp(0, _autoPopulateOrder.length);
+          final autoPanels =
+              _autoPopulateOrder.take(targetCount).toList();
+          // Add panels one by one. Each entry animation is 300ms,
+          // so wait 400ms between additions for a clear cascade.
+          for (var i = 0; i < autoPanels.length; i++) {
+            unawaited(
+              Future<void>.delayed(
+                Duration(milliseconds: 400 * i),
+                () {
+                  if (!hasInteracted.value &&
+                      !selectedPanels.value.contains(autoPanels[i])) {
+                    selectedPanels.value = [
+                      ...selectedPanels.value,
+                      autoPanels[i],
+                    ];
+                  }
+                },
+              ),
+            );
+          }
+        }
+
+        // Truncate panels from end if resized narrower
+        if (selectedPanels.value.length > maxPanels) {
+          selectedPanels.value =
+              selectedPanels.value.take(maxPanels).toList();
+        }
+
+        return null;
+      },
+      [maxPanels, isDesktop],
+    );
+
     void onChipSelected(DetailPanelType type) {
-      if (selectedPanel.value == type) {
-        selectedPanel.value = null;
-        unawaited(animationController.reverse());
+      hasInteracted.value = true;
+
+      if (maxPanels <= 1) {
+        // Single-panel mode: toggle behavior
+        if (selectedPanels.value.contains(type)) {
+          selectedPanels.value = [];
+          unawaited(animationController.reverse());
+        } else {
+          selectedPanels.value = [type];
+          unawaited(analyticsService.logPanelOpened(type.name));
+          if (animationController.status == AnimationStatus.dismissed) {
+            unawaited(animationController.forward());
+          }
+        }
       } else {
-        selectedPanel.value = type;
-        if (animationController.status == AnimationStatus.dismissed) {
-          unawaited(animationController.forward());
+        // Multi-panel mode
+        final current = List.of(selectedPanels.value);
+        if (current.contains(type)) {
+          if (closingPanels.value.contains(type)) {
+            // Already closing — cancel by removing from closing set
+            closingPanels.value = {...closingPanels.value}
+              ..remove(type);
+          } else {
+            // Mark as closing; panel stays in list until animation
+            // completes via onPanelClosed.
+            closingPanels.value = {...closingPanels.value, type};
+          }
+        } else {
+          unawaited(analyticsService.logPanelOpened(type.name));
+          // Count only active (non-closing) panels for capacity
+          final activeCount = current
+              .where((t) => !closingPanels.value.contains(t))
+              .length;
+          if (activeCount >= maxPanels) {
+            current.removeLast();
+          }
+          current.add(type);
+          selectedPanels.value = current;
         }
       }
+    }
+
+    void onPanelClosed(DetailPanelType type) {
+      final current = List.of(selectedPanels.value)..remove(type);
+      selectedPanels.value = current;
+      closingPanels.value = {...closingPanels.value}..remove(type);
     }
 
     final animate = shouldAnimate && !hasAnimated.value;
@@ -62,19 +162,13 @@ class HomeView extends HookWidget {
       const [],
     );
 
-    final breakpoint = Breakpoints.of(context);
-    final previousBreakpoint = useRef(breakpoint);
-    final isDesktop = breakpoint == ScreenBreakpoint.desktop;
-    final isMobile = breakpoint == ScreenBreakpoint.mobile;
-    final screenWidth = MediaQuery.sizeOf(context).width;
-    final padding = _lerpPadding(screenWidth);
-
     useEffect(
       () {
         final prev = previousBreakpoint.value;
         final crossedDesktop =
-            (prev == ScreenBreakpoint.desktop) != (breakpoint == ScreenBreakpoint.desktop);
-        if (crossedDesktop && selectedPanel.value != null) {
+            (prev == ScreenBreakpoint.desktop) !=
+                (breakpoint == ScreenBreakpoint.desktop);
+        if (crossedDesktop && selectedPanels.value.isNotEmpty) {
           animationController.reset();
           WidgetsBinding.instance.addPostFrameCallback((_) {
             unawaited(animationController.forward());
@@ -92,7 +186,7 @@ class HomeView extends HookWidget {
         builder: (context, state) => state.when(
           initial: () => const SizedBox.shrink(),
           loading: () => const Center(
-            child: CircularProgressIndicator(),
+            child: DotLoader(),
           ),
           loaded: (profile) => Center(
             child: Padding(
@@ -100,7 +194,10 @@ class HomeView extends HookWidget {
               child: !isDesktop
                   ? MobileLayout(
                       profile: profile,
-                      selectedPanel: selectedPanel.value,
+                      selectedPanel: selectedPanels.value.isNotEmpty
+                          ? selectedPanels.value.first
+                          : null,
+                      selectedPanels: selectedPanels.value.toSet(),
                       onChipSelected: onChipSelected,
                       animation: animation,
                       shouldAnimate: animate,
@@ -108,22 +205,34 @@ class HomeView extends HookWidget {
                     )
                   : DesktopLayout(
                       profile: profile,
-                      selectedPanel: selectedPanel.value,
+                      selectedPanels: selectedPanels.value,
+                      closingPanels: closingPanels.value,
+                      maxPanels: maxPanels,
                       onChipSelected: onChipSelected,
+                      onPanelClosed: onPanelClosed,
                       animation: animation,
                       shouldAnimate: animate,
                     ),
             ),
           ),
-          error: (message) => Center(
-            child: Text(
-              AppLocalizations.of(context).errorMessage(message),
-              style: const TextStyle(color: ColorName.accentLight),
-            ),
+          error: (exception) => FullPageError(
+            exception: exception,
+            onRetry: () =>
+                context.read<ProfileCubit>().loadProfile(),
           ),
         ),
       ),
     );
+  }
+
+  int _computeMaxPanels(double screenWidth) {
+    // Only enable multi-panel on truly wide screens.
+    // Single-panel layout already handles up to ~1200px content well.
+    // 1600+ can fit 2 panels, 2200+ can fit 3.
+    // Never exceed the number of available panel types.
+    if (screenWidth >= 2200) return DetailPanelType.values.length;
+    if (screenWidth >= 1600) return 2;
+    return 1;
   }
 
   double _lerpPadding(double screenWidth) {
@@ -131,7 +240,8 @@ class HomeView extends HookWidget {
     const maxPadding = 32.0;
     const minWidth = 600.0;
     const maxWidth = 1024.0;
-    final t = ((screenWidth - minWidth) / (maxWidth - minWidth)).clamp(0.0, 1.0);
+    final t = ((screenWidth - minWidth) / (maxWidth - minWidth))
+        .clamp(0.0, 1.0);
     return minPadding + (maxPadding - minPadding) * t;
   }
 }

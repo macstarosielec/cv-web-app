@@ -1,1 +1,56 @@
-{"flutter":{"platforms":{"dart":{"lib/firebase_options_dev.dart":{"projectId":"cv-web-app-dev","configurations":{"web":"1:165423531884:web:da9dcaaca7459d65d5d549"}},"lib/firebase_options_prod.dart":{"projectId":"cv-web-app-prod","configurations":{"web":"1:464122169532:web:2b4b4afeb2a3076fbfa8b9"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "dart": {
+        "lib/firebase_options_dev.dart": {
+          "projectId": "cv-web-app-dev",
+          "configurations": {
+            "web": "1:165423531884:web:da9dcaaca7459d65d5d549"
+          }
+        },
+        "lib/firebase_options_prod.dart": {
+          "projectId": "cv-web-app-prod",
+          "configurations": {
+            "web": "1:464122169532:web:2b4b4afeb2a3076fbfa8b9"
+          }
+        }
+      }
+    }
+  },
+  "hosting": {
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ],
+    "headers": [
+      {
+        "source": "**/*.@(js|css|png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)",
+        "headers": [
+          { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+        ]
+      },
+      {
+        "source": "index.html",
+        "headers": [
+          { "key": "Cache-Control", "value": "public, max-age=3600, must-revalidate" }
+        ]
+      },
+      {
+        "source": "**",
+        "headers": [
+          { "key": "X-Frame-Options", "value": "DENY" },
+          { "key": "X-Content-Type-Options", "value": "nosniff" },
+          { "key": "X-XSS-Protection", "value": "1; mode=block" }
+        ]
+      }
+    ]
+  }
+}

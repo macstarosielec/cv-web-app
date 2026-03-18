@@ -1,0 +1,77 @@
+name: Deploy to Firebase Hosting (dev)
+on:
+  push:
+    branches:
+      - develop
+jobs:
+  build_and_deploy_cv:
+    name: CV App (dev)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Activate Melos
+        run: dart pub global activate melos
+
+      - name: Run code generation
+        run: melos run build
+
+      - name: Generate localization
+        run: melos run l10n
+
+      - name: Build web app (dev)
+        run: cd apps/cv_app && flutter build web --target lib/main_dev.dart
+
+      - name: Deploy to Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CV_WEB_APP_DEV }}
+          channelId: live
+          projectId: cv-web-app-dev
+          entryPoint: apps/cv_app
+
+  build_and_deploy_admin:
+    name: Admin App (dev)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Activate Melos
+        run: dart pub global activate melos
+
+      - name: Run code generation
+        run: melos run build
+
+      - name: Generate localization
+        run: melos run l10n
+
+      - name: Build admin app (dev)
+        run: cd apps/admin_app && flutter build web --target lib/main_dev.dart
+
+      - name: Deploy to Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CV_WEB_APP_DEV }}
+          channelId: live
+          projectId: cv-web-app-dev
+          entryPoint: apps/admin_app

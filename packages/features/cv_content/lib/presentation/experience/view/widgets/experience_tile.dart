@@ -1,5 +1,10 @@
+import 'dart:async';
+
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:shared/analytics/analytics_service.dart';
+import 'package:shared/constants/app_dimensions.dart';
 import 'package:shared/gen/colors.gen.dart';
 import 'package:shared/l10n/l10n.dart';
 
@@ -38,17 +43,24 @@ class _ExperienceTileState extends State<ExperienceTile> {
     final l10n = AppLocalizations.of(context);
 
     return MouseRegion(
-      onEnter: (_) => setState(() => _isHovered = true),
+      onEnter: (_) {
+        setState(() => _isHovered = true);
+        unawaited(
+          GetIt.instance<AnalyticsService>().logExperienceHovered(
+            title: widget.experience.title,
+            company: widget.experience.company,
+          ),
+        );
+      },
       onExit: (_) => setState(() => _isHovered = false),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         margin: const EdgeInsets.only(bottom: 4),
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppDimensions.paddingSmall),
         decoration: BoxDecoration(
           color: _isHovered
-              ? ColorName.accent.withValues(alpha: 0.06)
+              ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.06)
               : Colors.transparent,
-          borderRadius: BorderRadius.circular(12),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,13 +84,15 @@ class _ExperienceTileState extends State<ExperienceTile> {
                       vertical: 4,
                     ),
                     decoration: BoxDecoration(
-                      color: ColorName.accent.withValues(alpha: 0.15),
-                      borderRadius: BorderRadius.circular(6),
+                      color: Theme.of(context)
+                          .colorScheme
+                          .primary
+                          .withValues(alpha: 0.15),
                     ),
                     child: Text(
                       l10n.current,
                       style: textTheme.labelSmall?.copyWith(
-                        color: ColorName.accent,
+                        color: Theme.of(context).colorScheme.primary,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -100,7 +114,7 @@ class _ExperienceTileState extends State<ExperienceTile> {
               ),
             ),
             if (widget.experience.responsibilities.isNotEmpty) ...[
-              const SizedBox(height: 12),
+              const SizedBox(height: AppDimensions.spacingSmall),
               ...widget.experience.responsibilities.map(
                 (r) => Padding(
                   padding: const EdgeInsets.only(bottom: 4),

@@ -1,0 +1,8 @@
+{
+  "projects": {
+    "prod": "cv-web-app-prod",
+    "default": "cv-web-app-prod"
+  },
+  "targets": {},
+  "etags": {}
+}

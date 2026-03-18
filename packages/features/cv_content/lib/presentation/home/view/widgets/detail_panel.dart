@@ -1,18 +1,10 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:cv_content/presentation/contact/view/widgets/contact_panel.dart';
-import 'package:cv_content/presentation/experience/cubit/work_experience_cubit.dart';
-import 'package:cv_content/presentation/experience/cubit/work_experience_state.dart';
-import 'package:cv_content/presentation/experience/view/widgets/experience_list.dart';
+import 'package:cv_content/presentation/home/view/widgets/detail_panel_content.dart';
 import 'package:cv_content/presentation/models/detail_panel_type.dart';
-import 'package:cv_content/presentation/projects/cubit/projects_cubit.dart';
-import 'package:cv_content/presentation/projects/cubit/projects_state.dart';
-import 'package:cv_content/presentation/projects/view/widgets/projects_list.dart';
-import 'package:cv_content/presentation/widgets/gradient_card.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared/l10n/l10n.dart';
+import 'package:shared/widgets/gradient_card.dart';
 
 class DetailPanel extends StatefulWidget {
   const DetailPanel({
@@ -34,6 +26,7 @@ class _DetailPanelState extends State<DetailPanel>
   late final Animation<double> _flipAnimation;
   DetailPanelType? _displayedType;
   DetailPanelType? _nextType;
+  bool _seedFlipped = false;
 
   @override
   void initState() {
@@ -85,7 +78,10 @@ class _DetailPanelState extends State<DetailPanel>
   @override
   Widget build(BuildContext context) {
     if (widget.animationProgress < 1) {
-      return const GradientCard(seed: 42, child: SizedBox.shrink());
+      return GradientCard(
+        seed: _seedForType(_displayedType),
+        child: const SizedBox.shrink(),
+      );
     }
 
     return AnimatedBuilder(
@@ -94,6 +90,17 @@ class _DetailPanelState extends State<DetailPanel>
         final value = _flipAnimation.value;
         final isFirstHalf = value <= 0.5;
         final type = isFirstHalf ? _displayedType : _nextType;
+
+        // Only switch the seed once the card is edge-on (invisible)
+        if (!isFirstHalf && !_seedFlipped) {
+          _seedFlipped = true;
+        } else if (isFirstHalf && _seedFlipped) {
+          _seedFlipped = false;
+        }
+
+        final seed = _seedFlipped
+            ? _seedForType(_nextType)
+            : _seedForType(_displayedType);
 
         final angle = isFirstHalf
             ? value * pi
@@ -105,70 +112,16 @@ class _DetailPanelState extends State<DetailPanel>
             ..setEntry(3, 2, 0.001)
             ..rotateY(angle),
           child: GradientCard(
-            seed: _seedForType(type),
-            child: _buildPanelContent(context, type),
+            seed: seed,
+            child: type != null
+                ? DetailPanelContent(type: type)
+                : const SizedBox.shrink(),
           ),
         );
       },
     );
   }
 
-  int _seedForType(DetailPanelType? type) {
-    return switch (type) {
-      DetailPanelType.projects => 42,
-      DetailPanelType.experience => 84,
-      DetailPanelType.contact => 126,
-      null => 42,
-    };
-  }
-
-  Widget _buildPanelContent(
-    BuildContext context,
-    DetailPanelType? type,
-  ) {
-    return switch (type) {
-      DetailPanelType.projects =>
-        BlocBuilder<ProjectsCubit, ProjectsState>(
-          builder: (context, state) => state.when(
-            initial: () => const SizedBox.shrink(),
-            loading: () => const Center(
-              child: CircularProgressIndicator(),
-            ),
-            loaded: (projects) => ProjectsList(
-              key: const ValueKey('projects'),
-              projects: projects,
-            ),
-            error: (message) =>
-                Center(
-                child: Text(
-                  AppLocalizations.of(context).errorMessage(message),
-                ),
-              ),
-          ),
-        ),
-      DetailPanelType.experience =>
-        BlocBuilder<WorkExperienceCubit, WorkExperienceState>(
-          builder: (context, state) => state.when(
-            initial: () => const SizedBox.shrink(),
-            loading: () => const Center(
-              child: CircularProgressIndicator(),
-            ),
-            loaded: (experiences) => ExperienceList(
-              key: const ValueKey('experience'),
-              experiences: experiences,
-            ),
-            error: (message) =>
-                Center(
-                child: Text(
-                  AppLocalizations.of(context).errorMessage(message),
-                ),
-              ),
-          ),
-        ),
-      DetailPanelType.contact => const ContactPanel(
-          key: ValueKey('contact'),
-        ),
-      null => const SizedBox.shrink(),
-    };
-  }
+  int _seedForType(DetailPanelType? type) =>
+      type?.gradientSeed ?? DetailPanelType.projects.gradientSeed;
 }

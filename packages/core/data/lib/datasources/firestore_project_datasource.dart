@@ -1,0 +1,46 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:domain/domain.dart';
+import 'package:injectable/injectable.dart';
+import 'package:shared/constants/app_constants.dart';
+
+@lazySingleton
+class FirestoreProjectDatasource {
+  FirestoreProjectDatasource(this._firestore);
+
+  final FirebaseFirestore _firestore;
+
+  CollectionReference<Map<String, dynamic>> get _collection =>
+      _firestore.collection(AppConstants.firestoreCollectionProjects);
+
+  Future<List<Project>> getProjects() async {
+    final snapshot =
+        await _collection.orderBy(AppConstants.fieldSortOrder).get();
+    return snapshot.docs.map((doc) {
+      final data = {...doc.data(), 'id': doc.id};
+      return Project.fromJson(data);
+    }).toList();
+  }
+
+  Future<void> addProject(Project project) {
+    final json = project.toJson()..remove('id');
+    return _collection.doc(project.id).set(json);
+  }
+
+  Future<void> updateProject(Project project) {
+    final json = project.toJson()..remove('id');
+    return _collection.doc(project.id).update(json);
+  }
+
+  Future<void> deleteProject(String id) => _collection.doc(id).delete();
+
+  Future<void> reorderProjects(List<Project> projects) async {
+    final batch = _firestore.batch();
+    for (final project in projects) {
+      batch.update(
+        _collection.doc(project.id),
+        {AppConstants.fieldSortOrder: project.sortOrder},
+      );
+    }
+    await batch.commit();
+  }
+}
