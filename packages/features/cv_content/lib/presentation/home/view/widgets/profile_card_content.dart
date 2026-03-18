@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:cv_content/presentation/home/view/widgets/social_links_row.dart';
 import 'package:cv_content/presentation/models/detail_panel_type.dart';
 import 'package:cv_content/presentation/widgets/navigation_chips_row.dart';
 import 'package:cv_content/presentation/widgets/section_title.dart';
@@ -87,8 +86,7 @@ class _ProfileCardContentState extends State<ProfileCardContent>
 
     final hasBottomRow = profile.location != null ||
         profile.timezone != null ||
-        profile.cvUrl != null ||
-        profile.socialLinks.isNotEmpty;
+        profile.cvUrl != null;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -298,10 +296,6 @@ class _ProfileCardContentState extends State<ProfileCardContent>
                       ),
                   ],
                 ),
-                if (profile.socialLinks.isNotEmpty) ...[
-                  const SizedBox(height: AppDimensions.spacingMedium),
-                  SocialLinksRow(socialLinks: profile.socialLinks),
-                ],
               ],
             ),
           ),
