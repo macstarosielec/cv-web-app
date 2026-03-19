@@ -2,7 +2,7 @@ name: cv_app
 description: Public-facing CV web application - display-only interface for
   viewing portfolio content
 publish_to: 'none'
-version: 1.2.0+3
+version: 1.3.0+4
 resolution: workspace
 
 environment:
