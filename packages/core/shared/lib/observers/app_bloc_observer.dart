@@ -37,6 +37,13 @@ class AppBlocObserver extends BlocObserver {
   void onError(BlocBase<dynamic> bloc, Object error, StackTrace stackTrace) {
     if (appConfig.isLogBlocErrors) {
       log('onError(${bloc.runtimeType}, $error, $stackTrace)');
+      unawaited(
+        analyticsService.logError(
+          errorType: error.runtimeType.toString(),
+          source: 'bloc:${bloc.runtimeType}',
+          message: error.toString(),
+        ),
+      );
     }
     unawaited(
       errorReportingService.captureException(error, stackTrace),

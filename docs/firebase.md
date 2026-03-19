@@ -33,6 +33,8 @@ Each app has its own `firebase.json` with SPA rewrites. Hosting sites:
 | cv_app | `cv-web-app-dev` | `cv-web-app-prod` |
 | admin_app | `cv-admin-app-dev` | `cv-admin-app-prod` |
 
+The CV app deploys to the default hosting site (matching the project ID), so no extra config is needed. The admin app uses a **deploy target** (`admin`) configured in `apps/admin_app/.firebaserc` to resolve the correct site per environment. GitHub Actions workflows pass `target: admin` in the admin deploy step.
+
 ## Regenerating Firebase Config
 
 ```bash

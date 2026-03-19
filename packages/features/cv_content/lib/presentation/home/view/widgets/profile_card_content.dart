@@ -282,8 +282,8 @@ class _ProfileCardContentState extends State<ProfileCardContent>
               ],
             ),
           ),
+            ],
           ],
-        ],
         ),
       ),
     );

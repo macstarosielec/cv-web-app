@@ -75,4 +75,5 @@ jobs:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CV_WEB_APP_DEV }}
           projectId: cv-web-app-dev
+          target: admin
           entryPoint: apps/admin_app
