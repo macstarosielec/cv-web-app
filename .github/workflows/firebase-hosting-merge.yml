@@ -4,6 +4,19 @@ on:
     branches:
       - main
 jobs:
+  deploy_firestore_rules:
+    name: Firestore Rules (prod)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy Firestore rules
+        uses: w9jds/firebase-action@master
+        with:
+          args: deploy --only firestore:rules --project cv-web-app-prod
+        env:
+          GCP_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CV_WEB_APP_PROD }}
+
   build_and_deploy_cv:
     name: CV App (prod)
     runs-on: ubuntu-latest

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:ui';
 
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,9 +32,18 @@ Future<void> sharedBootstrap({
       options: getIt<IFirebaseConfig>().getFirebaseOptions(),
     );
 
-    log('Firebase initialized for environment: $environment');
-    log('Firebase app name: ${Firebase.app().name}');
-    log('Firebase project ID: ${Firebase.app().options.projectId}');
+    if (environment == 'dev') {
+      log('Firebase initialized for environment: $environment');
+      log('Firebase app name: ${Firebase.app().name}');
+      log('Firebase project ID: ${Firebase.app().options.projectId}');
+    }
+
+    final recaptchaKey = appConfig.recaptchaSiteKey;
+    if (recaptchaKey.isNotEmpty) {
+      await FirebaseAppCheck.instance.activate(
+        providerWeb: ReCaptchaV3Provider(recaptchaKey),
+      );
+    }
 
     final analyticsService = AnalyticsService();
     getIt.registerSingleton<AnalyticsService>(analyticsService);

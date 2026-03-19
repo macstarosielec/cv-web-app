@@ -28,6 +28,9 @@ class AppConfigDev implements IAppConfig, IFirebaseConfig {
       'https://37f6c2b660050d2e133ae8882b8c1f71@o4511066998112256.ingest.de.sentry.io/4511067007615056';
 
   @override
+  String get recaptchaSiteKey => '';
+
+  @override
   FirebaseOptions getFirebaseOptions() =>
       DefaultFirebaseOptions.currentPlatform;
 }

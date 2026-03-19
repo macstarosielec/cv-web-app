@@ -13,7 +13,7 @@ Feature Packages (presentation) --> core/domain <-- core/data
 |-------|---------|----------|
 | **Domain** | `packages/core/domain` | Entities (Freezed), repository interfaces. No Flutter/Firebase dependencies. |
 | **Data** | `packages/core/data` | Repository implementations, datasources (Firestore for prod, mock for dev). Depends on domain. |
-| **Shared** | `packages/core/shared` | Cross-cutting concerns: `IAppConfig` interface, `AppTheme`, localization, `AppBlocObserver`, `AppRouteObserver`, `AnalyticsService`, `Breakpoints`, DI setup, generated colors, shared widgets (GradientCard, MatrixRain, NavigationChip, ActionChip). |
+| **Shared** | `packages/core/shared` | Cross-cutting concerns: `IAppConfig` interface, `AppTheme`, localization, `AppBlocObserver`, `AppRouteObserver`, `AnalyticsService`, `ErrorReportingService` (Sentry), `Breakpoints`, DI setup, generated colors, shared widgets (GradientCard, MatrixRain, NavigationChip, ActionChip). |
 | **Features** | `packages/features/*` | Self-contained feature modules. Each owns its presentation layer (pages, cubits/blocs, widgets), its own DI module, and its own micro-router. |
 | **Apps** | `apps/*` | Thin shell applications. Wire up DI, Firebase, routing, and theme. Contain environment configs and entry points. |
 
@@ -28,8 +28,10 @@ Feature Packages (presentation) --> core/domain <-- core/data
 | **JSON Serialization** | `json_annotation` + `json_serializable` (via build_runner) |
 | **UI Hooks** | `flutter_hooks` (HookWidget for pages) |
 | **Asset Generation** | `flutter_gen` (color constants from XML) |
+| **SVG Path Rendering** | `path_drawing` (parses SVG path data for CustomPainter) |
 | **Linting** | `very_good_analysis` |
-| **Firebase** | `firebase_core`, `cloud_firestore`, `firebase_auth`, `firebase_analytics` |
+| **Firebase** | `firebase_core`, `cloud_firestore`, `firebase_auth`, `firebase_analytics`, `firebase_app_check` |
+| **Error Reporting** | `sentry_flutter` (Sentry) |
 
 ## Dependency Injection Flow
 
@@ -69,9 +71,11 @@ bootstrap(environment: "dev")    bootstrap(environment: "prod")
       ├── WidgetsFlutterBinding.ensureInitialized()
       ├── configureDependencies()      // GetIt setup for all modules
       ├── Firebase.initializeApp()     // Uses IFirebaseConfig.getFirebaseOptions()
+      ├── FirebaseAppCheck.activate()    // reCAPTCHA v3 if recaptchaSiteKey is configured
       ├── AnalyticsService()             // Registered in GetIt
-      ├── Error handlers                  // FlutterError.onError, PlatformDispatcher.onError, zone errors → AnalyticsService
-      ├── Bloc.observer = AppBlocObserver() // Wired with AnalyticsService for error reporting
+      ├── Error handlers                  // FlutterError.onError, PlatformDispatcher.onError → ErrorReportingService (Sentry)
+      ├── Bloc.observer = AppBlocObserver() // Wired with ErrorReportingService for error capture
+      ├── SentryFlutter.init()           // Wraps app if sentryDsn is configured
       └── runApp(App())
 ```
 

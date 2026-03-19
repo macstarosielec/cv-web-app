@@ -31,6 +31,13 @@ presentation/
 │   └── view/widgets/
 ├── contact/
 │   └── view/widgets/
+│       ├── contact_panel.dart          # Outer panel wrapper
+│       ├── contact_panel_content.dart  # Stagger-animated contact sections
+│       ├── contact_row.dart            # Icon + label + value link row
+│       ├── decode_email_reveal.dart    # Animated email decode reveal
+│       ├── europe_map.dart             # Vector Europe map (CustomPainter, highlights country)
+│       ├── location_country_code.dart  # Location string → ISO country code mapping
+│       └── location_info_row.dart      # Location + timezone row
 └── widgets/         # Shared presentation widgets
     ├── section_title.dart
     └── navigation_chips_row.dart
