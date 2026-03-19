@@ -20,9 +20,36 @@ Currently configured for **web only**.
 | Service | Usage |
 |---------|-------|
 | **Firestore** | Document storage for profile, projects, work experience |
-| **Auth** | Admin app authentication (email/password) |
+| **Auth** | Admin app authentication (email/password) with `admin` custom claim for write access |
 | **Hosting** | Static web hosting for both apps (SPA rewrites) |
 | **Analytics** | Event tracking |
+| **App Check** | reCAPTCHA v3 on admin_app — validates requests come from the real app, not scripts |
+
+## Security
+
+### Firestore Rules
+
+Rules are defined in `firestore.rules` at the repo root and deployed via CI/CD (and manually via `firebase deploy --only firestore:rules --project <id>`).
+
+- **Deny-by-default:** any new collection is locked unless explicitly allowed
+- **Public read:** `profile`, `projects`, `work_experiences` — anyone can read
+- **Admin write:** requires authenticated user with `admin: true` custom claim
+
+### App Check
+
+Enforced on Cloud Firestore for both projects. Only the admin app activates App Check (reCAPTCHA v3, invisible). The CV app skips it (empty `recaptchaSiteKey`). Site keys are configured per environment in `IAppConfig` implementations.
+
+### Auth & Access Control
+
+- Admin users have `admin: true` custom claim (set via Firebase Admin SDK or MCP tools)
+- Authorized domains are restricted to Firebase Hosting domains + localhost
+- Self-registration is not disabled but grants no write access (Firestore rules + App Check block unauthorized writes)
+
+### Adding a New Admin User
+
+1. Create the user in Firebase Console > Authentication
+2. Set the `admin` custom claim: use Firebase MCP `auth_update_user` tool or Firebase Admin SDK
+3. The user must sign out and back in for the claim to take effect
 
 ## Hosting
 

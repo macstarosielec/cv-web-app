@@ -225,6 +225,7 @@ class _ProfileFormState extends State<ProfileForm> {
   Widget _timezoneDropdown(BuildContext context) =>
       DropdownButtonFormField<String>(
         initialValue: _timezone,
+        isExpanded: true,
         decoration: adminInputDecoration(
           context: context,
           label: AppLocalizations.of(context).timezone,
@@ -241,7 +242,7 @@ class _ProfileFormState extends State<ProfileForm> {
           ..._timezones.map(
             (tz) => DropdownMenuItem(
               value: tz,
-              child: Text(tz),
+              child: Text(tz, overflow: TextOverflow.ellipsis),
             ),
           ),
         ],

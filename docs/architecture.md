@@ -30,7 +30,7 @@ Feature Packages (presentation) --> core/domain <-- core/data
 | **Asset Generation** | `flutter_gen` (color constants from XML) |
 | **SVG Path Rendering** | `path_drawing` (parses SVG path data for CustomPainter) |
 | **Linting** | `very_good_analysis` |
-| **Firebase** | `firebase_core`, `cloud_firestore`, `firebase_auth`, `firebase_analytics` |
+| **Firebase** | `firebase_core`, `cloud_firestore`, `firebase_auth`, `firebase_analytics`, `firebase_app_check` |
 | **Error Reporting** | `sentry_flutter` (Sentry) |
 
 ## Dependency Injection Flow
@@ -71,6 +71,7 @@ bootstrap(environment: "dev")    bootstrap(environment: "prod")
       ├── WidgetsFlutterBinding.ensureInitialized()
       ├── configureDependencies()      // GetIt setup for all modules
       ├── Firebase.initializeApp()     // Uses IFirebaseConfig.getFirebaseOptions()
+      ├── FirebaseAppCheck.activate()    // reCAPTCHA v3 if recaptchaSiteKey is configured
       ├── AnalyticsService()             // Registered in GetIt
       ├── Error handlers                  // FlutterError.onError, PlatformDispatcher.onError → ErrorReportingService (Sentry)
       ├── Bloc.observer = AppBlocObserver() // Wired with ErrorReportingService for error capture
