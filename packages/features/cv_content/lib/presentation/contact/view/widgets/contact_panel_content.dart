@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:cv_content/presentation/contact/view/widgets/contact_row.dart';
 import 'package:cv_content/presentation/contact/view/widgets/decode_email_reveal.dart';
-import 'package:cv_content/presentation/contact/view/widgets/spinning_bracket_icon.dart';
+import 'package:cv_content/presentation/contact/view/widgets/europe_map.dart';
+import 'package:cv_content/presentation/contact/view/widgets/location_country_code.dart';
+import 'package:cv_content/presentation/contact/view/widgets/location_info_row.dart';
 import 'package:cv_content/presentation/widgets/section_title.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +30,10 @@ class _ContactPanelContentState extends State<ContactPanelContent>
   late final List<Animation<double>> _animations;
 
   int get _itemCount =>
+      (widget.profile.location != null ? 1 : 0) +
+      (widget.profile.location != null || widget.profile.timezone != null
+          ? 1
+          : 0) +
       (widget.profile.phoneNumber != null ? 1 : 0) +
       widget.profile.socialLinks.length;
 
@@ -73,8 +79,40 @@ class _ContactPanelContentState extends State<ContactPanelContent>
     final accentColor = Theme.of(context).colorScheme.primary;
     final profile = widget.profile;
 
-    final items = <Widget>[];
+    final allItems = <Widget>[];
     var index = 0;
+
+    // Map
+    if (profile.location != null) {
+      allItems.add(
+        StaggerItem(
+          animation: _animations[index++],
+          child: Center(
+            child: SizedBox(
+              height: 180,
+              child: EuropeMap(
+                countryCode: locationToCountryCode(profile.location!),
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    // Location & timezone
+    if (profile.location != null || profile.timezone != null) {
+      allItems.add(
+        StaggerItem(
+          animation: _animations[index++],
+          child: LocationInfoRow(
+            location: profile.location,
+            timezone: profile.timezone,
+          ),
+        ),
+      );
+    }
+
+    final items = <Widget>[];
 
     // Phone
     if (profile.phoneNumber != null) {
@@ -138,8 +176,9 @@ class _ContactPanelContentState extends State<ContactPanelContent>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Center(child: SpinningBracketIcon(size: 150)),
-          const SizedBox(height: AppDimensions.spacingLarge),
+          ...allItems,
+          if (allItems.isNotEmpty)
+            const SizedBox(height: AppDimensions.spacingLarge),
           SectionTitle(l10n.contact),
           const SizedBox(height: AppDimensions.spacingLarge),
           Center(child: DecodeEmailReveal(email: profile.email)),
