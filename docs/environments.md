@@ -13,9 +13,11 @@ The project uses two Firebase projects and two app entry points per app to separ
      String get appName;
      bool get isLogBlocChanges;
      bool get isLogBlocErrors;
+     bool get alwaysAnimateEntrance;
+     String get sentryDsn;
    }
    ```
-   `IFirebaseConfig` is a separate interface for `FirebaseOptions getFirebaseOptions()`.
+   `IFirebaseConfig` is a separate interface for `FirebaseOptions getFirebaseOptions()`. When `sentryDsn` is non-empty, the bootstrap wraps the app with `SentryFlutter.init()` for automatic error reporting.
 
 3. **Environment implementations** (in each app's `lib/config/dev/` and `prod/`):
    - `AppConfigDev` annotated `@dev @Injectable(as: IAppConfig)` — registered only for dev

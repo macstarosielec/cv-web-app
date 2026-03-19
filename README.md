@@ -84,6 +84,7 @@ Feature Packages (presentation) --> core/domain <-- core/data
 | Models | `freezed` + `json_serializable` |
 | UI | `flutter_hooks` (pages), `StatefulWidget` (multi-controller animations) |
 | Backend | Firebase (Firestore, Auth, Hosting, Analytics) |
+| Error Reporting | Sentry (`sentry_flutter`) |
 | Linting | `very_good_analysis` |
 
 ## CI/CD
