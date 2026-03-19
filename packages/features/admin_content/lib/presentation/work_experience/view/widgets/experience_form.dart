@@ -1,7 +1,8 @@
 import 'dart:async';
 
 import 'package:admin_content/presentation/projects/view/widgets/responsibilities_editor.dart';
-import 'package:admin_content/presentation/widgets/admin_input_decoration.dart';
+import 'package:admin_content/presentation/widgets/admin_form_field.dart';
+import 'package:admin_content/presentation/widgets/animated_form_item.dart';
 import 'package:admin_content/presentation/widgets/form_section.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
@@ -153,6 +154,7 @@ class _ExperienceFormState extends State<ExperienceForm>
       startDate: _startDate,
       endDate: _endDate,
       responsibilities: _responsibilities,
+      sortOrder: widget.workExperience?.sortOrder ?? 0,
     );
     widget.onSave(workExperience);
   }
@@ -172,9 +174,8 @@ class _ExperienceFormState extends State<ExperienceForm>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _animated(
-            index: index++,
-            total: itemCount,
+          AnimatedFormItem(
+            animation: _itemAnimation(index++, itemCount),
             child: Text(
               _isEditing ? l10n.editExperience : l10n.addExperience,
               style: const TextStyle(
@@ -185,21 +186,29 @@ class _ExperienceFormState extends State<ExperienceForm>
             ),
           ),
           const SizedBox(height: AppDimensions.spacingMedium),
-          _animated(
-            index: index++,
-            total: itemCount,
+          AnimatedFormItem(
+            animation: _itemAnimation(index++, itemCount),
             child: Row(
               children: [
-                Expanded(child: _field(_title, l10n.title)),
+                Expanded(
+                  child: AdminFormField(
+                    controller: _title,
+                    label: l10n.title,
+                  ),
+                ),
                 const SizedBox(width: AppDimensions.spacingSmall),
-                Expanded(child: _field(_company, l10n.company)),
+                Expanded(
+                  child: AdminFormField(
+                    controller: _company,
+                    label: l10n.company,
+                  ),
+                ),
               ],
             ),
           ),
           const SizedBox(height: AppDimensions.spacingMedium),
-          _animated(
-            index: index++,
-            total: itemCount,
+          AnimatedFormItem(
+            animation: _itemAnimation(index++, itemCount),
             child: FormSection(
               title: l10n.dates,
               child: Column(
@@ -260,9 +269,8 @@ class _ExperienceFormState extends State<ExperienceForm>
               ),
             ),
           ),
-          _animated(
-            index: index++,
-            total: itemCount,
+          AnimatedFormItem(
+            animation: _itemAnimation(index++, itemCount),
             child: FormSection(
               title: l10n.responsibilities,
               child: ResponsibilitiesEditor(
@@ -275,9 +283,8 @@ class _ExperienceFormState extends State<ExperienceForm>
             ),
           ),
           const SizedBox(height: AppDimensions.spacingMedium),
-          _animated(
-            index: index,
-            total: itemCount,
+          AnimatedFormItem(
+            animation: _itemAnimation(index, itemCount),
             child: Row(
               children: [
                 shared.ActionChip(
@@ -300,31 +307,4 @@ class _ExperienceFormState extends State<ExperienceForm>
       ),
     );
   }
-
-  Widget _animated({
-    required int index,
-    required int total,
-    required Widget child,
-  }) {
-    final animation = _itemAnimation(index, total);
-    return FadeTransition(
-      opacity: animation,
-      child: SlideTransition(
-        position: animation.drive(
-          Tween(begin: const Offset(0, 0.1), end: Offset.zero),
-        ),
-        child: child,
-      ),
-    );
-  }
-
-  Widget _field(TextEditingController controller, String label) => TextField(
-        controller: controller,
-        decoration: adminInputDecoration(
-          context: context,
-          label: label,
-          isDense: true,
-        ),
-        style: const TextStyle(color: ColorName.textPrimary),
-      );
 }

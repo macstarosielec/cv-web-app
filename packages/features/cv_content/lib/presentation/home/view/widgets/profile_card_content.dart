@@ -89,110 +89,117 @@ class _ProfileCardContentState extends State<ProfileCardContent>
         profile.timezone != null ||
         profile.cvUrl != null;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        StaggerItem(
-          animation: _animations[0],
-          child: Text(
-            profile.fullName,
-            style: textTheme.displaySmall?.copyWith(
-              fontWeight: FontWeight.w700,
-              color: ColorName.textPrimary,
+    return ScrollConfiguration(
+      behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            StaggerItem(
+              animation: _animations[0],
+              child: Text(
+                profile.fullName,
+                style: textTheme.displaySmall?.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: ColorName.textPrimary,
+                ),
+              ),
             ),
-          ),
-        ),
-        const SizedBox(height: 4),
-        StaggerItem(
-          animation: _animations[1],
-          child: Text(
-            profile.title,
-            style: AppTheme.accentStyle(fontSize: 18).copyWith(
-              color: Theme.of(context).colorScheme.primary,
-              letterSpacing: 2,
+            const SizedBox(height: 4),
+            StaggerItem(
+              animation: _animations[1],
+              child: Text(
+                profile.title,
+                style: AppTheme.accentStyle(fontSize: 18).copyWith(
+                  color: Theme.of(context).colorScheme.primary,
+                  letterSpacing: 2,
+                ),
+              ),
             ),
-          ),
-        ),
-        const SizedBox(height: AppDimensions.spacingLarge),
-        StaggerItem(
-          animation: _animations[2],
-          child: Text(
-            profile.about,
-            style: textTheme.bodyLarge?.copyWith(
-              color: ColorName.textSecondary,
-              height: 1.6,
+            const SizedBox(height: AppDimensions.spacingLarge),
+            StaggerItem(
+              animation: _animations[2],
+              child: Text(
+                profile.about,
+                style: textTheme.bodyLarge?.copyWith(
+                  color: ColorName.textSecondary,
+                  height: 1.6,
+                ),
+              ),
             ),
-          ),
-        ),
-        if (widget.showNavigationChips) ...[
-          const SizedBox(height: 32),
-          StaggerItem(
-            animation: _animations[3],
-            child: NavigationChipsRow(
-              selectedPanels: widget.selectedPanels,
-              onChipSelected: widget.onChipSelected,
-            ),
-          ),
-        ],
-        if (profile.languages.isNotEmpty ||
-            profile.interests.isNotEmpty) ...[
-          const SizedBox(height: AppDimensions.spacingLarge),
-          StaggerItem(
-            animation: _animations[4],
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (profile.languages.isNotEmpty)
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SectionTitle(l10n.languages),
-                        const SizedBox(height: AppDimensions.spacingSmall),
-                        Wrap(
-                          spacing: AppDimensions.tagSpacing,
-                          runSpacing: AppDimensions.tagSpacing,
-                          children: profile.languages
-                              .map(
-                                (lang) => TagChip(
-                                  label:
-                                      '${lang.name} (${lang.proficiency.label})',
-                                ),
-                              )
-                              .toList(),
+            if (widget.showNavigationChips) ...[
+              const SizedBox(height: 32),
+              StaggerItem(
+                animation: _animations[3],
+                child: NavigationChipsRow(
+                  selectedPanels: widget.selectedPanels,
+                  onChipSelected: widget.onChipSelected,
+                ),
+              ),
+            ],
+            if (profile.languages.isNotEmpty ||
+                profile.interests.isNotEmpty) ...[
+              const SizedBox(height: AppDimensions.spacingLarge),
+              StaggerItem(
+                animation: _animations[4],
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (profile.languages.isNotEmpty)
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SectionTitle(l10n.languages),
+                            const SizedBox(
+                              height: AppDimensions.spacingSmall,
+                            ),
+                            Wrap(
+                              spacing: AppDimensions.tagSpacing,
+                              runSpacing: AppDimensions.tagSpacing,
+                              children: profile.languages
+                                  .map(
+                                    (lang) => TagChip(
+                                      label:
+                                          '${lang.name} (${lang.proficiency.label})',
+                                    ),
+                                  )
+                                  .toList(),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
-                if (profile.languages.isNotEmpty &&
-                    profile.interests.isNotEmpty)
-                  const SizedBox(width: 24),
-                if (profile.interests.isNotEmpty)
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SectionTitle(l10n.interests),
-                        const SizedBox(height: AppDimensions.spacingSmall),
-                        Wrap(
-                          spacing: AppDimensions.tagSpacing,
-                          runSpacing: AppDimensions.tagSpacing,
-                          children: profile.interests
-                              .map(
-                                (interest) => TagChip(label: interest),
-                              )
-                              .toList(),
+                      ),
+                    if (profile.languages.isNotEmpty &&
+                        profile.interests.isNotEmpty)
+                      const SizedBox(width: 24),
+                    if (profile.interests.isNotEmpty)
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SectionTitle(l10n.interests),
+                            const SizedBox(
+                              height: AppDimensions.spacingSmall,
+                            ),
+                            Wrap(
+                              spacing: AppDimensions.tagSpacing,
+                              runSpacing: AppDimensions.tagSpacing,
+                              children: profile.interests
+                                  .map(
+                                    (interest) =>
+                                        TagChip(label: interest),
+                                  )
+                                  .toList(),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
-              ],
-            ),
-          ),
-        ],
-        if (hasBottomRow) ...[
-          const Spacer(),
-          const SizedBox(height: 32),
+                      ),
+                  ],
+                ),
+              ),
+            ],
+            if (hasBottomRow) ...[
+              const SizedBox(height: 32),
           StaggerItem(
             animation: _animations[5],
             child: Column(
@@ -275,8 +282,10 @@ class _ProfileCardContentState extends State<ProfileCardContent>
               ],
             ),
           ),
-        ],
-      ],
+            ],
+          ],
+        ),
+      ),
     );
   }
 }

@@ -14,14 +14,23 @@ class FirestoreWorkExperienceDatasource {
           .collection(AppConstants.firestoreCollectionWorkExperiences);
 
   Future<List<WorkExperience>> getWorkExperiences() async {
-    final snapshot =
-        await _collection.orderBy(AppConstants.fieldSortOrder).get();
-    return snapshot.docs.map((doc) {
+    final snapshot = await _collection.get();
+    final experiences = snapshot.docs.map((doc) {
       final data = Map<String, dynamic>.from(doc.data());
       data['id'] = doc.id;
       _convertTimestampsToIso(data);
       return WorkExperience.fromJson(data);
-    }).toList();
+    }).toList()
+      ..sort((a, b) {
+        if (a.endDate == null && b.endDate != null) return -1;
+        if (a.endDate != null && b.endDate == null) return 1;
+        if (a.endDate != null && b.endDate != null) {
+          final cmp = b.endDate!.compareTo(a.endDate!);
+          if (cmp != 0) return cmp;
+        }
+        return b.startDate.compareTo(a.startDate);
+      });
+    return experiences;
   }
 
   Future<void> addWorkExperience(WorkExperience workExperience) =>

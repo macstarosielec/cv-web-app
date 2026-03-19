@@ -56,6 +56,16 @@ class AdminProjectsCubit extends Cubit<AdminProjectsState> {
     }
   }
 
+  Future<void> reorderProjects(List<Project> reordered) async {
+    emit(AdminProjectsState.saving(projects: reordered));
+    try {
+      await _projectRepository.reorderProjects(reordered);
+      emit(AdminProjectsState.loaded(projects: reordered));
+    } on AppException catch (e) {
+      emit(AdminProjectsState.error(exception: e));
+    }
+  }
+
   List<Project> get _currentProjects => state.when(
         initial: () => [],
         loading: () => [],

@@ -1,26 +1,9 @@
 import 'dart:async';
 
-import 'package:admin_app/app/widgets/login_card_placeholder.dart';
-import 'package:admin_app/app/widgets/transition_nav_content.dart';
-import 'package:admin_content/admin_content.dart';
+import 'package:admin_app/app/widgets/auth_phase_indicator.dart';
 import 'package:auth/auth.dart';
-import 'package:auth/presentation/login/view/widgets/login_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared/widgets/gradient_card.dart';
-
-enum _Phase {
-  login,
-  fadeOutContent,
-  morphCard,
-  staggerNav,
-  revealContent,
-  dashboard,
-  hideContent,
-  unstaggerNav,
-  unmorphCard,
-  fadeInContent,
-}
 
 class AdminAuthShell extends StatefulWidget {
   const AdminAuthShell({super.key});
@@ -31,12 +14,7 @@ class AdminAuthShell extends StatefulWidget {
 
 class _AdminAuthShellState extends State<AdminAuthShell>
     with TickerProviderStateMixin {
-  _Phase _phase = _Phase.login;
-
-  static const _margin = 24.0;
-  static const _navCardWidth = 250.0;
-  static const double _loginCardWidth = LoginCard.cardWidth;
-  static const double _loginCardHeight = LoginCard.cardHeight;
+  AuthPhase _phase = AuthPhase.login;
 
   late final AnimationController _fadeController;
   late final Animation<double> _fadeAnimation;
@@ -105,14 +83,14 @@ class _AdminAuthShellState extends State<AdminAuthShell>
       initial: () {},
       loading: () {},
       authenticated: () {
-        if (_phase == _Phase.login) {
+        if (_phase == AuthPhase.login) {
           unawaited(_startLoginTransition());
         }
       },
       unauthenticated: () {
-        if (_phase == _Phase.login) {
-          setState(() => _phase = _Phase.login);
-        } else if (_phase == _Phase.dashboard) {
+        if (_phase == AuthPhase.login) {
+          setState(() => _phase = AuthPhase.login);
+        } else if (_phase == AuthPhase.dashboard) {
           unawaited(_startLogoutTransition());
         }
       },
@@ -121,25 +99,25 @@ class _AdminAuthShellState extends State<AdminAuthShell>
   }
 
   Future<void> _startLoginTransition() async {
-    setState(() => _phase = _Phase.fadeOutContent);
+    setState(() => _phase = AuthPhase.fadeOutContent);
     await _fadeController.forward();
     if (!mounted) return;
 
-    setState(() => _phase = _Phase.morphCard);
+    setState(() => _phase = AuthPhase.morphCard);
     await _morphController.forward();
     if (!mounted) return;
 
-    setState(() => _phase = _Phase.staggerNav);
+    setState(() => _phase = AuthPhase.staggerNav);
   }
 
   void _onStaggerComplete() {
     if (!mounted) return;
     _navFadeController.value = 1;
 
-    setState(() => _phase = _Phase.revealContent);
+    setState(() => _phase = AuthPhase.revealContent);
     unawaited(
       _contentRevealController.forward().then((_) {
-        if (mounted) setState(() => _phase = _Phase.dashboard);
+        if (mounted) setState(() => _phase = AuthPhase.dashboard);
       }),
     );
   }
@@ -150,148 +128,36 @@ class _AdminAuthShellState extends State<AdminAuthShell>
     _morphController.value = 1;
     _fadeController.value = 1;
 
-    setState(() => _phase = _Phase.hideContent);
+    setState(() => _phase = AuthPhase.hideContent);
     await _contentRevealController.reverse();
     if (!mounted) return;
 
-    setState(() => _phase = _Phase.unstaggerNav);
+    setState(() => _phase = AuthPhase.unstaggerNav);
     await _navFadeController.reverse();
     if (!mounted) return;
 
-    setState(() => _phase = _Phase.unmorphCard);
+    setState(() => _phase = AuthPhase.unmorphCard);
     await _morphController.reverse();
     if (!mounted) return;
 
-    setState(() => _phase = _Phase.fadeInContent);
+    setState(() => _phase = AuthPhase.fadeInContent);
     await _fadeController.reverse();
     if (!mounted) return;
 
-    setState(() => _phase = _Phase.login);
+    setState(() => _phase = AuthPhase.login);
   }
 
   @override
   Widget build(BuildContext context) =>
       BlocListener<AuthCubit, AuthState>(
         listener: (context, state) => _onAuthStateChanged(state),
-        child: _buildPhase(context),
-      );
-
-  Widget _buildPhase(BuildContext context) => switch (_phase) {
-        _Phase.login => const LoginView(),
-        _Phase.dashboard => DashboardPage(
-            onSignOut: () => context.read<AuthCubit>().signOut(),
-          ),
-        _ => _buildTransition(context),
-      };
-
-  Widget _buildTransition(BuildContext context) => Scaffold(
-        backgroundColor: Colors.transparent,
-        body: LayoutBuilder(
-          builder: (context, constraints) {
-            final screenWidth = constraints.maxWidth;
-            final screenHeight = constraints.maxHeight;
-
-            final loginLeft = (screenWidth - _loginCardWidth) / 2;
-            final loginTop = (screenHeight - _loginCardHeight) / 2;
-            final navHeight = screenHeight - _margin * 2;
-
-            const contentLeft = _margin + _navCardWidth + 16;
-            final contentWidth = screenWidth - contentLeft - _margin;
-
-            return Stack(
-              children: [
-                AnimatedBuilder(
-                  animation: _morphAnimation,
-                  builder: (context, _) {
-                    final t = _morphAnimation.value;
-
-                    return Positioned(
-                      left: _lerp(loginLeft, _margin, t),
-                      top: _lerp(loginTop, _margin, t),
-                      width: _lerp(_loginCardWidth, _navCardWidth, t),
-                      height: _lerp(_loginCardHeight, navHeight, t),
-                      child: _buildCardContent(),
-                    );
-                  },
-                ),
-                if (_isContentCardVisible)
-                  AnimatedBuilder(
-                    animation: _contentRevealAnimation,
-                    builder: (context, _) {
-                      final t = _contentRevealAnimation.value;
-
-                      return Positioned(
-                        left: contentLeft + (1 - t) * contentWidth,
-                        top: _margin,
-                        width: contentWidth,
-                        height: screenHeight - _margin * 2,
-                        child: Opacity(
-                          opacity: t,
-                          child: const GradientCard(
-                            seed: 42,
-                            child: SizedBox.expand(),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-              ],
-            );
-          },
+        child: AuthPhaseIndicator(
+          phase: _phase,
+          fadeAnimation: _fadeAnimation,
+          morphAnimation: _morphAnimation,
+          contentRevealAnimation: _contentRevealAnimation,
+          navFadeAnimation: _navFadeAnimation,
+          onStaggerComplete: _onStaggerComplete,
         ),
       );
-
-  bool get _isContentCardVisible =>
-      _phase == _Phase.revealContent || _phase == _Phase.hideContent;
-
-  Widget _buildCardContent() {
-    if (_phase == _Phase.fadeOutContent ||
-        _phase == _Phase.fadeInContent) {
-      return AnimatedBuilder(
-        animation: _fadeAnimation,
-        builder: (context, child) => GradientCard(
-          child: Opacity(
-            opacity: 1 - _fadeAnimation.value,
-            child: child,
-          ),
-        ),
-        child: const LoginCardPlaceholder(),
-      );
-    }
-
-    if (_phase == _Phase.morphCard || _phase == _Phase.unmorphCard) {
-      return const GradientCard(child: SizedBox.expand());
-    }
-
-    if (_phase == _Phase.staggerNav ||
-        _phase == _Phase.revealContent) {
-      return GradientCard(
-        child: TransitionNavContent(onComplete: _onStaggerComplete),
-      );
-    }
-
-    if (_phase == _Phase.unstaggerNav ||
-        _phase == _Phase.hideContent) {
-      return AnimatedBuilder(
-        animation: _navFadeAnimation,
-        builder: (context, child) => GradientCard(
-          child: Opacity(
-            opacity: _navFadeAnimation.value,
-            child: Transform.translate(
-              offset: Offset(0, 8 * (1 - _navFadeAnimation.value)),
-              child: child,
-            ),
-          ),
-        ),
-        child: TransitionNavContent(
-          onComplete: () {},
-          animate: false,
-        ),
-      );
-    }
-
-    return const GradientCard(child: SizedBox.expand());
-  }
-
-  double _lerp(double a, double b, double t) => a + (b - a) * t;
 }

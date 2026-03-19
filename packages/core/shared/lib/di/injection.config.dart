@@ -12,13 +12,19 @@
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 
+import '../error_reporting/error_reporting_service.dart' as _i981;
+import '../error_reporting/sentry_error_reporting_service.dart' as _i655;
+
 extension GetItInjectableX on _i174.GetIt {
   // initializes the registration of main-scope dependencies inside of GetIt
   _i174.GetIt init({
     String? environment,
     _i526.EnvironmentFilter? environmentFilter,
   }) {
-    _i526.GetItHelper(this, environment, environmentFilter);
+    final gh = _i526.GetItHelper(this, environment, environmentFilter);
+    gh.lazySingleton<_i981.ErrorReportingService>(
+      () => _i655.SentryErrorReportingService(),
+    );
     return this;
   }
 }
