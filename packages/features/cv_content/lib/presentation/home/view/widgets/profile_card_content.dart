@@ -7,6 +7,7 @@ import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/constants/app_dimensions.dart';
 import 'package:shared/gen/colors.gen.dart';
+import 'package:shared/widgets/accent_divider.dart';
 import 'package:shared/l10n/l10n.dart';
 import 'package:shared/theme/theme.dart';
 import 'package:shared/widgets/stagger_item.dart';
@@ -137,6 +138,8 @@ class _ProfileCardContentState extends State<ProfileCardContent>
             ],
             if (profile.languages.isNotEmpty ||
                 profile.interests.isNotEmpty) ...[
+              const SizedBox(height: AppDimensions.spacingLarge),
+              const AccentDivider(),
               const SizedBox(height: AppDimensions.spacingLarge),
               StaggerItem(
                 animation: _animations[4],

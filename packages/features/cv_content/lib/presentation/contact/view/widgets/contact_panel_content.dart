@@ -89,7 +89,7 @@ class _ContactPanelContentState extends State<ContactPanelContent>
           animation: _animations[index++],
           child: Center(
             child: SizedBox(
-              height: 180,
+              height: 240,
               child: EuropeMap(
                 countryCode: locationToCountryCode(profile.location!),
               ),
@@ -101,6 +101,9 @@ class _ContactPanelContentState extends State<ContactPanelContent>
 
     // Location & timezone
     if (profile.location != null || profile.timezone != null) {
+      if (allItems.isNotEmpty) {
+        allItems.add(const SizedBox(height: AppDimensions.spacingMedium));
+      }
       allItems.add(
         StaggerItem(
           animation: _animations[index++],
@@ -176,10 +179,12 @@ class _ContactPanelContentState extends State<ContactPanelContent>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          SectionTitle(l10n.contact),
+          const SizedBox(height: AppDimensions.spacingLarge),
           ...allItems,
           if (allItems.isNotEmpty)
-            const SizedBox(height: AppDimensions.spacingLarge),
-          SectionTitle(l10n.contact),
+            const SizedBox(height: AppDimensions.spacingSmall),
+          const AccentDivider(),
           const SizedBox(height: AppDimensions.spacingLarge),
           Center(child: DecodeEmailReveal(email: profile.email)),
           const SizedBox(height: AppDimensions.spacingXLarge),

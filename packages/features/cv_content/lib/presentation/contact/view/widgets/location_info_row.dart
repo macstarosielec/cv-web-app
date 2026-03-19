@@ -16,43 +16,46 @@ class LocationInfoRow extends StatelessWidget {
     final accentColor = Theme.of(context).colorScheme.primary;
 
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        if (location != null) ...[
-          Icon(
-            Icons.location_on_outlined,
-            size: AppDimensions.iconSizeMedium,
-            color: accentColor,
-          ),
-          const SizedBox(width: AppDimensions.spacingTiny),
-          Flexible(
-            child: Text(
-              location!,
-              style: textTheme.bodyMedium?.copyWith(
-                color: ColorName.textSecondary,
+        if (location != null)
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.location_on_outlined,
+                size: AppDimensions.iconSizeMedium,
+                color: accentColor,
               ),
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-        ],
-        if (location != null && timezone != null)
-          const SizedBox(width: AppDimensions.spacingMedium),
-        if (timezone != null) ...[
-          Icon(
-            Icons.schedule,
-            size: AppDimensions.iconSizeMedium,
-            color: accentColor,
-          ),
-          const SizedBox(width: AppDimensions.spacingTiny),
-          Flexible(
-            child: Text(
-              timezone!,
-              style: textTheme.bodyMedium?.copyWith(
-                color: ColorName.textSecondary,
+              const SizedBox(width: AppDimensions.spacingTiny),
+              Text(
+                location!,
+                style: textTheme.bodyMedium?.copyWith(
+                  color: ColorName.textSecondary,
+                ),
+                overflow: TextOverflow.ellipsis,
               ),
-              overflow: TextOverflow.ellipsis,
-            ),
+            ],
           ),
-        ],
+        if (timezone != null)
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.schedule,
+                size: AppDimensions.iconSizeMedium,
+                color: accentColor,
+              ),
+              const SizedBox(width: AppDimensions.spacingTiny),
+              Text(
+                timezone!,
+                style: textTheme.bodyMedium?.copyWith(
+                  color: ColorName.textSecondary,
+                ),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ),
       ],
     );
   }
