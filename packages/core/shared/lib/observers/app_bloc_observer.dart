@@ -2,19 +2,16 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared/analytics/analytics_service.dart';
 import 'package:shared/config/app_config.dart';
 import 'package:shared/error_reporting/error_reporting_service.dart';
 
 class AppBlocObserver extends BlocObserver {
   AppBlocObserver({
     required this.appConfig,
-    required this.analyticsService,
     required this.errorReportingService,
   });
 
   final IAppConfig appConfig;
-  final AnalyticsService analyticsService;
   final ErrorReportingService errorReportingService;
 
   @override
@@ -37,13 +34,6 @@ class AppBlocObserver extends BlocObserver {
   void onError(BlocBase<dynamic> bloc, Object error, StackTrace stackTrace) {
     if (appConfig.isLogBlocErrors) {
       log('onError(${bloc.runtimeType}, $error, $stackTrace)');
-      unawaited(
-        analyticsService.logError(
-          errorType: error.runtimeType.toString(),
-          source: 'bloc:${bloc.runtimeType}',
-          message: error.toString(),
-        ),
-      );
     }
     unawaited(
       errorReportingService.captureException(error, stackTrace),

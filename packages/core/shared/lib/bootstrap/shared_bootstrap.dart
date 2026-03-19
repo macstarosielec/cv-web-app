@@ -58,7 +58,6 @@ Future<void> sharedBootstrap({
 
     Bloc.observer = AppBlocObserver(
       appConfig: appConfig,
-      analyticsService: analyticsService,
       errorReportingService: errorReportingService,
     );
 
