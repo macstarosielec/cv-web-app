@@ -5,4 +5,5 @@ abstract class IAppConfig {
   bool get isLogBlocErrors;
   bool get alwaysAnimateEntrance;
   String get sentryDsn;
+  String get recaptchaSiteKey;
 }

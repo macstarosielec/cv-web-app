@@ -28,6 +28,9 @@ class AppConfigProd implements IAppConfig, IFirebaseConfig {
       'https://e27a0a880e9314a8c37696a14ad1fa6c@o4511066998112256.ingest.de.sentry.io/4511067047329872';
 
   @override
+  String get recaptchaSiteKey => '6LfTR5AsAAAAAE7MkBxxMNMA871LzgX8Sjz7P3Dd';
+
+  @override
   FirebaseOptions getFirebaseOptions() =>
       DefaultFirebaseOptions.currentPlatform;
 }

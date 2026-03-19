@@ -46,7 +46,7 @@ class _ProfileFormState extends State<ProfileForm> {
     _email = TextEditingController(text: p.email);
     _phoneNumber = TextEditingController(text: p.phoneNumber ?? '');
     _location = TextEditingController(text: p.location ?? '');
-    _timezone = p.timezone;
+    _timezone = _timezones.contains(p.timezone) ? p.timezone : null;
     _cvUrl = TextEditingController(text: p.cvUrl ?? '');
     _languages = List.from(p.languages);
     _interests = List.from(p.interests);
@@ -225,6 +225,7 @@ class _ProfileFormState extends State<ProfileForm> {
   Widget _timezoneDropdown(BuildContext context) =>
       DropdownButtonFormField<String>(
         initialValue: _timezone,
+        isExpanded: true,
         decoration: adminInputDecoration(
           context: context,
           label: AppLocalizations.of(context).timezone,
@@ -241,7 +242,7 @@ class _ProfileFormState extends State<ProfileForm> {
           ..._timezones.map(
             (tz) => DropdownMenuItem(
               value: tz,
-              child: Text(tz),
+              child: Text(tz, overflow: TextOverflow.ellipsis),
             ),
           ),
         ],
