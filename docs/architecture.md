@@ -13,7 +13,7 @@ Feature Packages (presentation) --> core/domain <-- core/data
 |-------|---------|----------|
 | **Domain** | `packages/core/domain` | Entities (Freezed), repository interfaces. No Flutter/Firebase dependencies. |
 | **Data** | `packages/core/data` | Repository implementations, datasources (Firestore for prod, mock for dev). Depends on domain. |
-| **Shared** | `packages/core/shared` | Cross-cutting concerns: `IAppConfig` interface, `AppTheme`, localization, `AppBlocObserver`, `AppRouteObserver`, `AnalyticsService`, `Breakpoints`, DI setup, generated colors, shared widgets (GradientCard, MatrixRain, NavigationChip, ActionChip). |
+| **Shared** | `packages/core/shared` | Cross-cutting concerns: `IAppConfig` interface, `AppTheme`, localization, `AppBlocObserver`, `AppRouteObserver`, `AnalyticsService`, `ErrorReportingService` (Sentry), `Breakpoints`, DI setup, generated colors, shared widgets (GradientCard, MatrixRain, NavigationChip, ActionChip). |
 | **Features** | `packages/features/*` | Self-contained feature modules. Each owns its presentation layer (pages, cubits/blocs, widgets), its own DI module, and its own micro-router. |
 | **Apps** | `apps/*` | Thin shell applications. Wire up DI, Firebase, routing, and theme. Contain environment configs and entry points. |
 
@@ -30,6 +30,7 @@ Feature Packages (presentation) --> core/domain <-- core/data
 | **Asset Generation** | `flutter_gen` (color constants from XML) |
 | **Linting** | `very_good_analysis` |
 | **Firebase** | `firebase_core`, `cloud_firestore`, `firebase_auth`, `firebase_analytics` |
+| **Error Reporting** | `sentry_flutter` (Sentry) |
 
 ## Dependency Injection Flow
 
@@ -70,8 +71,9 @@ bootstrap(environment: "dev")    bootstrap(environment: "prod")
       ├── configureDependencies()      // GetIt setup for all modules
       ├── Firebase.initializeApp()     // Uses IFirebaseConfig.getFirebaseOptions()
       ├── AnalyticsService()             // Registered in GetIt
-      ├── Error handlers                  // FlutterError.onError, PlatformDispatcher.onError, zone errors → AnalyticsService
-      ├── Bloc.observer = AppBlocObserver() // Wired with AnalyticsService for error reporting
+      ├── Error handlers                  // FlutterError.onError, PlatformDispatcher.onError → ErrorReportingService (Sentry)
+      ├── Bloc.observer = AppBlocObserver() // Wired with ErrorReportingService for error capture
+      ├── SentryFlutter.init()           // Wraps app if sentryDsn is configured
       └── runApp(App())
 ```
 
