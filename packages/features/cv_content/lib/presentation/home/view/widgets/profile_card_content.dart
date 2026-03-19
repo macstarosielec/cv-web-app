@@ -7,6 +7,7 @@ import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/constants/app_dimensions.dart';
 import 'package:shared/gen/colors.gen.dart';
+import 'package:shared/widgets/accent_divider.dart';
 import 'package:shared/l10n/l10n.dart';
 import 'package:shared/theme/theme.dart';
 import 'package:shared/widgets/stagger_item.dart';
@@ -85,9 +86,7 @@ class _ProfileCardContentState extends State<ProfileCardContent>
     final l10n = AppLocalizations.of(context);
     final profile = widget.profile;
 
-    final hasBottomRow = profile.location != null ||
-        profile.timezone != null ||
-        profile.cvUrl != null;
+    final hasBottomRow = profile.cvUrl != null;
 
     return ScrollConfiguration(
       behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
@@ -139,6 +138,8 @@ class _ProfileCardContentState extends State<ProfileCardContent>
             ],
             if (profile.languages.isNotEmpty ||
                 profile.interests.isNotEmpty) ...[
+              const SizedBox(height: AppDimensions.spacingLarge),
+              const AccentDivider(),
               const SizedBox(height: AppDimensions.spacingLarge),
               StaggerItem(
                 animation: _animations[4],
@@ -202,83 +203,50 @@ class _ProfileCardContentState extends State<ProfileCardContent>
               const SizedBox(height: 32),
           StaggerItem(
             animation: _animations[5],
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Row(
               children: [
-                Row(
-                  children: [
-                    if (profile.location != null) ...[
-                      const Icon(
-                        Icons.location_on_outlined,
-                        size: AppDimensions.iconSizeDefault,
-                        color: ColorName.textMuted,
+                const Spacer(),
+                if (profile.cvUrl != null)
+                  MouseRegion(
+                    cursor: SystemMouseCursors.click,
+                    child: GestureDetector(
+                      onTap: () => unawaited(
+                        launchUrl(Uri.parse(profile.cvUrl!)),
                       ),
-                      const SizedBox(width: 4),
-                      Text(
-                        profile.location!,
-                        style: textTheme.bodySmall?.copyWith(
-                          color: ColorName.textSecondary,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
                         ),
-                      ),
-                    ],
-                    if (profile.location != null && profile.timezone != null)
-                      const SizedBox(width: 16),
-                    if (profile.timezone != null) ...[
-                      const Icon(
-                        Icons.schedule,
-                        size: AppDimensions.iconSizeDefault,
-                        color: ColorName.textMuted,
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        profile.timezone!,
-                        style: textTheme.bodySmall?.copyWith(
-                          color: ColorName.textSecondary,
-                        ),
-                      ),
-                    ],
-                    const Spacer(),
-                    if (profile.cvUrl != null)
-                      MouseRegion(
-                        cursor: SystemMouseCursors.click,
-                        child: GestureDetector(
-                          onTap: () => unawaited(
-                            launchUrl(Uri.parse(profile.cvUrl!)),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Theme.of(context).colorScheme.primary,
                           ),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 8,
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.download,
+                              size: AppDimensions.iconSizeDefault,
+                              color: Theme.of(context).colorScheme.primary,
                             ),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Theme.of(context).colorScheme.primary,
+                            const SizedBox(
+                              width: AppDimensions.spacingExtraSmall,
+                            ),
+                            Text(
+                              l10n.downloadCv,
+                              style: textTheme.bodySmall?.copyWith(
+                                color:
+                                    Theme.of(context).colorScheme.primary,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                  Icons.download,
-                                  size: AppDimensions.iconSizeDefault,
-                                  color: Theme.of(context).colorScheme.primary,
-                                ),
-                                const SizedBox(width: AppDimensions.spacingExtraSmall),
-                                Text(
-                                  l10n.downloadCv,
-                                  style: textTheme.bodySmall?.copyWith(
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                          ],
                         ),
                       ),
-                  ],
-                ),
+                    ),
+                  ),
               ],
             ),
           ),

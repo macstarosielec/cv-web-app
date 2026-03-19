@@ -28,6 +28,7 @@ Feature Packages (presentation) --> core/domain <-- core/data
 | **JSON Serialization** | `json_annotation` + `json_serializable` (via build_runner) |
 | **UI Hooks** | `flutter_hooks` (HookWidget for pages) |
 | **Asset Generation** | `flutter_gen` (color constants from XML) |
+| **SVG Path Rendering** | `path_drawing` (parses SVG path data for CustomPainter) |
 | **Linting** | `very_good_analysis` |
 | **Firebase** | `firebase_core`, `cloud_firestore`, `firebase_auth`, `firebase_analytics` |
 | **Error Reporting** | `sentry_flutter` (Sentry) |
