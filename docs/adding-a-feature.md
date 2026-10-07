@@ -113,3 +113,35 @@ flutter pub run build_runner build --delete-conflicting-outputs
 ## 9. Wire into the App
 
 Add dependency in the app's `pubspec.yaml`, register the DI module in `injection.dart`, and add routes in the app router.
+
+
+
+How to test (QA)
+
+Prerequisites
+- A develop/main build that includes this story, plus the `automation-ids` artifact (automation_ids.json) from the same pipeline run.
+- Appium with UiAutomator2 (Android) / XCUITest (iOS). No Flutter driver needed.
+
+Setup
+- Android: after session start call `driver.setSetting("disableIdLocatorAutocompletion", true)`
+  (or capability `appium:settings[disableIdLocatorAutocompletion]: true`).
+- iOS: no extra setup.
+
+Steps
+1. Open automation_ids.json. Expected: it contains `login_phone_input` (UpInputText) and `login_submit_button` (UpButton), with version/commit matching the build.
+2. Launch the app, reach the phone-number login screen.
+3. Locate the field:
+    - Android: `AppiumBy.id("login_phone_input")`
+    - iOS: `AppiumBy.accessibilityId("login_phone_input")`
+      Expected: element found; on Android its class is android.widget.EditText.
+4. Locate the button the same way with `login_submit_button`.
+   Expected: element found; on Android its class is android.widget.Button; `enabled` is false while the field is empty.
+5. `element.sendKeys("<valid phone number>")` on the field (no prior tap needed).
+   Expected: text appears in the field.
+6. Re-read the button. Expected: `enabled` is true.
+7. Tap the button. Expected: app proceeds to the next step of login.
+
+Notes
+- XPath is no longer needed for these two elements; `id` / `accessibilityId` are stable across layout changes.
+- Other screens have no ids yet; they are added per screen going forward and enforced on new code by CI.
+- Details: docs/development/automation-ids.md in the mobile repo.
