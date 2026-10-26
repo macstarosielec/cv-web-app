@@ -7,3 +7,13 @@
 
 On retry: wait backoff[attemptIndex], build `newOptions` as a copy with the incremented key (same approach as incrementRetryCount — copy extra, keep everything else including extra['encryptedFormData']), then
 `retryDioClientFactory().fetch<dynamic>(newOptions).then(handler.resolve).catchError((e) => handler.reject(e as DioException))` — mirror caching_cloudflare_integration_interceptor.dart:63-71 exactly. Otherwise `handler.next(err)`.
+
+Cover:
+- POST /x/_get: adapter throws HttpException('Software caused connection abort') on 1st call, returns 200 on 2nd → caller gets 200, adapter called twice, second options.extra['TransportRetryKey'] == 1.
+- GET /x (no suffix): same as above → retried.
+- POST /x/_post with the same failure → NOT retried, error propagates unchanged, adapter called once.
+- connectionError with SocketException 'Failed host lookup' → NOT retried.
+- receiveTimeout → NOT retried.
+- Failure on every attempt → adapter called exactly 1 + maxRetries times, final error is the last DioException.
+- options.extra['encryptedFormData'] set on the original request is present on the retried request's options.
+- Existing 'RetryKey' value is unchanged on the retried request.
