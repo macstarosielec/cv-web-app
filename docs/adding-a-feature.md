@@ -116,7 +116,7 @@ Add dependency in the app's `pubspec.yaml`, register the DI module in `injection
 
 ## 10. Additions
 
-Follow-up on the TransportRetryInterceptor change (bug 1475538). Apply exactly these four adjustments, nothing else. No refactors of unrelated code.
+Follow-up on the TransportRetryInterceptor change. Apply exactly these four adjustments, nothing else. No refactors of unrelated code.
 
 1. transport_retry_interceptor.dart — guard the backoff lookup:
    add `assert(backoff.length >= maxRetries, 'backoff must provide a delay for every retry attempt')` to the constructor initializer list. Keep `backoff[attemptIndex]` as is.
